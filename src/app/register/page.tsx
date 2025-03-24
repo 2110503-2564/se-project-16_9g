@@ -1,37 +1,116 @@
-import DateReserve from "@/components/DateReserve"
-import { TextField, FormControl, InputLabel, Select, MenuItem } from "@mui/material"
-import { Dayjs } from "dayjs"
-import Link from "next/link"
-export default function LoginPage() {
-    return (
-<div className="font-mono flex flex-col items-center ">
-            
-            <hr className="w-[100%] " />
-            <div className="text-center flex flex-col items-center justify-center   
-            border-[#4AC9FF] border-2 shadow-lg rounded-xl p-10 w-[700px] h-[600px] mx-auto my-10 ">
-                <h1 className="text-5xl py-5 font-medium h-[80px] bg-gradient-to-r from-[#4AC9FF] to-[#4AC9FF] 
-                inline-block bg-clip-text text-transparent  ">Register</h1>
-                <div className="flex flex-col items-center">
-                    <TextField name="Name" label="Name" variant="standard" className="w-[500px]"
-                    fullWidth  /> <br />
-                    <TextField name="Email" label="Email" variant="standard" className="w-[500px] h-[50px]"
-                    fullWidth  /> <br />
-                    <TextField name="Password" label="Password" variant="standard" className="w-[500px] h-[75px]"
-                    fullWidth  />
-                    <TextField name="Tel." label="Tel." variant="standard" className="w-[500px] h-[50px]"
-                    fullWidth  /> <br />
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import userRegister from "@/libs/userRegister";
 
-                    
-                    
-                    
-                    <button className="block rounded-md px-3 py-2
-                    text-white shadow-sm w-[100%] my-2
-                    bg-gradient-to-r from-[#4AC9FF] to-[#4AC9FF]
-                    hover:from-[#4AC9FF] hover:to-[#4AC9FF] transition duration-500 h-[50px] ease-in-out hover:scale-105"
-                    name="Book Venue">
-                        Register
-                    </button>
-                </div>
-            </div>
+export default function RegisterPage() {
+    const router = useRouter();
+    
+    const [user, setUser] = useState({
+        name: "",
+        email: "",
+        password: "",
+        tel: "",
+    });
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false); 
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUser({ ...user, [e.target.name]: e.target.value });
+    };
+
+    
+    const handleRegister = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setError(""); 
+        setLoading(true); 
+
+        try {
+            const response = await userRegister(user.email, user.password, user.name, user.tel);
+
             
-        </div>)}
+            if (response) {
+                alert("Registration successful! Redirecting to login...");
+                router.push("/login"); 
+            }
+        } catch (error: any) {
+            setError(error.message || "Registration failed. Please try again.");
+        } finally {
+            setLoading(false); 
+        }
+    };
+
+    return (
+        <div className="font-mono flex flex-col items-center my-10 text-center">
+            <form onSubmit={handleRegister} className="w-[500px] p-10 flex flex-col items-center rounded-xl shadow-[0px_0px_8px_6px_rgba(0,0,0,0.15)]">
+                <div className="text-3xl p-2">Register</div>
+                {error && <p className="text-red-500">{error}</p>} {/* Show error if there's any */}
+                
+                <div className="w-full text-lg">
+                    <div className="flex flex-row justify-between my-5 items-center">
+                        <label htmlFor="name">Name</label>
+                        <input
+                            type="text"
+                            name="name"
+                            id="name"
+                            placeholder="Enter your name"
+                            value={user.name}
+                            onChange={handleChange}
+                            className="border-2 border-slate-300 w-[70%] h-[40px] mx-5 px-2 rounded-md focus:outline-none"
+                            required
+                        />
+                    </div>
+                    <div className="flex flex-row justify-between my-5 items-center">
+                        <label htmlFor="email">Email</label>
+                        <input
+                            type="email"
+                            name="email"
+                            id="email"
+                            placeholder="Enter your email"
+                            value={user.email}
+                            onChange={handleChange}
+                            className="border-2 border-slate-300 w-[70%] h-[40px] mx-5 px-2 rounded-md focus:outline-none"
+                            required
+                        />
+                    </div>
+                    <div className="flex flex-row justify-between my-5 items-center">
+                        <label htmlFor="password">Password</label>
+                        <input
+                            type="password"
+                            name="password"
+                            id="password"
+                            placeholder="Enter password"
+                            value={user.password}
+                            onChange={handleChange}
+                            className="border-2 border-slate-300 w-[70%] h-[40px] mx-5 px-2 rounded-md focus:outline-none"
+                            required
+                        />
+                    </div>
+                    <div className="flex flex-row justify-between my-5 items-center">
+                        <label htmlFor="tel">Telephone</label>
+                        <input
+                            type="text"
+                            name="tel"
+                            id="tel"
+                            placeholder="Enter your telephone number"
+                            value={user.tel}
+                            onChange={handleChange}
+                            className="border-2 border-slate-300 w-[70%] h-[40px] mx-5 px-2 rounded-md focus:outline-none"
+                            required
+                        />
+                    </div>
+
+                    <div className="mt-5 text-center">
+                        <button
+                            type="submit"
+                            className="bg-[#4AC9FF] w-[50%] text-white px-10 py-2 rounded-md hover:bg-[#0356a3] duration-300"
+                            disabled={loading} 
+                        >
+                            {loading ? "Registering..." : "Register"}
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    );
+}
