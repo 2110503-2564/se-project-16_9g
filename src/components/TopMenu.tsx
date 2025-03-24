@@ -2,7 +2,7 @@ import TopMenuItem from "./TopMenuItem";
 import { Link } from "@mui/material";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/auth/[...nextauth]/authOptions";
-import getUserProfile from "@/libs/getUserProfile";
+
 
 export default async function TopMenu() {
     const session = await getServerSession(authOptions)
