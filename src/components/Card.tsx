@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { RestaurantItem } from "../../interfaces";
+import Link from "next/link";
 
 export default function Card(res:RestaurantItem) {
     return (
@@ -19,8 +20,9 @@ export default function Card(res:RestaurantItem) {
                     <p>Close time: {res.closetime}</p>
                 </div>
                 <div className="text-center" >
-                    <button className="px-4 py-2 bg-[#4AC9FF] text-white rounded-lg w-full
-                    hover:bg-[#0356a3] duration-300">Reserve</button>
+                    <Link href={'/reservations'} className="px-4 py-2 bg-[#4AC9FF] text-white 
+                    rounded-lg w-full hover:bg-[#0356a3] duration-300">
+                    Reserve</Link>
                 </div>
             </div>
         </div>

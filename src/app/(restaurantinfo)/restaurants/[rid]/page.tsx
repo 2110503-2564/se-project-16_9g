@@ -4,7 +4,7 @@ import Review from "@/components/Review";
 import getRestaurant from "@/libs/getRestaurant";
 import { ReviewItem } from "../../../../../interfaces";
 import { useState, useEffect } from "react";
-import { Suspense } from "react";
+import Link from "next/link";
 import { LinearProgress } from "@mui/material";
 
 export default function InfoPage({ params }: { params: { rid: string } }) {
@@ -46,8 +46,9 @@ export default function InfoPage({ params }: { params: { rid: string } }) {
                         <p>Close time: {res.data.closetime}</p>
                     </div>
                     <div className="my-3">
-                        <button className="bg-[#4AC9FF] text-white px-3 py-2 rounded-md mr-3
-                        hover:bg-[#0356a3] duration-300">Reserve</button>
+                        <Link href={'/reservations'} className="bg-[#4AC9FF] text-white 
+                        px-3 py-2 rounded-md hover:bg-[#0356a3] duration-300 mr-3">
+                        Reserve</Link>
                         <button className="bg-[#4AC9FF] text-white px-3 py-2 rounded-md
                         hover:bg-[#0356a3] duration-300">Review this Restaurant</button>
                     </div>
