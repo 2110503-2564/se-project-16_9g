@@ -30,14 +30,14 @@ export default function LoginPage() {
                 <button className="block rounded-md px-3 py-2
                     text-white shadow-sm w-[100%] my-5
                     bg-gradient-to-r from-[#4AC9FF] to-[#4AC9FF]
-                    hover:from-[#4AC9FF] hover:to-[#4AC9FF] transition duration-500 h-[50px] ease-in-out hover:scale-105">
-                    Login
-                </button>
-
-                <Link rel="stylesheet" href="/register">
-                    <h1 className="h-[50px]">Don't have an account?</h1>
-                </Link>
+                    hover:from-[#4AC9FF] hover:to-[#4AC9FF] transition duration-500 h-[50px] ease-in-out hover:scale-105"
+                    name="Book Venue">
+                        Login
+                    </button>
+                    <Link rel="stylesheet" href="/register" >
+                        <h1 className=" h-[50px]"> don't have account?</h1>
+                    </Link>
+                </div>
             </div>
-        </div>
-    )
-}
+            
+        </div>)}

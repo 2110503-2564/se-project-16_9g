@@ -1,5 +1,5 @@
 export default async function userLogIn(userEmail:string, userPassword:string) {
-    const response = await fetch("http://localhost:5000/api/stb/auth/login", {
+    const response = await fetch("https://restaurant-api-fawn.vercel.app/api/stb/auth/login", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
