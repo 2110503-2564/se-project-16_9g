@@ -1,8 +1,33 @@
-import DateReserve from "@/components/DateReserve"
-import { TextField, FormControl, InputLabel, Select, MenuItem } from "@mui/material"
-import { Dayjs } from "dayjs"
-import Link from "next/link"
+"use client";
+import { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+
 export default function LoginPage() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const router = useRouter();
+
+    const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setError(""); 
+
+        const res = await signIn("credentials", {
+            redirect: false, 
+            email,
+            password,
+        });
+
+        if (res?.error) {
+            setError("Invalid email or password");
+        } else {
+            router.push("/");
+            router.refresh(); 
+        }
+    };
+
     return (
         <div className="font-mono flex flex-col items-center">
             <hr className="w-[100%]" />
@@ -11,33 +36,49 @@ export default function LoginPage() {
                 border-[#4AC9FF] border-2 shadow-lg rounded-xl p-10 w-[700px] h-[600px] mx-auto my-10">
                 
                 <h1 className="text-5xl py-5 font-medium h-[150px] bg-gradient-to-r from-[#4AC9FF] to-[#4AC9FF] 
-                    inline-block bg-clip-text text-transparent">Login by email
+                    inline-block bg-clip-text text-transparent">Login by Email
                 </h1>
 
-                <div className="flex flex-col items-center w-[100%] justify-center space-y-4">
+                <form onSubmit={handleLogin} className="flex flex-col items-center w-[100%] justify-center space-y-4">
                     <div className="flex flex-row items-center w-[100%] justify-center">
                         <label htmlFor="Email" className="w-[120px] text-left mr-4">Email</label>
-                        <input type="text" name="Email" id="Email"
-                            className="border-2 border-[#4AC9FF] w-[300px] h-[40px] px-2 rounded-md focus:outline-none"/>
+                        <input 
+                            type="email" 
+                            id="Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="border-2 border-[#4AC9FF] w-[300px] h-[40px] px-2 rounded-md focus:outline-none"
+                            required
+                        />
                     </div> 
+
                     <div className="flex flex-row items-center justify-center w-[100%]">
                         <label htmlFor="Password" className="w-[120px] text-left mr-4">Password</label>
-                        <input type="password" name="Password" id="Password"
-                            className="border-2 border-[#4AC9FF] w-[300px] h-[40px] px-2 rounded-md focus:outline-none"/>
+                        <input 
+                            type="password" 
+                            id="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="border-2 border-[#4AC9FF] w-[300px] h-[40px] px-2 rounded-md focus:outline-none"
+                            required
+                        />
                     </div>
-                </div>
 
-                <button className="block rounded-md px-3 py-2
-                    text-white shadow-sm w-[100%] my-5
-                    bg-gradient-to-r from-[#4AC9FF] to-[#4AC9FF]
-                    hover:from-[#4AC9FF] hover:to-[#4AC9FF] transition duration-500 h-[50px] ease-in-out hover:scale-105"
-                    name="Book Venue">
+                    {error && <p className="text-red-500">{error}</p>}
+
+                    <button 
+                        type="submit"
+                        className="block rounded-md px-3 py-2 text-white shadow-sm w-[100%] my-5
+                        bg-gradient-to-r from-[#4AC9FF] to-[#4AC9FF] transition duration-500 h-[50px] 
+                        ease-in-out hover:scale-105">
                         Login
                     </button>
-                    <Link rel="stylesheet" href="/register" >
-                        <h1 className=" h-[50px]"> don't have account?</h1>
-                    </Link>
-                </div>
+                </form>
+
+                <Link href="/register">
+                    <p className="h-[50px] text-[#4AC9FF] underline">Don't have an account?</p>
+                </Link>
             </div>
-            
-        </div>)}
+        </div>
+    );
+}

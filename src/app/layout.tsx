@@ -29,7 +29,6 @@ export default async function RootLayout({
         <NextAuthProvider session={session}>
           <TopMenu />
           {children}
-
         </NextAuthProvider>
       </body>
     </html>
