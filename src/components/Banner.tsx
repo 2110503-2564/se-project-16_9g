@@ -1,0 +1,19 @@
+import Image from "next/image";
+import Link from "next/link";
+
+export default function Banner() {
+    return (
+        <div className="relative w-screen h-[65vh]">
+            <div className="absolute w-full h-full bg-black top-0 left-0 z-10 opacity-50 "></div>
+            <Image src="/img/cover.jpg" alt="cover" fill objectFit="cover"/>
+            <div className="relative z-20 top-[45%] text-center text-white text-5xl ">
+                <h1>Welcome to Restaurant Reservation Website</h1>
+                <h3>By StepBack</h3>
+                <div className="m-3">
+                    <Link href={'/restaurants'} className="text-xl bg-[#4AC9FF] px-5 py-3
+                    rounded-lg hover:bg-[#0356a3] duration-300">View All Restaurants</Link>
+                </div>
+            </div>
+        </div>
+    );
+}
