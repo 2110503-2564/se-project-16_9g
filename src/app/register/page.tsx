@@ -8,7 +8,7 @@ export default function LoginPage() {
             
             <hr className="w-[100%] " />
             <div className="text-center flex flex-col items-center justify-center   
-            border-2 rounded-xl p-10 w-[700px] h-[600px] mx-auto my-10 ">
+            border-[#4AC9FF] border-2 shadow-lg rounded-xl p-10 w-[700px] h-[600px] mx-auto my-10 ">
                 <h1 className="text-5xl py-5 font-medium h-[80px] bg-gradient-to-r from-[#4AC9FF] to-[#4AC9FF] 
                 inline-block bg-clip-text text-transparent  ">Register</h1>
                 <div className="flex flex-col items-center">
