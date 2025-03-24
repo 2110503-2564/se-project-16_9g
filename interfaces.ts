@@ -1,4 +1,4 @@
-export interface Reservation {
+export interface ReservationItem {
     _id: string,
     resDate: string,
     resTime: string,
@@ -30,7 +30,7 @@ export interface RestaurantItem {
     closetime: string,
     reviews: ReviewItem[]; 
     __v: number;
-    reservations: Reservation[];
+    reservations: ReservationItem[];
     id: string;
 }
 
@@ -39,4 +39,10 @@ export interface RestaurantJson {
     count: number,
     pagination: Object,
     data: RestaurantItem[]
+}
+
+export interface ReservationJson {
+    success: boolean,
+    count: number,
+    data: ReservationItem[]
 }

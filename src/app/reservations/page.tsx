@@ -39,7 +39,7 @@ export default function Reservation() {
         };
 
         fetchUserProfile();
-    }, [session]); // Only run when session is available
+    }, [session?.user?.token]); // Only run when session is available
 
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -119,13 +119,14 @@ export default function Reservation() {
                     <div className="flex flex-row justify-between my-3 items-center">
                         <label>Date</label>
                         <div className="w-[70%] mx-5">
-                            <DateReserve onDateChange={(value: Dayjs) => { setResDate(dayjs(value).format("YYYY-MM-DD")) }} />
+                            <DateReserve initialDate={dayjs()}
+                            onDateChange={(value: Dayjs) => { setResDate(dayjs(value).format("YYYY-MM-DD")) }} />
                         </div>
                     </div>
                     <div className="flex flex-row justify-between my-3 items-center">
                         <label>Time</label>
                         <div className="w-[70%] mx-5">
-                            <TimeReserve onTimeChange={(value: Dayjs) => { setResTime(dayjs(value).format("HH:mm:ss")) }} />
+                            <TimeReserve initialTime={dayjs()} onTimeChange={(value: Dayjs) => { setResTime(dayjs(value).format("HH:mm:ss")) }} />
                         </div>
                     </div>
                     {error && <div className="text-red-500 text-sm my-3">{error}</div>}

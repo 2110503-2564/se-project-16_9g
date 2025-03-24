@@ -12,8 +12,8 @@ export default async function TopMenu() {
         <div className="w-screen h-[60px] bg-[#4AC9FF] flex flew-row justify-end top-0 z-30 px-8 py-2 font-serif ">
             <div className="text-medium  absolute  flex absolute left-0 item-center">
                 <TopMenuItem label="Home" href="/" />
-                {/* <TopMenuItem label="My Reservation" href="/myReservation" />
-                <TopMenuItem label="edit" href="/editReservation" />
+                {/* <TopMenuItem label="My Reservation" href="/myreservation" />
+                <TopMenuItem label="edit" href="/editreservation" />
                 <TopMenuItem label="Profile" href="/profile" /> */}
             </div>
             {

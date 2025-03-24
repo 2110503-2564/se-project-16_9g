@@ -1,21 +1,29 @@
-'use client';
+"use client";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import getUserProfile from "@/libs/getUserProfile";
 import Image from "next/image";
-import { CircularProgress } from "@mui/material";
+import { LinearProgress } from "@mui/material";
+import getReservations from "@/libs/getReservations";
+import deleteReservation from "@/libs/deleteReservation";
 
 interface Reservation {
-  id: number;
-  restaurantName: string;
-  customerName: string;
-  tel: string;
-  date: string;
-  time: string;
-  numberOfPeople: number;
-  imageUrl: string;
+  _id: string,
+  resDate: string,
+  resTime: string,
+  partySize: number,
+  contact: string,
+  name: string,
+  restaurant: {
+    _id: string,
+    name: string,
+    picture?: string,
+  },
+  user: {
+    name: string,
+  }
 }
 
 export default function MyReservationPage() {
@@ -24,33 +32,66 @@ export default function MyReservationPage() {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [reservations, setReservations] = useState<Reservation[]>([]);
+  
+  const handleDeleteReservation = async (reservationId: string) => {
+    if (!session?.user?.token) return;
+
+    const confirmDelete = window.confirm("Are you sure you want to delete this reservation?");
+    if (!confirmDelete) return;
+
+    try {
+      await deleteReservation(reservationId, session.user.token);
+      alert("Reservation deleted successfully!");
+
+      setReservations((prevReservations) =>
+        prevReservations.filter((reservation) => reservation._id !== reservationId)
+      );
+
+      router.refresh();
+    } catch (error: any) {
+      alert("Failed to delete reservation: " + error.message);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!session?.user?.token) return;
+
       setLoading(true);
-      if (session?.user?.token) {
-        try {
-          const userData = await getUserProfile(session.user.token);
-          setUser(userData);
-          // Fetch reservations
-          const res = await fetch("/api/reservations");
-          const data = await res.json();
-          setReservations(data);
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        } finally {
-          setLoading(false);
+      try {
+        const userData = await getUserProfile(session.user.token);
+        setUser(userData);
+
+        const res = await getReservations(session.user.token);
+        if (res?.data) {
+          setReservations(res.data);
+        } else {
+          setReservations([]);
         }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setReservations([]);
+      } finally {
+        setLoading(false);
       }
     };
+
     fetchData();
-  }, [session]);
+  }, [session?.user?.token]);
 
   if (loading) {
     return (
       <div className="w-full text-center">
         <p>Loading...</p>
-        <CircularProgress />
+        <LinearProgress />
+      </div>
+    );
+  }
+
+  if (reservations.length === 0) {
+    return (
+      <div className="w-full text-center text-gray-500">
+        <h1>No reservations found.</h1>
       </div>
     );
   }
@@ -58,40 +99,42 @@ export default function MyReservationPage() {
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6">
-        <h1 className="text-2xl font-bold text-center mb-6">My Reservation</h1>
+        <h1 className="text-2xl font-bold text-center mb-6">My Reservations</h1>
         {reservations.map((reservation) => (
           <div
-            key={reservation.id}
+            key={reservation._id}
             className="relative w-full bg-white rounded-lg shadow-md flex p-4 mb-4 items-center"
           >
-            <div className="w-1/4">
-              <Image
-                src={reservation.imageUrl}
-                alt={reservation.restaurantName}
-                width={150}
-                height={100}
-                className="rounded-md object-cover w-full"
-                unoptimized
-              />
-            </div>
+            {reservation.restaurant?.picture && (
+              <div className="w-1/4">
+                <Image
+                  src={reservation.restaurant.picture}
+                  alt={reservation.restaurant.name}
+                  width={150}
+                  height={100}
+                  className="rounded-md object-cover w-full"
+                  unoptimized
+                />
+              </div>
+            )}
             <div className="flex-1 ml-4">
-              <p className="font-semibold">{reservation.restaurantName}</p>
-              <p>Customer: {reservation.customerName}</p>
-              <p>Tel: {reservation.tel}</p>
-              <p>Date: {reservation.date}</p>
-              <p>Time: {reservation.time}</p>
-              <p>Number of people: {reservation.numberOfPeople}</p>
+              <p className="font-semibold text-xl">{reservation.restaurant.name}</p>
+              <p>Customer: {reservation.name}</p>
+              <p>Tel: {reservation.contact}</p>
+              <p>Date: {reservation.resDate}</p>
+              <p>Time: {reservation.resTime}</p>
+              <p>Number of people: {reservation.partySize}</p>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-3 absolute bottom-0 right-0 m-3">
               <button
                 className="bg-yellow-500 text-white px-4 py-2 rounded"
-                onClick={() => router.push(`/edit-reservation/${reservation.id}`)}
+                onClick={() => router.push(`/editreservation?res=${reservation._id}`)}
               >
                 Edit
               </button>
               <button
                 className="bg-red-500 text-white px-4 py-2 rounded"
-                onClick={() => alert("Delete function not implemented yet")}
+                onClick={() => handleDeleteReservation(reservation._id)}
               >
                 Delete
               </button>

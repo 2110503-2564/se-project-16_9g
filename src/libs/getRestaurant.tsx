@@ -1,4 +1,4 @@
-export default async function getRestaurants(id:string) {
+export default async function getRestaurant(id:string) {
 
     const response = await fetch(`https://restaurant-api-fawn.vercel.app/api/stb/restaurants/${id}`);
     if(!response.ok) {

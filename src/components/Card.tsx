@@ -28,7 +28,7 @@ export default function Card(res: RestaurantItem) {
             }
         };
         fetchData();
-    }, [session]);
+    }, [session?.user?.token]);
 
     if (loading) {
         return (
