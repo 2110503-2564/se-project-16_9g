@@ -3,29 +3,27 @@ import { useEffect, useState } from "react";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import getUserProfile from "@/libs/getUserProfile";
+import { useSession } from "next-auth/react";
+import { LinearProgress } from "@mui/material";
 
 export default function ProfilePage() {
     
     const router = useRouter();
-    const [user, setUser] = useState({ name: "", email: "", tel: "" }); // เก็บข้อมูลผู้ใช้
+    const [user, setUser] = useState<any>(null); 
     const [loading, setLoading] = useState(true);
+    const {data: session} = useSession();
 
     useEffect(() => {
         const fetchUserProfile = async () => {
             try {
-                const token = localStorage.getItem("userToken"); // ดึง Token จาก localStorage
-                if (!token) {
+                if (!session?.user.token) {
                     throw new Error("No token found");
                 }
-                const userData = await getUserProfile(token);
-                setUser({
-                    name: userData.name,
-                    email: userData.email,
-                    tel: userData.tel || "N/A" // เผื่อว่า tel อาจไม่มีข้อมูล
-                });
+                const userData = await getUserProfile(session.user.token);
+                setUser(userData);
             } catch (error) {
                 console.error("Failed to fetch user profile:", error);
-                setUser({ name: "Guest", email: "Not Available", tel: "N/A" });
+                setUser(null);
             } finally {
                 setLoading(false);
             }
@@ -34,9 +32,7 @@ export default function ProfilePage() {
     }, []);
 
     const handleLogout = async () => {
-        await signOut({ redirect: false });
-        localStorage.removeItem("userToken");
-        router.push("/");
+        router.push('/api/auth/signout')
     };
 
     const goToChangePassword = () => {
@@ -44,19 +40,24 @@ export default function ProfilePage() {
     };
 
     if (loading) {
-        return <div className="text-center text-lg">Loading...</div>;
+        return <div className="text-center text-lg">Loading... <LinearProgress /></div>;
     }
 
     return (
-        <div className="font-mono flex flex-col items-center">
+        <div className="font-mono flex flex-col items-center shadow-[0px_0px_8px_6px_rgba(0,0,0,0.15)] 
+        w-[500px] h-[500px] justify-center my-5 mx-auto rounded-lg ">
             <h1 className="text-3xl my-5">Your Information</h1>
-            <div className="text-lg">
-                <p><strong>Name:</strong> {user.name}</p>
-                <p><strong>Email:</strong> {user.email}</p>
-                <p><strong>Tel:</strong> {user.tel}</p>
-            </div>
+            {
+                user ? (
+                    <div className="text-xl my-5">
+                        <p className="py-3"><strong>Name:</strong> {user.data.name}</p>
+                        <p className="py-3"><strong>Email:</strong> {user.data.email}</p>
+                        <p className="py-3"><strong>Tel:</strong> {user.data.tel}</p>
+                    </div>
+                ) : null
+            }
 
-            <div className="mt-5 flex flex-col gap-3">
+            <div className="flex flex-row gap-3">
                 <button 
                     onClick={handleLogout}
                     className="bg-blue-400 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-500 transition">
