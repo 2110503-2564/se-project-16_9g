@@ -9,33 +9,45 @@ export default async function TopMenu() {
     console.log(session)
 
     return (
-        <div className="w-screen h-[60px] bg-[#4AC9FF] flex flew-row justify-end top-0 z-30 px-8 py-2 font-serif ">
-            <div className="text-medium  absolute  flex absolute left-0 item-center">
+        <div className="w-screen h-[60px] bg-[#4AC9FF] flex flew-row relative z-30 px-8 items-center font-serif justify-between ">
+            <div className="text-medium flex flex-row justify-start items-center">
                 <TopMenuItem label="Home" href="/" />
                 {/* <TopMenuItem label="My Reservation" href="/myreservation" />
                 <TopMenuItem label="edit" href="/editreservation" />
                 <TopMenuItem label="Profile" href="/profile" /> */}
-            </div>
-            {
-                session? 
-                    <Link href="/api/auth/signout">
-                        <div className="flex items-center underline relative left-0 h-full px-5 absolute right-0 text-white text-sm w-fit">
-                            Log Out
+                {
+                    session ?
+                    <Link href="/myreservation">
+                        <div className=" h-full px-5 text-white text-sm w-fit">
+                            My Reservation
                         </div>
                     </Link>
-                    :<div className="flex flex-row gap-4"> 
-                        <Link href="/register">
-                            <div className="text-medium underline relative  flex absolute item-center text-white font-serif top-2">
-                                Register
+                    : null
+                }
+            </div>
+            <div >
+                {
+                    session ?
+                        <Link href="/api/auth/signout" >
+                            <div className=" underline h-full px-5 text-white text-sm ">
+                                Log Out
                             </div>
                         </Link>
-                        <Link href="/api/auth/signin">
-                            <div className="text-medium underline relative  flex absolute item-center text-white font-serif top-2">
-                                Log In
-                            </div>
-                        </Link>
-                    </div>
-            }
+                        : <div className="flex flex-row gap-4 items-center px-3">
+                            <Link href="/register">
+                                <div className="text-medium underline text-white font-serif">
+                                    Register
+                                </div>
+                            </Link>
+                            <Link href="/api/auth/signin">
+                                <div className="text-medium underline text-white font-serif ">
+                                    Log In
+                                </div>
+                            </Link>
+                        </div>
+                }
+
+            </div>
         </div>
     );
 }

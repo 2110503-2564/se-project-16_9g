@@ -35,18 +35,18 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="font-mono flex flex-col items-center">
+        <div className="font-mono flex flex-col items-center max-w-[700px] max-h-[700px] justify-center m-auto">
             <hr className="w-[100%]" />
 
             <div className="text-center flex flex-col items-center justify-center   
-                border-[#4AC9FF] border-2 shadow-lg rounded-xl p-10 w-[700px] h-[600px] mx-auto my-10">
+                border-[#4AC9FF] border-2 shadow-lg rounded-xl p-10 mx-auto my-5">
 
-                <h1 className="text-5xl py-5 font-medium h-[150px] bg-gradient-to-r from-[#4AC9FF] to-[#4AC9FF] 
+                <h1 className="text-5xl py-8  bg-gradient-to-r from-[#4AC9FF] to-[#4AC9FF] 
                     inline-block bg-clip-text text-transparent">Login by Email
                 </h1>
 
-                <form onSubmit={handleLogin} className="flex flex-col items-center w-[100%] justify-center space-y-4">
-                    <div className="flex flex-row items-center w-[100%] justify-center">
+                <form onSubmit={handleLogin} className="flex flex-col items-center w-[100%] justify-center space-y-4 mb-5">
+                    <div className="flex flex-row items-center w-full py-3 justify-center">
                         <label htmlFor="Email" className="w-[120px] text-left mr-4">Email</label>
                         <input
                             type="email"
@@ -58,7 +58,7 @@ export default function LoginPage() {
                         />
                     </div>
 
-                    <div className="flex flex-row items-center justify-center w-[100%]">
+                    <div className="flex flex-row items-center justify-center w-full pt-2 pb-3">
                         <label htmlFor="Password" className="w-[120px] text-left mr-4">Password</label>
                         <input
                             type="password"
@@ -81,9 +81,11 @@ export default function LoginPage() {
                     </button>
                 </form>
 
-                <Link href="/register">
-                    <p className="h-[50px] text-[#4AC9FF] underline">Don't have an account?</p>
-                </Link>
+                <span className="h-[50px] text-black ">Don't have an account? 
+                    <Link href="/register" className="text-[#4AC9FF] text-lg pl-3">
+                        Register Here
+                    </Link>
+                </span>
             </div>
         </div>
     );
