@@ -38,7 +38,7 @@ export default function Home() {
 
       if (loading) {
         return (
-            <div className="w-full text-center">
+            <div className="w-full text-center font-mono">
                 <p>Loading...</p>
                 <LinearProgress />
             </div>

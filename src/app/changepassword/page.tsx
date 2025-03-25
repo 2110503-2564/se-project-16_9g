@@ -40,7 +40,7 @@ export default function ChangePassWordPage() {
     };
 
     return (
-        <div className="font-mono flex flex-col items-center">
+        <div className="font-mono flex flex-col items-center font-mono">
             <hr className="w-[100%]" />
             <div className="text-center flex flex-col items-center justify-center    
                 border-2 rounded-xl p-5 w-[550px] h-[550px] mx-auto my-10 shadow-[0px_0px_8px_6px_rgba(0,0,0,0.15)]">

@@ -75,7 +75,7 @@ export default function AddRestaurant() {
     };
 
     return (
-        <div className="w-[550px] my-10 mx-auto p-3">
+        <div className="w-[550px] my-10 mx-auto p-3 font-mono ">
             <form onSubmit={handleSubmit} className="flex flex-col gap-3 w-full shadow-[0px_0px_8px_4px_rgba(0,0,0,0.15)]
             justify-center items-center rounded-lg p-6 ">
                 <div className="py-3"><h1 className="text-2xl">Add Restaurant</h1></div>

@@ -108,7 +108,7 @@ export default function EditReservation() {
     }
 
     return (
-        <div className="flex flex-col items-center my-10">
+        <div className="flex flex-col items-center my-10 font-mono">
             <form onSubmit={handleEditReservation} className="w-[500px] p-5 flex flex-col items-center rounded-xl shadow-md">
                 <div className="text-2xl">Edit Reservation</div>
                 <div className="my-5">

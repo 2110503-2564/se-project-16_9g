@@ -38,9 +38,13 @@ export default async function RootLayout({
           role === 'admin' ? (
             <NextAuthProvider session={session}>
               <TopMenu />
-              <Sidebar />
-              <div className="w-[75%] absolute right-0 ">
-                {children}  
+              <div className="h-fit">
+                <Sidebar />
+                <div className="w-[80%] absolute right-0  ">
+                  <div className="flex justify-center ">
+                    {children}    
+                  </div>
+                </div>
               </div>
             </NextAuthProvider>
           ) : (

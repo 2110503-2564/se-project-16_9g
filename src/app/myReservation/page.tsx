@@ -97,13 +97,14 @@ export default function MyReservationPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <div className=" p-6 font-mono">
       <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6">
         <h1 className="text-2xl font-bold text-center mb-6">My Reservations</h1>
         {reservations.map((reservation) => (
           <div
             key={reservation._id}
-            className="relative w-full bg-white rounded-lg shadow-md flex p-4 mb-4 items-center"
+            className="relative w-full bg-white rounded-lg shadow-md flex flex-row
+            p-4 mb-4 items-center gap-5  "
           >
             {reservation.restaurant?.picture && (
               <div className="w-1/4">
@@ -118,22 +119,22 @@ export default function MyReservationPage() {
               </div>
             )}
             <div className="flex-1 ml-4">
-              <p className="font-semibold text-xl">{reservation.restaurant.name}</p>
-              <p>Customer: {reservation.name}</p>
-              <p>Tel: {reservation.contact}</p>
-              <p>Date: {reservation.resDate}</p>
-              <p>Time: {reservation.resTime}</p>
-              <p>Number of people: {reservation.partySize}</p>
+              <p className="font-semibold text-xl py-2">{reservation.restaurant.name}</p>
+              <p className="py-2">Customer: {reservation.name}</p>
+              <p className="py-2">Tel: {reservation.contact}</p>
+              <p className="py-2">Date: {reservation.resDate}</p>
+              <p className="py-2">Time: {reservation.resTime}</p>
+              <p className="py-2">Number of people: {reservation.partySize}</p>
             </div>
             <div className="flex gap-3 absolute bottom-0 right-0 m-3">
               <button
-                className="bg-yellow-500 text-white px-4 py-2 rounded"
+                className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-700 duration-300"
                 onClick={() => router.push(`/editreservation?res=${reservation._id}`)}
               >
                 Edit
               </button>
               <button
-                className="bg-red-500 text-white px-4 py-2 rounded"
+                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 duration-300"
                 onClick={() => handleDeleteReservation(reservation._id)}
               >
                 Delete

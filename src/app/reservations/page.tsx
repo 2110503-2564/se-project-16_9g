@@ -75,7 +75,7 @@ export default function Reservation() {
     };
 
     return (
-        <div className="flex flex-col items-center my-10">
+        <div className="font-mono flex flex-col items-center my-10">
             <form onSubmit={handleSubmit} className="w-[500px] h-auto p-5 flex flex-col items-center rounded-xl shadow-[0px_0px_8px_6px_rgba(0,0,0,0.15)]">
                 <div className="text-2xl">Make Reservation</div>
                 <div className="my-5">

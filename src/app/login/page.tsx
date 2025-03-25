@@ -8,15 +8,15 @@ export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false); // Track loading state
-    const [success, setSuccess] = useState(false); // Track successful login
+    const [loading, setLoading] = useState(false); 
+    const [success, setSuccess] = useState(false); 
     const router = useRouter();
 
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError("");
         setSuccess(false);
-        setLoading(true); // Set loading state to true
+        setLoading(true); 
 
         const res = await signIn("credentials", {
             redirect: false,
@@ -24,12 +24,12 @@ export default function LoginPage() {
             password,
         });
 
-        setLoading(false); // Set loading state to false
+        setLoading(false); 
 
         if (res?.error) {
             setError("Invalid email or password");
         } else {
-            setSuccess(true); // Set success state to true on successful login
+            setSuccess(true); 
             router.push("/"); 
             router.refresh();
         }
@@ -71,18 +71,18 @@ export default function LoginPage() {
                         />
                     </div>
 
-                    {loading && <p className="text-blue-500">Logging in...</p>} {/* Show loading message */}
-                    {error && <p className="text-red-500">{error}</p>} {/* Show error message */}
-                    {success && <p className="text-green-500">Login successful! Redirecting...</p>} {/* Show success message */}
+                    {loading && <p className="text-blue-500">Logging in...</p>} 
+                    {error && <p className="text-red-500">{error}</p>} 
+                    {success && <p className="text-green-500">Login successful! Redirecting...</p>} 
 
                     <button
                         type="submit"
                         className="block rounded-md px-3 py-2 text-white shadow-sm w-[100%] my-5
                         bg-gradient-to-r from-[#4AC9FF] to-[#4AC9FF] transition duration-500 h-[50px] 
                         ease-in-out hover:scale-105"
-                        disabled={loading} // Disable the button during loading
+                        disabled={loading} 
                     >
-                        {loading ? "Logging in..." : "Login"} {/* Change button text when loading */}
+                        {loading ? "Logging in..." : "Login"} 
                     </button>
                 </form>
 

@@ -9,7 +9,7 @@ import getUserProfile from "@/libs/getUserProfile";
 
 export default function ReviewPage() {
     const params = useParams();
-    const rid = Array.isArray(params?.rid) ? params.rid[0] : params?.rid; // Ensure rid is a string
+    const rid = Array.isArray(params?.rid) ? params.rid[0] : params?.rid; 
 
     const [res, setRes] = useState<any | null>(null);
     const { data: session } = useSession();
@@ -18,7 +18,7 @@ export default function ReviewPage() {
 
     useEffect(() => {
         const fetchData = async () => {
-            setLoading(true);  // Set loading to true when fetching data
+            setLoading(true);  
 
             try {
                 if (rid) {
@@ -28,7 +28,6 @@ export default function ReviewPage() {
                     throw new Error("Restaurant ID not found");
                 }
 
-                // If session exists, fetch user profile
                 if (session?.user?.token) {
                     const userData = await getUserProfile(session.user.token);
                     setUser(userData);
@@ -63,7 +62,7 @@ export default function ReviewPage() {
     }
 
     return (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center font-mono">
             <AddReview 
                 resName={res.data.name} 
                 rid={res.data.id} 

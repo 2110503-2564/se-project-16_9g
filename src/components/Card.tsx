@@ -79,8 +79,8 @@ export default function Card(res: RestaurantItem) {
                 />
             </div>
             <div className="p-3">
-                <div className="pb-10 text-sm my-5">
-                    <p className="text-lg">Name: {res.name}</p>
+                <div className="pb-10 text-md my-5">
+                    <p className=" py-2">Name: {res.name}</p>
                     <p>Address: {res.address} {res.province} {res.postalcode}</p>
                 </div>
                 <div className="text-center flex flex-row gap-2 bottom-0 ">

@@ -37,7 +37,7 @@ export default function InfoPage({ params }: { params: { rid: string } }) {
         };
 
         fetchData();
-    }, [id, session]);
+    }, [id, session?.user.token]);
 
     if (loading) {
         return (
@@ -54,34 +54,36 @@ export default function InfoPage({ params }: { params: { rid: string } }) {
 
     return (
         <div>
-            <div className="text-center text-3xl py-10">{res.data.name}</div>
-            <div className="flex flex-row justify-center items-center gap-[70px]">
+            <div className="flex flex-row justify-center m-10 items-center gap-[70px]">
                 <div>
                     <Image
                         src={res.data.picture}
                         alt="restaurant"
-                        width={400}
-                        height={300}
-                        className="rounded-lg w-[400px] h-auto"
+                        width={0}
+                        height={0}
+                        sizes="100vw"
+                        className="rounded-lg w-[350px] h-auto"
                         unoptimized={true}
                     />
                 </div>
                 <div>
                     <div className="text-lg">
-                        <p>Address: {res.data.address} {res.data.province} {res.data.postalcode}</p>
-                        <p>Tel: {res.data.tel}</p>
-                        <p>Open time: {res.data.opentime}</p>
-                        <p>Close time: {res.data.closetime}</p>
-                    </div>
+                        <div className="text-3xl py-8 font-mono">{res.data.name}</div>
+                            <p className="py-2">Address: {res.data.address} {res.data.province} {res.data.postalcode}</p>
+                            <p className="py-2">Tel: {res.data.tel}</p>
+                            <p className="py-2">Open time: {res.data.opentime}</p>
+                            <p className="py-2">Close time: {res.data.closetime}</p>
+                        </div>
                     <div className="my-5">
                         {user ? (
-                            <Link href={`/reservations?res=${res.data.id}&resname=${res.data.name}&img=${res.data.picture}&user=${user.data._id}`} className="px-8 py-2 bg-[#4AC9FF] text-white 
+                            <Link href={`/reservations?res=${res.data.id}&resname=${res.data.name}&img=${res.data.picture}&user=${user.data._id}`} 
+                            className="px-8 py-3 bg-[#4AC9FF] text-white 
                         rounded-lg w-full hover:bg-[#0356a3] duration-300 mr-3">
                                 Reserve
                             </Link>
                         ) : (
-                            <Link href="/login" className="px-4 py-2 bg-[#4AC9FF] text-white 
-                        rounded-lg w-full hover:bg-[#0356a3] duration-300 mx-3">
+                            <Link href="/login" className="px-4 py-3 bg-[#4AC9FF] text-white 
+                        rounded-lg w-full hover:bg-[#0356a3] duration-300 mr-3">
                                 Login to Reserve
                             </Link>
                         )}
@@ -91,7 +93,7 @@ export default function InfoPage({ params }: { params: { rid: string } }) {
                                 text-white px-3 py-2 rounded-md
                                 hover:bg-[#0356a3] duration-300">Review this Restaurant</Link>
                             ) : (
-                                <Link href={'/api/auth/signin'} className="bg-[#4AC9FF] text-white px-3 py-2 mx-3 rounded-md
+                                <Link href={'/api/auth/signin'} className="bg-[#4AC9FF] text-white px-3 py-3 mx-3 rounded-md
                                 hover:bg-[#0356a3] duration-300">LogIn to Review this Restaurant</Link>
                             )
                         }
@@ -101,7 +103,7 @@ export default function InfoPage({ params }: { params: { rid: string } }) {
 
             {res.data.reviews.length !== 0 ? (
                 <div className="text-center my-10 ">
-                    <div className="text-3xl ">Reviews & Rating</div>
+                    <div className="text-3xl py-3 ">Reviews & Rating</div>
                     <div className="flex flex-row justify-center" >
                         {res.data.reviews.map((review: ReviewItem) => (
                             <Review rating={review.rating} comment={review.comment} key={review._id} />

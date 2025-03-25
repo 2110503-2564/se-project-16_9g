@@ -114,7 +114,7 @@ export default function EditRestaurant() {
         }
 
     return (
-        <div className="w-[550px] my-10 mx-auto p-3">
+        <div className="w-[550px] my-10 mx-auto p-3 font-mono ">
             <form
                 onSubmit={handleEditRestaurant}
                 className="flex flex-col gap-3 w-full shadow-[0px_0px_8px_4px_rgba(0,0,0,0.15)]
