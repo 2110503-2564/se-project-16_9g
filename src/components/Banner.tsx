@@ -11,7 +11,7 @@ export default function Banner() {
     return (
         <div className="relative w-screen h-[65vh]">
             <div className="absolute w-full h-full bg-black top-0 left-0 z-10 opacity-50 "></div>
-            <Image src="/img/cover.jpg" alt="cover" fill />
+            <Image src="/img/cover.jpg" alt="cover" fill priority />
             <div className="relative z-20 top-[45%] text-center text-white text-5xl object-cover ">
                 <h1>Welcome to Restaurant Reservation Website</h1>
                 <h3>By StepBack</h3>

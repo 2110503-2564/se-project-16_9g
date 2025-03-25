@@ -73,7 +73,7 @@ export default function InfoPage({ params }: { params: { rid: string } }) {
                         <p>Open time: {res.data.opentime}</p>
                         <p>Close time: {res.data.closetime}</p>
                     </div>
-                    <div className="my-3">
+                    <div className="my-5">
                         {user ? (
                             <Link href={`/reservations?res=${res.data.id}&resname=${res.data.name}&img=${res.data.picture}&user=${user.data._id}`} className="px-8 py-2 bg-[#4AC9FF] text-white 
                         rounded-lg w-full hover:bg-[#0356a3] duration-300 mr-3">
@@ -81,7 +81,7 @@ export default function InfoPage({ params }: { params: { rid: string } }) {
                             </Link>
                         ) : (
                             <Link href="/login" className="px-4 py-2 bg-[#4AC9FF] text-white 
-                        rounded-lg w-full hover:bg-[#0356a3] duration-300">
+                        rounded-lg w-full hover:bg-[#0356a3] duration-300 mx-3">
                                 Login to Reserve
                             </Link>
                         )}
@@ -91,7 +91,7 @@ export default function InfoPage({ params }: { params: { rid: string } }) {
                                 text-white px-3 py-2 rounded-md
                                 hover:bg-[#0356a3] duration-300">Review this Restaurant</Link>
                             ) : (
-                                <Link href={'/api/auth/signin'} className="bg-[#4AC9FF] text-white px-3 py-2 rounded-md
+                                <Link href={'/api/auth/signin'} className="bg-[#4AC9FF] text-white px-3 py-2 mx-3 rounded-md
                                 hover:bg-[#0356a3] duration-300">LogIn to Review this Restaurant</Link>
                             )
                         }
@@ -109,7 +109,7 @@ export default function InfoPage({ params }: { params: { rid: string } }) {
                     </div>
                 </div>
             ) : (
-                "NO REVIEW"
+                <div className="text-2xl text-center p-10 ">NO REVIEW</div>
             )}
         </div>
     );

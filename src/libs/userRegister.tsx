@@ -1,21 +1,30 @@
-export default async function userRegister(userEmail:string, userPassword:string, name:string, tel:string) {
-    const response = await fetch("https://restaurant-api-fawn.vercel.app/api/stb/auth/register", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            name: name,
-            email: userEmail,
-            password: userPassword,
-            tel: tel,
-            role: "user"
-        }),
-    })
-    
-    if(!response.ok) {
-        throw new Error("Failed to register")
-    }
+import axios from "axios";
 
-    return await response.json();
-}   
+export default async function userRegister(
+    userEmail: string,
+    userPassword: string,
+    name: string,
+    tel: string
+) {
+    try {
+        const response = await axios.post(
+            "https://restaurant-api-fawn.vercel.app/api/stb/auth/register",
+            {
+                name,
+                email: userEmail,
+                password: userPassword,
+                tel,
+                role: "user",
+            },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.message || "Failed to register");
+    }
+}

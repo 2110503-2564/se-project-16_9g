@@ -1,25 +1,23 @@
-export default async function editReservation(userid: string, token:string, currentPassword:string,
-    newPassword:string
-) {
+import axios from "axios";
+
+export default async function ChangePassword(userid: string, token: string, currentPassword: string, newPassword: string) {
     try {
-        const response = await fetch(`https://restaurant-api-fawn.vercel.app/api/stb/auth/changepassword`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                "authorization": `Bearer ${token}`,
+        const response = await axios.put(
+            `https://restaurant-api-fawn.vercel.app/api/stb/auth/changepassword`,
+            {
+                currentPassword,
+                newPassword
             },
-            body: JSON.stringify({
-                currentPassword: currentPassword,
-                newPassword: newPassword
-            }),
-        });
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    "authorization": `Bearer ${token}`,
+                }
+            }
+        );
 
-        if (!response.ok  ) {
-            throw new Error("Failed to make reservation");
-        }
-
-        return await response.json();
+        return response.data;
     } catch (error: any) {
-        throw new Error(error.message || "Server error");
+        throw new Error(error.response?.data?.message || "Failed to change password");
     }
 }

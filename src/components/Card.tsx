@@ -33,19 +33,19 @@ export default function Card(res: RestaurantItem) {
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
-            if (session?.user?.token) {
-                try {
+            try {
+                if (session?.user?.token) {
                     const userData = await getUserProfile(session.user.token);
                     setUser(userData);
-                } catch (error) {
-                    console.error("Error fetching user profile:", error);
-                } finally {
-                    setLoading(false);
                 }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            } finally {
+                setLoading(false)
             }
         };
         fetchData();
-    }, []);
+    }, [session?.user.token]);
 
     if (loading) {
         return (
@@ -55,7 +55,12 @@ export default function Card(res: RestaurantItem) {
         );
     }
 
-    const role = user.data.role || "";
+    let role = " "
+    if(user) {
+        role = user.data.role;
+    }
+
+
     return (
         <div className="relative flex flex-col items-center w-[300px] h-auto bg-white rounded-lg 
         shadow-[0px_0px_8px_6px_rgba(0,0,0,0.15)] m-5 px-2 pt-3
@@ -70,6 +75,7 @@ export default function Card(res: RestaurantItem) {
                     width={0} height={0} sizes="100vw"
                     className="rounded-lg w-full h-full object-cover"
                     unoptimized
+                    priority
                 />
             </div>
             <div className="p-3">
@@ -77,7 +83,7 @@ export default function Card(res: RestaurantItem) {
                     <p className="text-lg">Name: {res.name}</p>
                     <p>Address: {res.address} {res.province} {res.postalcode}</p>
                 </div>
-                <div className="text-center flex flex-row gap-2 absolute bottom-0 my-2">
+                <div className="text-center flex flex-row gap-2 bottom-0 ">
                     {user ? (
                         <button
                             className="px-4 py-2 bg-[#4AC9FF] text-white 
@@ -100,7 +106,7 @@ export default function Card(res: RestaurantItem) {
                         </button>
                     )}
                     {
-                        role === 'admin' ? (
+                        user && role === 'admin' ? (
                             <button
                                 className="px-4 py-2 bg-yellow-400 text-white 
                             rounded-lg w-full hover:bg-yellow-600 duration-300"
@@ -114,7 +120,7 @@ export default function Card(res: RestaurantItem) {
                         ) : null
                     }
                     {
-                        role === 'admin' ? (
+                        user && role === 'admin' ? (
                             <button
                                 className="px-4 py-2 bg-red-500 text-white 
                             rounded-lg w-full hover:bg-red-700 duration-300"

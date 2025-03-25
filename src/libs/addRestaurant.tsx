@@ -1,14 +1,22 @@
-export default async function AddNewRestaurant(token:string, resName:string, address:string, district:string,
-    province:string, postalcode:string, picture:string, tel:string, region:string, opentime:string, closetime:string
+import axios from "axios";
+
+export default async function AddNewRestaurant(
+    token: string, 
+    resName: string, 
+    address: string, 
+    district: string,
+    province: string, 
+    postalcode: string, 
+    picture: string, 
+    tel: string, 
+    region: string, 
+    opentime: string, 
+    closetime: string
 ) {
     try {
-        const response = await fetch(`https://restaurant-api-fawn.vercel.app/api/stb/restaurants`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "authorization": `Bearer ${token}`,
-            },
-            body: JSON.stringify({
+        const response = await axios.post(
+            `https://restaurant-api-fawn.vercel.app/api/stb/restaurants`,
+            {
                 name: resName,
                 address: address,
                 district: district,
@@ -19,15 +27,17 @@ export default async function AddNewRestaurant(token:string, resName:string, add
                 region: region,
                 opentime: opentime,
                 closetime: closetime
-            }),
-        });
+            },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    "authorization": `Bearer ${token}`,
+                }
+            }
+        );
 
-        if (!response.ok) {
-            throw new Error("Failed to add restaurant");
-        }
-
-        return await response.json();
+        return response.data;
     } catch (error: any) {
-        throw new Error(error.message || "Server error");
+        throw new Error(error.response?.data?.message || "Failed to add restaurant");
     }
 }

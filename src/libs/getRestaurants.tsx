@@ -1,8 +1,10 @@
-export default async function getRestaurants() {
+import axios from 'axios';
 
-    const response = await fetch("https://restaurant-api-fawn.vercel.app/api/stb/restaurants");
-    if(!response.ok) {
-        throw new Error("Failed to fetch restaurants")
+export default async function getRestaurants() {
+    try {
+        const response = await axios.get("https://restaurant-api-fawn.vercel.app/api/stb/restaurants");
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.message || "Failed to fetch restaurants");
     }
-    return await response.json();
 }

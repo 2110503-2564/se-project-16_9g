@@ -7,6 +7,7 @@ import { useSearchParams } from "next/navigation";
 import makeReservation from "@/libs/makeReservation";
 import { useSession } from "next-auth/react"; // Assuming you're using next-auth for session management
 import dayjs, { Dayjs } from "dayjs";
+import { useRouter } from "next/navigation";
 
 export default function Reservation() {
     const params = useSearchParams();
@@ -26,6 +27,8 @@ export default function Reservation() {
     const [userToken, setUserToken] = useState(""); 
 
     const { data: session } = useSession(); 
+
+    const router = useRouter()
 
     useEffect(() => {
         const fetchUserProfile = async () => {
@@ -64,6 +67,7 @@ export default function Reservation() {
             const response = await makeReservation(userId, partySize, name, tel, res, resDate, resTime, userToken);
             setSuccess(true);
             setLoading(false);
+            router.push('/myreservation')
         } catch (error) {
             setError("Failed to make reservation. Please try again.");
             setLoading(false);

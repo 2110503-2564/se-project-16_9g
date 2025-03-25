@@ -28,11 +28,9 @@ export default function RegisterPage() {
 
         try {
             const response = await userRegister(user.email, user.password, user.name, user.tel);
-
-            
             if (response) {
                 alert("Registration successful! Redirecting to login...");
-                router.push("/login"); 
+                router.push("/"); 
             }
         } catch (error: any) {
             setError(error.message || "Registration failed. Please try again.");
@@ -101,23 +99,20 @@ export default function RegisterPage() {
                         />
                     </div>
 
-                    <div className="mt-5 text-center">
+                    <div className="mt-5 text-center flex flex-row gap-3">
+                        <Link href="/" className="text-white bg-[#4AC9FF] w-full py-2 rounded-md hover:bg-[#0356a3] text-lg ">
+                            Cancel
+                        </Link>
                         <button
                             type="submit"
-                            className="bg-[#4AC9FF] w-[50%] text-white px-10 py-2 rounded-md hover:bg-[#0356a3] duration-300"
+                            className="bg-[#4AC9FF] w-[50%] text-white w-full rounded-md hover:bg-[#0356a3] duration-300"
                             disabled={loading} 
                         >
                             {loading ? "Registering..." : "Register"}
                         </button>
                     </div>
-
                 </div>
             </form>
-            <span className="h-[50px] text-black ">
-                    <Link href="/" className="text-[#4AC9FF] text-lg pl-3">
-                        Cancel
-                    </Link>
-            </span>
         </div>
     );
 }

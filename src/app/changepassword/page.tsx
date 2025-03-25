@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import changePassword from "@/libs/changePassword";
+import ChangePassword from "@/libs/changePassword";
 import Link from "next/link";
 
 export default function ChangePassWordPage() {
@@ -27,7 +27,7 @@ export default function ChangePassWordPage() {
 
         setLoading(true);
         try {
-            await changePassword(session.user._id, session.user.token, currentPassword, newPassword);
+            await ChangePassword(session.user._id, session.user.token, currentPassword, newPassword);
             alert("Password changed successfully!");
             setCurrentPassword("");
             setNewPassword("");

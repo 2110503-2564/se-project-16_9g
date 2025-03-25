@@ -5,7 +5,6 @@ import Card from "./Card";
 
 export default function RestaurantList({restaurantData} : {restaurantData:RestaurantItem[]}) {
 
-
     return (
         <div>
             <div style={{margin:"20px", display:"flex", flexDirection:"row", justifyContent:"space-around"}}>

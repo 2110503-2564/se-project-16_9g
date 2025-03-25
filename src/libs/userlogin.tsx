@@ -1,18 +1,22 @@
-export default async function userLogIn(userEmail:string, userPassword:string) {
-    const response = await fetch("https://restaurant-api-fawn.vercel.app/api/stb/auth/login", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            email: userEmail,
-            password: userPassword
-        }),
-    })
-    
-    if(!response.ok) {
-        throw new Error("Failed to log-in")
-    }
+import axios from "axios";
 
-    return await response.json();
-}   
+export default async function userLogIn(userEmail: string, userPassword: string) {
+    try {
+        const response = await axios.post(
+            "https://restaurant-api-fawn.vercel.app/api/stb/auth/login",
+            {
+                email: userEmail,
+                password: userPassword,
+            },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.message || "Failed to log in");
+    }
+}

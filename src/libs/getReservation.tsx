@@ -1,13 +1,14 @@
-export default async function getReservation(id:string, token:string) {
+import axios from "axios";
 
-    const response = await fetch(`https://restaurant-api-fawn.vercel.app/api/stb/reservations/${id}`, {
-        method: "GET",
-        headers: {
-            authorization: `Bearer ${token}`,
-        }
-    });
-    if(!response.ok) {
-        throw new Error("Failed to fetch reservation")
+export default async function getReservation(id: string, token: string) {
+    try {
+        const response = await axios.get(`https://restaurant-api-fawn.vercel.app/api/stb/reservations/${id}`, {
+            headers: {
+                authorization: `Bearer ${token}`,
+            }
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error("Failed to fetch reservation");
     }
-    return await response.json();
 }

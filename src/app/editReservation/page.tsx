@@ -1,5 +1,4 @@
 "use client";
-
 import Image from "next/image";
 import DateReserve from "@/components/DateReserve";
 import TimeReserve from "@/components/TimeReserve";
@@ -9,9 +8,10 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import getReservation from "@/libs/getReservation";
-import editReservation from "@/libs/editReservation"; // Import API function
+import editReservation from "@/libs/editReservation"; 
 import { LinearProgress } from "@mui/material";
 import { useRouter } from "next/navigation";
+import getUserProfile from "@/libs/getUserProfile";
 
 export default function EditReservation() {
     const router = useRouter()
@@ -22,7 +22,8 @@ export default function EditReservation() {
     const [contact, setContact] = useState<string>("");
     const [partySize, setPartySize] = useState<number>(1);
     const [loading, setLoading] = useState<boolean>(true);
-    const [saving, setSaving] = useState<boolean>(false); // For edit request
+    const [saving, setSaving] = useState<boolean>(false); 
+    const [userProfile, setUserProfile] = useState<any>(null);
 
     const { data: session } = useSession();
     const params = useSearchParams();
@@ -33,15 +34,23 @@ export default function EditReservation() {
 
         const fetchData = async () => {
             setLoading(true);
+
             try {
+                // Fetch reservation data
                 const res = await getReservation(rid, session.user.token);
                 if (res?.data) {
                     setReservationData(res.data);
-                    setName(res.data.user.name);
+                    setName(res.data.name);
                     setContact(res.data.contact);
                     setPartySize(res.data.partySize);
                     setResDate(res.data.resDate);
                     setResTime(res.data.resTime);
+                }
+
+                // Fetch user profile data
+                const userRes = await getUserProfile(session.user.token);
+                if (userRes?.data) {
+                    setUserProfile(userRes.data);
                 }
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -53,6 +62,7 @@ export default function EditReservation() {
         fetchData();
     }, [session?.user?.token, rid]);
 
+
     const handleEditReservation = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!session?.user?.token || !rid) return;
@@ -60,7 +70,7 @@ export default function EditReservation() {
         setSaving(true);
         try {
             await editReservation(
-                session.user.token, 
+                userProfile._id, 
                 partySize,
                 name,
                 contact,
