@@ -3,16 +3,15 @@ import Link from "next/link";
 import Card from "./Card";
 
 
-export default async function RestaurantList({restaurantJson} : {restaurantJson:Promise<RestaurantJson>}) {
+export default function RestaurantList({restaurantData} : {restaurantData:RestaurantItem[]}) {
 
-    const restaurantJsonReady = await restaurantJson;
 
     return (
         <div>
             <div style={{margin:"20px", display:"flex", flexDirection:"row", justifyContent:"space-around"}}>
             {
-                restaurantJsonReady.data.map((resItem:RestaurantItem) => (
-                    // <Link href={`/restaurants/${resItem.id}?id=${resItem.id}`} key={resItem.id}>
+                restaurantData.map((resItem:RestaurantItem) => (
+                    // <Link href={/restaurants/${resItem.id}?id=${resItem.id}} key={resItem.id}>
                         <Card name={resItem.name} address={resItem.address} district={resItem.district} 
                         province={resItem.province} postalcode={resItem.postalcode} picture={resItem.picture}
                         tel={resItem.tel} region={resItem.region} opentime={resItem.opentime} 

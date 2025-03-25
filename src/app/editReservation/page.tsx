@@ -60,11 +60,11 @@ export default function EditReservation() {
         setSaving(true);
         try {
             await editReservation(
-                session.user._id, // User ID
+                session.user.token, 
                 partySize,
                 name,
                 contact,
-                rid, // Reservation ID
+                rid, 
                 resDate,
                 resTime,
                 session.user.token

@@ -23,15 +23,15 @@ export default function Reservation() {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
-    const [userToken, setUserToken] = useState(""); // State to store the user token
+    const [userToken, setUserToken] = useState(""); 
 
-    const { data: session } = useSession(); // If you're using next-auth, this will handle the session
+    const { data: session } = useSession(); 
 
     useEffect(() => {
         const fetchUserProfile = async () => {
             if (session?.user?.token) {
                 try {
-                    setUserToken(session.user.token); // Assuming the token is returned as part of the profile
+                    setUserToken(session.user.token);
                 } catch (error) {
                     console.error("Error fetching user profile:", error);
                 }
@@ -39,7 +39,7 @@ export default function Reservation() {
         };
 
         fetchUserProfile();
-    }, [session?.user?.token]); // Only run when session is available
+    }, [session?.user?.token]); 
 
 
     const handleSubmit = async (e: React.FormEvent) => {

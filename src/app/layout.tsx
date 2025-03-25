@@ -5,8 +5,8 @@ import TopMenu from "@/components/TopMenu";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/authOptions";
 import NextAuthProvider from "@/providers/NextAuthProvider";
-
-
+import getUserProfile from "@/libs/getUserProfile";
+import Sidebar from "@/components/Sidebar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,14 +22,34 @@ export default async function RootLayout({
 }>) {
 
   const session = await getServerSession(authOptions);
+  let user;
+  let role = "";
+  if(session?.user.token) {
+    user = await getUserProfile(session.user.token);
+  }
+  if(user) {
+    role = user.data.role;
+  }
 
   return (
     <html lang="en">
       <body className={inter.className}>
-        <NextAuthProvider session={session}>
-          <TopMenu />
-          {children}
-        </NextAuthProvider>
+        {
+          role === 'admin' ? (
+            <NextAuthProvider session={session}>
+              <TopMenu />
+              <Sidebar />
+              <div className="w-[75%] absolute right-0 ">
+                {children}  
+              </div>
+            </NextAuthProvider>
+          ) : (
+            <NextAuthProvider session={session}>
+              <TopMenu />
+              {children}
+            </NextAuthProvider>
+          )
+        }
       </body>
     </html>
   );

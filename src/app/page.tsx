@@ -1,28 +1,59 @@
+'use client'
 import Banner from "@/components/Banner";
-import Card from "@/components/Card";
-import Review from "@/components/Review";
-import AddReview from "@/components/AddReview";
+import { useSession } from "next-auth/react";
+import { useState, useEffect } from "react";
+import getUserProfile from "@/libs/getUserProfile";
+import { LinearProgress } from "@mui/material";
 
 export default function Home() {
+  const {data: session} = useSession();
+      const [user, setUser] = useState<any>(null); 
+      const [loading, setLoading] = useState(true)
+      const [role, setRole] = useState("");
+  
+      useEffect(() => {
+          const fetchData = async () => {
+              setLoading(true);  // Set loading to true when fetching data
+  
+              try {
+  
+                  // If session exists, fetch user profile
+                  if (session?.user?.token) {
+                      const userData = await getUserProfile(session.user.token);
+                      if(userData) {
+                          setRole(userData.data.role);
+                      }
+                  } else {
+                      setUser(null)
+                  }
+              } catch (error) {
+                  console.error("Error fetching data:", error);
+              } finally {
+                  setLoading(false);
+              }
+          };
+  
+          fetchData();
+      }, [session?.user.token]);
+
+      if (loading) {
+        return (
+            <div className="w-full text-center">
+                <p>Loading...</p>
+                <LinearProgress />
+            </div>
+        );
+    }
+
   return (
     <main>
-      <Banner />
-      <div className="flex flex-row justify-center">
-        {/* <Card />
-        <Card />
-        <Card /> */}
-      </div>
-      <div className="flex flex-row justify-center">
-        <Review rating={5} comment="Very delicious Lorem ipsum dolor sit amet, consectetur 
-        adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-        Ut enim ad minim veniam, quis nostrud exercitation " />
-        <Review rating={5} comment="Very delicious Lorem ipsum dolor sit amet, consectetur 
-        adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-        Ut enim ad minim veniam, quis nostrud exercitation " />
-        <Review rating={5} comment="Very delicious Lorem ipsum dolor sit amet, consectetur 
-        adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-        Ut enim ad minim veniam, quis nostrud exercitation " />
-      </div>
+      {
+        role === 'admin' ? (
+          null
+        ) : (
+          <Banner />
+        )
+      }
 
     </main>
   );

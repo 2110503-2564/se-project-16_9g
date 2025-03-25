@@ -1,13 +1,13 @@
 'use client'
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';;
 
 export default function Banner() {
     const router = useRouter();
     const {data: session} = useSession();
+
     return (
         <div className="relative w-screen h-[65vh]">
             <div className="absolute w-full h-full bg-black top-0 left-0 z-10 opacity-50 "></div>

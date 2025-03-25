@@ -2,11 +2,11 @@ import TopMenuItem from "./TopMenuItem";
 import { Link } from "@mui/material";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/auth/[...nextauth]/authOptions";
+import getUserProfile from "@/libs/getUserProfile";
 
 
 export default async function TopMenu() {
     const session = await getServerSession(authOptions)
-    console.log(session)
 
     return (
         <div className="w-screen h-[60px] bg-[#4AC9FF] flex flew-row relative z-30 px-8 items-center font-serif justify-between ">
@@ -16,7 +16,7 @@ export default async function TopMenu() {
                 <TopMenuItem label="edit" href="/editreservation" />
                 <TopMenuItem label="Profile" href="/profile" /> */}
                 {
-                    session ?
+                    session  ?
                     <Link href="/myreservation">
                         <div className=" h-full px-5 text-white text-sm w-fit">
                             My Reservation
