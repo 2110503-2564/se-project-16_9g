@@ -29,6 +29,11 @@ export default function LoginPage() {
                     name="Book Venue">
                         Change Password
                     </button>
+                    <span className="h-[50px] text-black ">
+                        <Link href="/profile" className="text-[#4AC9FF] text-lg pl-3">
+                            Cancel
+                        </Link>
+                    </span>
                     
                 </div>
             </div>
