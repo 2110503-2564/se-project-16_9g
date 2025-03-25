@@ -86,6 +86,11 @@ export default function LoginPage() {
                         Register Here
                     </Link>
                 </span>
+                <span className="h-[50px] text-black ">
+                    <Link href="/" className="text-[#4AC9FF] text-lg pl-3">
+                        Cancel
+                    </Link>
+                </span>
             </div>
         </div>
     );

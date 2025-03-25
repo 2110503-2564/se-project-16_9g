@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import userRegister from "@/libs/userRegister";
+import Link from "next/link";
 
 export default function RegisterPage() {
     const router = useRouter();
@@ -109,8 +110,14 @@ export default function RegisterPage() {
                             {loading ? "Registering..." : "Register"}
                         </button>
                     </div>
+
                 </div>
             </form>
+            <span className="h-[50px] text-black ">
+                    <Link href="/" className="text-[#4AC9FF] text-lg pl-3">
+                        Cancel
+                    </Link>
+            </span>
         </div>
     );
 }
