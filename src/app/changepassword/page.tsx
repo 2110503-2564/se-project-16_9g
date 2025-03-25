@@ -81,12 +81,9 @@ export default function ChangePassWordPage() {
                     >
                         {loading ? "Changing..." : "Change Password"}
                     </button>
-                    <span className="h-[50px] text-black ">
-                        <Link href="/profile" className="text-[#4AC9FF] text-lg pl-3">
-                            Cancel
-                        </Link>
-                    </span>
-                    
+                    <Link href="/profile" className="text-[#4AC9FF] text-lg pl-3">
+                        Cancel
+                    </Link>
                 </div>
             </div>
         </div>
