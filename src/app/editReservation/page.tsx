@@ -81,7 +81,7 @@ export default function EditReservation() {
             );
 
             alert("Reservation updated successfully!");
-            router.push("/myreservation");
+            router.push("/myReservation");
             router.refresh();
         } catch (error: any) {
             alert("Failed to update reservation: " + error.message);

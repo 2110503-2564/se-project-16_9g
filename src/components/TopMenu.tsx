@@ -14,7 +14,7 @@ export default async function TopMenu() {
                 <TopMenuItem label="Home" href="/" />
                 {
                     session  ?
-                    <Link href="/myreservation" className="no-underline">
+                    <Link href="/" className="no-underline">
                         <div className=" h-full px-5 text-white text-xl  w-fit">
                             My Reservation
                         </div>

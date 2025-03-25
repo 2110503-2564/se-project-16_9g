@@ -67,7 +67,7 @@ export default function Reservation() {
             const response = await makeReservation(userId, partySize, name, tel, res, resDate, resTime, userToken);
             setSuccess(true);
             setLoading(false);
-            router.push('/myreservation')
+            router.push('/myReservation')
         } catch (error) {
             setError("Failed to make reservation. Please try again.");
             setLoading(false);
