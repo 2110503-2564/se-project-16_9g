@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import changePassword from "@/libs/changePassword";
+import Link from "next/link";
 
 export default function ChangePassWordPage() {
     const { data: session } = useSession();
@@ -80,15 +81,9 @@ export default function ChangePassWordPage() {
                     >
                         {loading ? "Changing..." : "Change Password"}
                     </button>
-<<<<<<< HEAD
-                    <span className="h-[50px] text-black ">
-                        <Link href="/profile" className="text-[#4AC9FF] text-lg pl-3">
-                            Cancel
-                        </Link>
-                    </span>
-                    
-=======
->>>>>>> cc2ec6dadf4bffd3fc378188f9b6c86273bb8dd7
+                    <Link href="/profile" className="text-[#4AC9FF] text-lg pl-3">
+                        Cancel
+                    </Link>
                 </div>
             </div>
         </div>
