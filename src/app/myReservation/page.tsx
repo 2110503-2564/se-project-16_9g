@@ -129,7 +129,7 @@ export default function MyReservationPage() {
                         <div className="flex gap-3 absolute bottom-0 right-0 m-3">
                             <button
                                 className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-700 duration-300"
-                                onClick={() => router.push(`/editreservation?res=${reservation._id}`)}
+                                onClick={() => router.push(`/editReservation?res=${reservation._id}`)}
                             >
                                 Edit
                             </button>
