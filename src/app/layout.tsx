@@ -33,7 +33,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className="bg-white text-black font-mono ">
+      <body className="bg-white text-black font-mono bg-sky-50 ">
         {
           role === 'admin' ? (
             <NextAuthProvider session={session}>
