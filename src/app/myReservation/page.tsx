@@ -99,12 +99,12 @@ export default function MyReservationPage() {
     return (
         <div className=" p-6 font-mono">
             <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6">
-                <h1 className="text-2xl font-bold text-center mb-6">My Reservations</h1>
+                <h1 className="text-2xl text-black font-bold text-center mb-6">My Reservations</h1>
                 {reservations.map((reservation) => (
                     <div
                         key={reservation._id}
                         className="relative w-full bg-white rounded-lg shadow-md flex flex-row
-            p-4 mb-4 items-center gap-5  "
+            p-4 mb-4 items-center gap-5 text-black "
                     >
                         {reservation.restaurant?.picture && (
                             <div className="w-1/4">
@@ -140,7 +140,7 @@ export default function MyReservationPage() {
                                 Delete
                             </button>
                         </div>
-                    </div>
+                    </div>      
                 ))}
             </div>
         </div>

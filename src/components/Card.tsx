@@ -50,7 +50,7 @@ export default function Card(res: RestaurantItem) {
     if (loading) {
         return (
             <div className="w-screen text-center">
-                <LinearProgress />
+                <LinearProgress className="w-screen absolute top-0" />
             </div>
         );
     }

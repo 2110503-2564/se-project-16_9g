@@ -30,7 +30,7 @@ export default function LoginPage() {
             setError("Invalid email or password");
         } else {
             setSuccess(true); 
-            router.push("/"); 
+            router.push("/restaurants"); 
             router.refresh();
         }
     };
@@ -54,7 +54,7 @@ export default function LoginPage() {
                             id="Email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="border-2 border-[#4AC9FF] w-[300px] h-[40px] px-2 rounded-md focus:outline-none"
+                            className="border-2 border-[#4AC9FF] w-[300px] h-[40px] px-2 rounded-md focus:outline-none bg-white"
                             required
                         />
                     </div>
@@ -66,7 +66,7 @@ export default function LoginPage() {
                             id="Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="border-2 border-[#4AC9FF] w-[300px] h-[40px] px-2 rounded-md focus:outline-none"
+                            className="border-2 border-[#4AC9FF] w-[300px] h-[40px] px-2 rounded-md focus:outline-none bg-white"
                             required
                         />
                     </div>

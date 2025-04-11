@@ -56,7 +56,7 @@ export default function ChangePassWordPage() {
                             name="Current_Password"
                             id="Current_Password"
                             placeholder="Enter your Current Password"
-                            className="border-2 border-slate-300 h-[40px] w-full px-2 rounded-md focus:outline-none"
+                            className="border-2 border-slate-300 h-[40px] w-full px-2 rounded-md focus:outline-none bg-white"
                             value={currentPassword}
                             onChange={(e) => setCurrentPassword(e.target.value)}
                         />
@@ -68,7 +68,7 @@ export default function ChangePassWordPage() {
                             name="New_Password"
                             id="New_Password"
                             placeholder="Enter your New Password"
-                            className="border-2 border-slate-300 h-[40px] w-full px-2 rounded-md focus:outline-none"
+                            className="border-2 border-slate-300 h-[40px] w-full px-2 rounded-md focus:outline-none bg-white"
                             value={newPassword}
                             onChange={(e) => setNewPassword(e.target.value)}
                         />

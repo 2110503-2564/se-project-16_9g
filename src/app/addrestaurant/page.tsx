@@ -83,7 +83,7 @@ export default function AddRestaurant() {
                     <div className="flex flex-row justify-between my-2 items-center">
                         <label htmlFor="name">Name</label>
                         <input className="border border-2 border-slate-300 h-[40px] rounded-md
-                        focus:outline-none p-2"
+                        focus:outline-none p-2 bg-white"
                             type="text" name="name" id="name"
                             value={formData.name} onChange={handleChange}/>
                     </div>
@@ -91,49 +91,49 @@ export default function AddRestaurant() {
                         <label htmlFor="address">Address</label>
                         <input type="text" name="address" id="address"
                             className="border border-2 border-slate-300 h-[40px] rounded-md
-                        focus:outline-none p-2"
+                        focus:outline-none p-2 bg-white"
                         value={formData.address} onChange={handleChange}/>
                     </div>
                     <div className="flex flex-row justify-between my-2 items-center">
                         <label htmlFor="district">District</label>
                         <input type="text" name="district" id="district"
                             className="border border-2 border-slate-300 h-[40px] rounded-md
-                        focus:outline-none p-2"
+                        focus:outline-none p-2 bg-white"
                         value={formData.district} onChange={handleChange}/>
                     </div>
                     <div className="flex flex-row justify-between gap-5 my-2 items-center">
                         <label htmlFor="province">Province</label>
                         <input type="text" name="province" id="province"
                             className="border border-2 border-slate-300 h-[40px] rounded-md
-                        focus:outline-none p-2"
+                        focus:outline-none p-2 bg-white"
                         value={formData.province} onChange={handleChange}/>
                     </div>
                     <div className="flex flex-row justify-between gap-5 my-2 items-center">
                         <label htmlFor="postalcode">Postalcode</label>
                         <input type="text" name="postalcode" id="postalcode"
                             className="border border-2 border-slate-300 h-[40px] rounded-md
-                        focus:outline-none p-2" 
+                        focus:outline-none p-2 bg-white" 
                         value={formData.postalcode} onChange={handleChange}/>
                     </div>
                     <div className="flex flex-row justify-between gap-5 my-2 items-center">
                         <label htmlFor="picture">Picture</label>
                         <input type="text" name="picture" id="picture"
                             className="border border-2 border-slate-300 h-[40px] rounded-md
-                        focus:outline-none p-2"
+                        focus:outline-none p-2 bg-white"
                         value={formData.picture} onChange={handleChange}/>
                     </div >
                     <div className="flex flex-row justify-between gap-5 my-2 items-center">
                         <label htmlFor="tel">Tel</label>
                         <input type="text" name="tel" id="tel"
                             className="border border-2 border-slate-300 h-[40px] rounded-md
-                        focus:outline-none p-2"
+                        focus:outline-none p-2 bg-white"
                         value={formData.tel} onChange={handleChange}/>
                     </div>
                     <div className="flex flex-row justify-between gap-5 my-2 items-center">
                         <label htmlFor="region">Region</label>
                         <input type="text" name="region" id="region"
                             className="border border-2 border-slate-300 h-[40px] rounded-md
-                        focus:outline-none p-2"
+                        focus:outline-none p-2 bg-white"
                         value={formData.region} onChange={handleChange}/>
                     </div>
                     <div className="flex flex-row justify-between gap-5 my-2 items-center">
@@ -146,7 +146,7 @@ export default function AddRestaurant() {
                     <div className="flex flex-row justify-between gap-5 my-2 items-center">
                         <label htmlFor="closetime">Close Time</label>
                         <TimeReserve
-                            initialTime={dayjs('2022-04-17T10:00')}
+                            initialTime={dayjs('2022-04-17T22:00')}
                             onTimeChange={(value: Dayjs) => setCloseTime(value.format("HH:mm:ss"))}
                         />
                     </div>

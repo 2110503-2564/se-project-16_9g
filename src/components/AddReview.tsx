@@ -48,7 +48,7 @@ export default function AddReview({ resName, rid, uid, token }:
 
     return (
         <div className="w-[500px] h-[500px] shadow-[0px_0px_8px_6px_rgba(0,0,0,0.15)] rounded-xl m-5
-        flex flex-col items-center py-3 px-8">
+        flex flex-col items-center py-3 px-8 ">
             <div className="p-3 text-2xl">{resName}</div>
             <div className="w-full h-[50%] mb-8" >
                 <textarea name="review-comment" id="review-comment"
@@ -63,7 +63,7 @@ export default function AddReview({ resName, rid, uid, token }:
             </div>
             {error && <div className="text-red-500 text-sm my-3">{error}</div>}
             <form className="w-full flex flex-row justify-around my-8" onSubmit={handleSubmit}>
-                <button type="button" onClick={() => router.push(`/restaurant/${rid}`)} className="w-[45%] bg-[#4AC9FF] py-2 rounded-lg text-white 
+                <button type="button" onClick={() => router.push(`/restaurants/${rid}`)} className="w-[45%] bg-[#4AC9FF] py-2 rounded-lg text-white 
                 hover:bg-[#0356a3] duration-300">Cancel</button>
                 <button type="submit" className="w-[45%] bg-[#4AC9FF] py-2 rounded-lg text-white
                 hover:bg-[#0356a3] duration-300">Add Review</button>

@@ -130,7 +130,7 @@ export default function EditReservation() {
                             id="name"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            className="border-2 border-slate-300 w-[70%] h-[40px] px-2 rounded-md"
+                            className="border-2 border-slate-300 w-[70%] h-[40px] px-2 rounded-md bg-white"
                         />
                     </div>
                     <div className="flex flex-row justify-between my-3 items-center">
@@ -140,7 +140,7 @@ export default function EditReservation() {
                             id="tel"
                             value={contact}
                             onChange={(e) => setContact(e.target.value)}
-                            className="border-2 border-slate-300 w-[70%] h-[40px] px-2 rounded-md"
+                            className="border-2 border-slate-300 w-[70%] h-[40px] px-2 rounded-md bg-white"
                         />
                     </div>
                     <div className="flex flex-row justify-between my-3 items-center">
@@ -150,7 +150,7 @@ export default function EditReservation() {
                             id="party-size"
                             value={partySize}
                             onChange={(e) => setPartySize(Number(e.target.value))}
-                            className="border-2 border-slate-300 w-[70%] h-[40px] px-2 rounded-md"
+                            className="border-2 border-slate-300 w-[70%] h-[40px] px-2 rounded-md bg-white"
                             min={1}
                         />
                     </div>

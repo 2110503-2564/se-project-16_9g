@@ -8,10 +8,24 @@ import getUserProfile from "@/libs/getUserProfile";
 export default async function TopMenu() {
     const session = await getServerSession(authOptions)
 
+    let profile = null;
+    if (session?.user.token) {
+        profile = await getUserProfile(session.user.token);
+    }
+
     return (
         <div className="w-screen h-[60px] bg-[#4AC9FF] flex flew-row relative z-30 px-8 items-center font-mono text-xl justify-between ">
             <div className=" flex flex-row justify-start items-center ">
-                <TopMenuItem label="Home" href="/" />
+                {
+                    profile && profile.data.role === 'admin' ? (
+                        <TopMenuItem label="Home" href="/restaurants" />
+                    ) : (
+                        <TopMenuItem label="Home" href="/" />
+                    )
+                }
+                
+
+                <TopMenuItem label="Restaurants" href="/restaurants" />
                 {
                     session  ?
                     <Link href="/myReservation" className="no-underline">

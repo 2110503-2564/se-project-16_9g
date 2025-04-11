@@ -90,11 +90,11 @@ export default function InfoPage({ params }: { params: { rid: string } }) {
                         {
                             user ? (
                                 <Link href={`/restaurants/${res.data.id}/review`} className="bg-[#4AC9FF] 
-                                text-white px-3 py-2 rounded-md
+                                text-white px-3 py-3 rounded-md
                                 hover:bg-[#0356a3] duration-300">Review this Restaurant</Link>
                             ) : (
                                 <Link href={'/api/auth/signin'} className="bg-[#4AC9FF] text-white px-3 py-3 mx-3 rounded-md
-                                hover:bg-[#0356a3] duration-300">LogIn to Review this Restaurant</Link>
+                                hover:bg-[#0356a3] duration-300">Login to Review this Restaurant</Link>
                             )
                         }
                     </div>

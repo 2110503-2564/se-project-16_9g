@@ -10,7 +10,7 @@ export default function TimeReserve({onTimeChange, initialTime} : {onTimeChange:
     return (
         <div>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <TimePicker className="w-full" 
+                <TimePicker className="w-full bg-white" 
                 defaultValue={initialTime}
                 value={reserveTime} 
                 onChange={(value) => {setReserveTime(value); onTimeChange(value)}}/>

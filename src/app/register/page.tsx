@@ -55,7 +55,7 @@ export default function RegisterPage() {
                             placeholder="Enter your name"
                             value={user.name}
                             onChange={handleChange}
-                            className="border-2 border-slate-300 w-[70%] h-[40px] mx-5 px-2 rounded-md focus:outline-none"
+                            className="border-2 border-slate-300 w-[70%] h-[40px] mx-5 px-2 rounded-md focus:outline-none bg-white"
                             required
                         />
                     </div>
@@ -68,7 +68,7 @@ export default function RegisterPage() {
                             placeholder="Enter your email"
                             value={user.email}
                             onChange={handleChange}
-                            className="border-2 border-slate-300 w-[70%] h-[40px] mx-5 px-2 rounded-md focus:outline-none"
+                            className="border-2 border-slate-300 w-[70%] h-[40px] mx-5 px-2 rounded-md focus:outline-none bg-white "
                             required
                         />
                     </div>
@@ -81,7 +81,7 @@ export default function RegisterPage() {
                             placeholder="Enter password"
                             value={user.password}
                             onChange={handleChange}
-                            className="border-2 border-slate-300 w-[70%] h-[40px] mx-5 px-2 rounded-md focus:outline-none"
+                            className="border-2 border-slate-300 w-[70%] h-[40px] mx-5 px-2 rounded-md focus:outline-none bg-white"
                             required
                         />
                     </div>
@@ -94,7 +94,7 @@ export default function RegisterPage() {
                             placeholder="Enter your telephone number"
                             value={user.tel}
                             onChange={handleChange}
-                            className="border-2 border-slate-300 w-[70%] h-[40px] mx-5 px-2 rounded-md focus:outline-none"
+                            className="border-2 border-slate-300 w-[70%] h-[40px] mx-5 px-2 rounded-md focus:outline-none bg-white"
                             required
                         />
                     </div>

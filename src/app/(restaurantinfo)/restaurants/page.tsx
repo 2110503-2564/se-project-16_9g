@@ -24,9 +24,10 @@ export default function Restaurants() {
         fetchRestaurants();
     }, []);
 
+
     return (
-        <div className="flex flex-row justify-center w-full font-mono ">
-            <Suspense fallback={<p>Loading ...<LinearProgress /> </p>}>
+        <div className=" w-full font-mono text-black ">
+            <Suspense fallback={<div>Loading ...<LinearProgress  /> </div>}>
                 <RestaurantList restaurantData={restaurants} />
             </Suspense>
         </div>

@@ -92,7 +92,7 @@ export default function Reservation() {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             placeholder="Enter your name"
-                            className="border-2 border-slate-300 w-[70%] h-[40px] mx-5 px-2 rounded-md focus:outline-none"
+                            className="border-2 border-slate-300 w-[70%] h-[40px] mx-5 px-2 rounded-md focus:outline-none bg-white"
                         />
                     </div>
                     <div className="flex flex-row justify-between my-3 items-center">
@@ -104,7 +104,7 @@ export default function Reservation() {
                             value={tel}
                             onChange={(e) => setTel(e.target.value)}
                             placeholder="Enter your contact number"
-                            className="border-2 border-slate-300 w-[70%] h-[40px] mx-5 px-2 rounded-md focus:outline-none"
+                            className="border-2 border-slate-300 w-[70%] h-[40px] mx-5 px-2 rounded-md focus:outline-none bg-white"
                         />
                     </div>
                     <div className="flex flex-row justify-between my-3 items-center">
@@ -116,7 +116,7 @@ export default function Reservation() {
                             value={partySize}
                             onChange={(e) => setPartySize(Number(e.target.value))}
                             placeholder="Enter number of people"
-                            className="border-2 border-slate-300 w-[70%] h-[40px] mx-5 px-2 rounded-md focus:outline-none"
+                            className="border-2 border-slate-300 w-[70%] h-[40px] mx-5 px-2 rounded-md focus:outline-none bg-white"
                             min={1}
                         />
                     </div>
@@ -135,7 +135,11 @@ export default function Reservation() {
                     </div>
                     {error && <div className="text-red-500 text-sm my-3">{error}</div>}
                     {success && <div className="text-green-500 text-sm my-3">Reservation successful!</div>}
-                    <div className="mt-5 text-center">
+                    <div className="mt-5 text-center flex flex-row gap-2">
+                        <button className="bg-[#4AC9FF] w-[50%] text-white px-10 py-2 rounded-md hover:bg-[#0356a3] duration-300"
+                        onClick={() => router.push(`/restaurants/${res}`)}>
+                            Cancel
+                        </button>
                         <button
                             type="submit"
                             className="bg-[#4AC9FF] w-[50%] text-white px-10 py-2 rounded-md hover:bg-[#0356a3] duration-300"

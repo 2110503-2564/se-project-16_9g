@@ -33,15 +33,15 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className="bg-white text-black font-mono ">
         {
           role === 'admin' ? (
             <NextAuthProvider session={session}>
               <TopMenu />
               <div className="h-fit">
                 <Sidebar />
-                <div className="w-[80%] absolute right-0  ">
-                  <div className="flex justify-center ">
+                <div className="w-[80%] absolute right-0 ">
+                  <div className=" ">
                     {children}    
                   </div>
                 </div>

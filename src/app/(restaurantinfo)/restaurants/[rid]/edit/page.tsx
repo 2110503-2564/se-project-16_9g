@@ -130,7 +130,7 @@ export default function EditRestaurant() {
                     <div className="flex flex-row justify-between my-2  items-center ">
                         <label htmlFor="name">Name</label>
                         <input
-                            className="border border-2 border-slate-300 h-[40px] rounded-md focus:outline-none p-2"
+                            className="border border-2 border-slate-300 h-[40px] rounded-md focus:outline-none p-2 bg-white"
                             type="text"
                             id="name"
                             value={resName}
@@ -143,7 +143,7 @@ export default function EditRestaurant() {
                         <input
                             type="text"
                             id="address"
-                            className="border border-2 border-slate-300 h-[40px] rounded-md focus:outline-none p-2"
+                            className="border border-2 border-slate-300 h-[40px] rounded-md focus:outline-none p-2 bg-white"
                             value={address}
                             onChange={(e) => setAddress(e.target.value)}
                         />
@@ -154,7 +154,7 @@ export default function EditRestaurant() {
                         <input
                             type="text"
                             id="district"
-                            className="border border-2 border-slate-300 h-[40px] rounded-md focus:outline-none p-2"
+                            className="border border-2 border-slate-300 h-[40px] rounded-md focus:outline-none p-2 bg-white"
                             value={district}
                             onChange={(e) => setDistrict(e.target.value)}
                         />
@@ -165,7 +165,7 @@ export default function EditRestaurant() {
                         <input
                             type="text"
                             id="province"
-                            className="border border-2 border-slate-300 h-[40px] rounded-md focus:outline-none p-2"
+                            className="border border-2 border-slate-300 h-[40px] rounded-md focus:outline-none p-2 bg-white"
                             value={province}
                             onChange={(e) => setProvince(e.target.value)}
                         />
@@ -176,7 +176,7 @@ export default function EditRestaurant() {
                         <input
                             type="text"
                             id="postalcode"
-                            className="border border-2 border-slate-300 h-[40px] rounded-md focus:outline-none p-2"
+                            className="border border-2 border-slate-300 h-[40px] rounded-md focus:outline-none p-2 bg-white"
                             value={postalcode}
                             onChange={(e) => setPostalCode(e.target.value)}
                         />
@@ -187,7 +187,7 @@ export default function EditRestaurant() {
                         <input
                             type="text"
                             id="picture"
-                            className="border border-2 border-slate-300 h-[40px] rounded-md focus:outline-none p-2"
+                            className="border border-2 border-slate-300 h-[40px] rounded-md focus:outline-none p-2 bg-white"
                             value={picture}
                             onChange={(e) => setPicture(e.target.value)}
                         />
@@ -198,7 +198,7 @@ export default function EditRestaurant() {
                         <input
                             type="text"
                             id="tel"
-                            className="border border-2 border-slate-300 h-[40px] rounded-md focus:outline-none p-2"
+                            className="border border-2 border-slate-300 h-[40px] rounded-md focus:outline-none p-2 bg-white"
                             value={tel}
                             onChange={(e) => setTel(e.target.value)}
                         />
@@ -209,7 +209,7 @@ export default function EditRestaurant() {
                         <input
                             type="text"
                             id="region"
-                            className="border border-2 border-slate-300 h-[40px] rounded-md focus:outline-none p-2"
+                            className="border border-2 border-slate-300 h-[40px] rounded-md focus:outline-none p-2 bg-white"
                             value={region}
                             onChange={(e) => setRegion(e.target.value)}
                         />

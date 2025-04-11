@@ -7,7 +7,7 @@ export default function RestaurantList({restaurantData} : {restaurantData:Restau
 
     return (
         <div>
-            <div style={{margin:"20px", display:"flex", flexDirection:"row", justifyContent:"space-around"}}>
+            <div className="m-[20px] p-5 grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))]">
             {
                 restaurantData.map((resItem:RestaurantItem) => (
                     <Card name={resItem.name} address={resItem.address} district={resItem.district} 
