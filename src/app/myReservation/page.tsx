@@ -19,6 +19,7 @@ interface Reservation {
     partySize: number,
     contact: string,
     name: string,
+    status: string,
     restaurant: {
         _id: string,
         name: string,
@@ -67,7 +68,7 @@ export default function MyReservationPage() {
 
                 const res = await getReservations(session.user.token);
                 if (res?.data) {
-                    setReservations(res.data.filter((reservation:any) => reservation.lockedByAdmin === false));
+                    setReservations(res.data.filter((reservation:any) => reservation.lockedByAdmin === false && reservation.status === "pending"));
                 } else {
                     setReservations([]);
                 }
