@@ -8,6 +8,7 @@ import Image from "next/image";
 import { LinearProgress } from "@mui/material";
 import getReservations from "@/libs/getReservations";
 import deleteReservation from "@/libs/deleteReservation";
+import cancelReservation from "@/libs/cancelReservation";
 
 interface Reservation {
     _id: string,
@@ -38,12 +39,12 @@ export default function MyReservationPage() {
     const handleDeleteReservation = async (reservationId: string) => {
         if (!session?.user?.token) return;
 
-        const confirmDelete = window.confirm("Are you sure you want to delete this reservation?");
+        const confirmDelete = window.confirm("Are you sure you want to cancel this reservation?");
         if (!confirmDelete) return;
 
         try {
-            await deleteReservation(reservationId, session.user.token);
-            alert("Reservation deleted successfully!");
+            await cancelReservation(reservationId, session.user.token);
+            alert("Reservation canceled successfully!");
 
             setReservations((prevReservations) =>
                 prevReservations.filter((reservation) => reservation._id !== reservationId)
@@ -51,7 +52,7 @@ export default function MyReservationPage() {
 
             router.refresh();
         } catch (error: any) {
-            alert("Failed to delete reservation: " + error.message);
+            alert("Failed to cancel reservation: " + error.message);
         }
     };
 
@@ -141,7 +142,7 @@ export default function MyReservationPage() {
                                 className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 duration-300"
                                 onClick={() => handleDeleteReservation(reservation._id)}
                             >
-                                Delete
+                                Cancel
                             </button>
                         </div>
                     </div>      
