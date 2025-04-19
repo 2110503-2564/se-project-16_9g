@@ -13,6 +13,9 @@ import { LinearProgress } from "@mui/material";
 import { useRouter } from "next/navigation";
 import getUserProfile from "@/libs/getUserProfile";
 import Alert from "@/components/Alert";
+import deleteReservation from "@/libs/deleteReservation";
+import makeReservation from "@/libs/makeReservation";
+
 
 export default function EditReservation() {
   const router = useRouter();
@@ -74,18 +77,19 @@ export default function EditReservation() {
 
     setSaving(true);
     try {
-      await editReservation(
-        userProfile._id,
-        partySize,
-        name,
-        contact,
-        rid,
-        resDate,
-        resTime,
-        session.user.token
-      );
+        await deleteReservation(reservationData._id, session.user.token);
 
-      alert("Reservation updated successfully!");
+        await makeReservation(
+            userProfile._id, 
+            partySize,
+            name,
+            contact,
+            rid, 
+            resDate,
+            resTime,
+            session.user.token
+        );
+
       setSuccess(true);
     } catch (error: any) {
       alert("Failed to update reservation: " + error.message);
