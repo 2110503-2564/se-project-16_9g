@@ -10,6 +10,7 @@ import dayjs, { Dayjs } from "dayjs";
 import { useRouter } from "next/navigation";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import Alert from "@/components/Alert";
+import TableCardList from "@/components/TableCardList";
 
 export default function Reservation() {
     const params = useSearchParams();
@@ -79,7 +80,16 @@ export default function Reservation() {
     };
 
     return (
-        <div className="font-mono flex flex-col items-center my-10">
+        <div className="font-mono flex flex-row justify-around items-center my-10">
+
+            <div>
+                <h1 className="h-[250px] bg-sky-300 my-10">Form</h1>
+                <div>
+                    <h2 className="py-2 text-xl">Available Tables (ยังไม่ใช่ของจริงนะ แปะไว้ก่อนเฉยๆ)</h2>
+                    <TableCardList />
+                </div>
+            </div>
+
             
             <form onSubmit={handleSubmit} className="w-[500px] h-auto p-5 flex flex-col items-center rounded-xl shadow-[0px_0px_8px_6px_rgba(0,0,0,0.15)]">
                 <div className="text-2xl">Make Reservation</div>
