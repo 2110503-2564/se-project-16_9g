@@ -29,11 +29,35 @@ export default function Reservation() {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [userToken, setUserToken] = useState("");
-    const [tableSize, setTableSize] = useState("small"); // Added state for table size
+    const [tableSize, setTableSize] = useState("small");
+    const [startTime, setStartTime] = useState("");
+    const [endTime, setEndTime] = useState("");
+    // const [partySize, setPartySize] = useState(1);
+
+    const [availableTables, setAvailableTables] = useState<any[]>([]);
+    const [selectedTable, setSelectedTable] = useState<any | null>(null);
+    const [selectedDuration, setSelectedDuration] = useState<any | null>(null);
+
 
     const { data: session } = useSession();
 
     const router = useRouter()
+
+    useEffect(() => {
+        const splitTimes = resTime.split(" - ");
+        setStartTime(splitTimes[0]); // เวลาที่ 1 (13:00)
+        setEndTime(splitTimes[1]); // เวลาที่ 2 (15:00)
+    }, [resTime]);
+
+    // //คำนวนเวลาจาจ้า เด่กๆ
+    // function calculateEndTime(resDate: string, resTime: string, duration: number): string {
+    //     const start = dayjs(`${resDate}T${resTime}`);
+    //     const end = start.add(duration, 'hour');
+    //     return end.format("HH:mm:ss"); // หรือ "HH:mm" ถ้าไม่ต้องการวินาที
+    // }
+
+
+    // const endTime = calculateEndTime(resDate, resTime, duration);
 
     useEffect(() => {
         const fetchUserProfile = async () => {
@@ -67,17 +91,29 @@ export default function Reservation() {
 
         try {
             const valid = validationCheck();
-            if(!valid){
+            if (!valid) {
                 //show alert
             }
             //correct the make reservation to call the api
 
-            const response = await makeReservation(userId, name, tel, res, resDate, resTime, endTime, tableSize, false, userToken);
-            
+            const response = await makeReservation(
+                userId,
+                // partySize,
+                name,
+                tel,
+                res,
+                resDate,
+                startTime,
+                endTime,
+                tableSize,
+                userToken
+            );
+
             setSuccess(true);
             setLoading(false);
             // router.push('/myReservation')
         } catch (error) {
+            console.log(error);
             setError("Failed to make reservation. Please try again.");
             setLoading(false);
         }
@@ -90,80 +126,121 @@ export default function Reservation() {
         }
         return true;
     };
-    
-    return (
-        <div className="font-mono flex flex-row justify-around items-center my-10">
 
-            <div>
-                {/* <h1 className="h-[250px] bg-sky-300 my-10">Form</h1> */}
-                <div>
-                    <CheckTableForm restaurantId={res} token={userToken} />
+
+
+    return (
+        <div className="font-mono flex flex-col lg:flex-row justify-around items-start gap-10 px-5 py-10">
+            {/* ฝั่งซ้าย - ตรวจสอบโต๊ะ */}
+            <div className="w-full lg:w-[50%]">
+                <div className="mb-8">
+                    <CheckTableForm
+                        restaurantId={res}
+                        token={userToken}
+                        onResult={(results, selectedDuration, selectedDate, partySize) => {
+                            setAvailableTables(results);
+                            setDuration(selectedDuration);
+                            setResDate(selectedDate);
+                            // setPartySize(partySize);
+                        }}
+                    />
                 </div>
-                <div>
-                    <h2 className="py-2 text-xl">Available Tables (ยังไม่ใช่ของจริงนะ แปะไว้ก่อนเฉยๆ)</h2>
-                    <TableCardList />
+                <div className="max-w-xl mx-auto p-4 bg-white rounded-2xl shadow">
+                    <div>
+                        <h2 className="text-xl font-semibold mb-2">Available Tables</h2>
+                        <TableCardList
+                            tables={availableTables}
+                            onTableSelect={(date, time, table) => {
+                                setSelectedTable({ date, time, table });
+                                setResTime(time);
+                                setTableSize(table);
+                                console.log(table);
+                            }}
+                        />
+                    </div>
                 </div>
             </div>
 
+            {/* ฝั่งขวา - ฟอร์มจองโต๊ะ */}
 
-            <form onSubmit={handleSubmit} className="w-[500px] h-auto p-5 flex flex-col items-center rounded-xl shadow-[0px_0px_8px_6px_rgba(0,0,0,0.15)]">
-                <div className="text-2xl">Make Reservation</div>
-                <div className="my-5">
-                    <Image src={img} width={0} height={0} sizes="100vw" alt="restaurant" className="w-auto h-[300px] m-auto rounded-lg" unoptimized />
+            <form
+                onSubmit={handleSubmit}
+                className="w-full lg:w-[500px] bg-white p-6 rounded-xl shadow-[0px_0px_8px_6px_rgba(0,0,0,0.15)]"
+            >
+                <div className="text-2xl font-bold text-center mb-4">Make Reservation</div>
+
+                <div className="mb-5">
+                    <Image
+                        src={img}
+                        width={0}
+                        height={0}
+                        sizes="100vw"
+                        alt="restaurant"
+                        className="w-full h-[300px] object-cover rounded-lg"
+                        unoptimized
+                    />
                 </div>
-                <div className="text-xl">{resName}</div>
-                <div className="w-[95%]">
-                    <div className="flex flex-row justify-between my-3 items-center">
+
+                <div className="text-xl text-center mb-4">{resName}</div>
+
+                <div className="space-y-4">
+                    <div className="flex justify-between items-center">
                         <label htmlFor="name">Name</label>
                         <input
-                            type="text"
-                            name="name"
                             id="name"
+                            type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             placeholder="Enter your name"
-                            className="border-2 border-slate-300 w-[70%] h-[40px] mx-5 px-2 rounded-md focus:outline-none bg-white"
+                            className="w-[70%] h-10 px-2 border-2 border-slate-300 rounded-md bg-white"
                         />
                     </div>
-                    <div className="flex flex-row justify-between my-3 items-center">
+
+                    <div className="flex justify-between items-center">
                         <label htmlFor="tel">Contact</label>
                         <input
-                            type="text"
-                            name="tel"
                             id="tel"
+                            type="text"
                             value={tel}
                             onChange={(e) => setTel(e.target.value)}
                             placeholder="Enter your contact number"
-                            className="border-2 border-slate-300 w-[70%] h-[40px] mx-5 px-2 rounded-md focus:outline-none bg-white"
+                            className="w-[70%] h-10 px-2 border-2 border-slate-300 rounded-md bg-white"
                         />
                     </div>
-                    <div className="flex flex-row justify-between my-3 items-center">
+
+                    <div className="flex justify-between items-center">
                         <label>Date</label>
-                        <div className="w-[70%] mx-5">
-                            <DateReserve initialDate={dayjs()}
-                                onDateChange={(value: Dayjs) => { setResDate(dayjs(value).format("YYYY-MM-DD")) }} />
-                        </div>
+                        <span className="w-[70%] mx-5">{resDate}</span>
                     </div>
-                    <div className="flex flex-row justify-between my-3 items-center">
-                        <label>Time</label>
-                        <div className="w-[70%] mx-5">
-                            <TimeReserve initialTime={dayjs()} onTimeChange={(value: Dayjs) => { setResTime(dayjs(value).format("HH:mm:ss")) }} />
-                        </div>
+
+                    <div className="flex justify-between items-center">
+                        <label>Start Time</label>
+                        <span className="w-[70%] mx-5">{resTime}</span>
                     </div>
-                    <div className="flex flex-row justify-between my-3 items-center">
+
+                    <div className="flex justify-between items-center">
                         <label>Duration</label>
                         <input
                             type="number"
-                            name="duration"
-                            id="duration"
-                            min={1}
                             value={duration}
-                            onChange={(e) => setDuration(Number(e.target.value))}
-                            placeholder="Enter your duration (hours)"
-                            className="border-2 border-slate-300 w-[70%] h-[40px] mx-5 px-2 rounded-md focus:outline-none bg-white"
+                            disabled
+                            className="w-[70%] h-10 px-2 border-2 border-slate-300 rounded-md bg-gray-100"
                         />
                     </div>
-                    {error && <div className="text-red-500 text-sm my-3">{error}</div>}
+
+                    <div className="flex justify-between items-center">
+                        <label>Table Size</label>
+                        <FormControl className="w-[70%] mx-5">
+                            <input
+                                type="text"
+                                value={tableSize}
+                                disabled
+                                className="h-10 px-3 border-2 border-slate-300 rounded-md bg-gray-100 text-gray-800"
+                            />
+                        </FormControl>
+                    </div>
+
+                    {error && <div className="text-red-500 text-sm text-center">{error}</div>}
                     {success && (
                         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-40">
                             <Alert
@@ -176,30 +253,18 @@ export default function Reservation() {
                             />
                         </div>
                     )}
-                    <div className="flex flex-row justify-between my-3 items-center">
-                        <label>Table Size</label>
-                        <FormControl className="w-[70%] mx-5">
-                            <InputLabel className="font-mono" id="demo-simple-select-label">Select your table size</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={tableSize}
-                                onChange={(e) => setTableSize(e.target.value)}
-                            >
-                                <MenuItem value="small">Small (1-4)</MenuItem>
-                                <MenuItem value="medium">Medium (5-9)</MenuItem>
-                                <MenuItem value="large">Large (10++)</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </div>
-                    <div className="mt-5 text-center flex flex-row gap-2">
-                        <button className="bg-[#4AC9FF] w-[50%] text-white px-10 py-2 rounded-md hover:bg-[#0356a3] duration-300"
-                            onClick={() => router.push(`/restaurants/${res}`)}>
+
+                    <div className="flex justify-between gap-4 mt-6">
+                        <button
+                            type="button"
+                            className="w-1/2 bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400"
+                            onClick={() => router.push(`/restaurants/${res}`)}
+                        >
                             Cancel
                         </button>
                         <button
                             type="submit"
-                            className="bg-[#4AC9FF] w-[50%] text-white px-10 py-2 rounded-md hover:bg-[#0356a3] duration-300"
+                            className="w-1/2 bg-sky-400 text-white px-4 py-2 rounded-md hover:bg-sky-600"
                             disabled={loading}
                         >
                             {loading ? "Reserving..." : "Reserve"}

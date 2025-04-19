@@ -5,8 +5,14 @@ import checkAvailableTables from "@/libs/checkAvaliableTable";
 import DateReserve from "./DateReserve";
 import dayjs, { Dayjs } from "dayjs";
 
+interface CheckTableFormProps {
+  restaurantId: string;
+  token: string;
+  onResult?: (results: any[], duration: number, date: string, partySize: number) => void;
+}
 
-export default function CheckTableForm({ restaurantId, token }: { restaurantId: string, token: string }) {
+
+export default function CheckTableForm({ restaurantId, token, onResult }: CheckTableFormProps) {
   const [date, setDate] = useState("");
   const [duration, setDuration] = useState(1);
   const [partySize, setPartySize] = useState(1);
@@ -40,7 +46,11 @@ export default function CheckTableForm({ restaurantId, token }: { restaurantId: 
       if (response.success) {
         // alert(response.data);
         setResults(response.data);
-        setSuccess(true);
+        if (onResult) {
+          onResult(response.data, duration, date, partySize);
+        }
+
+
       } else {
         setError(response.message || "No tables available.");
       }
@@ -103,19 +113,6 @@ export default function CheckTableForm({ restaurantId, token }: { restaurantId: 
 
       {error && <p className="text-red-600 mt-4">{error}</p>}
 
-      {/* {results.length > 0 && (
-        <div className="mt-6">
-          <h3 className="text-lg font-semibold mb-2">Available Time Slots</h3>
-          <ul className="space-y-2">
-            {results.map((slot, index) => (
-              <li key={index} className="p-2 border rounded">
-                <span className="font-medium">{slot.time}</span> —{" "}
-                {slot.availableTables.amount} {slot.availableTables.type} table(s)
-              </li>
-            ))}
-          </ul>
-        </div>
-      )} */}
 
     </div>
   );

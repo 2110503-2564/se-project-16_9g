@@ -1,4 +1,19 @@
-export default function TableCard({date, time, table} : {date: string, time: string, table: string}) {
+export default function TableCard({
+    date,
+    time,
+    table,
+    onReserve // เพิ่ม prop onReserve เพื่อรับฟังก์ชันที่เรียกเมื่อกดปุ่ม
+}: {
+    date: string;
+    time: string;
+    table: string;
+    onReserve: (date: string, time: string, table: string) => void; // ประกาศ prop onReserve
+}) {
+    // ฟังก์ชันที่เรียกเมื่อกดปุ่ม Reserve
+    const handleReserve = () => {
+        onReserve(date, time, table);
+    };
+
     return (
         <div>
             <div className='relative w-auto h-auto px-10 py-5 bg-white rounded-lg 
@@ -6,9 +21,14 @@ export default function TableCard({date, time, table} : {date: string, time: str
                 <div className="flex flex-row items-center justify-center gap-5 ">
                     <span>{time}</span>
                     <span>{table}</span>
-                    <button className="px-3 py-2 bg-sky-400 rounded-md text-white">Reserve</button>
+                    <button
+                        onClick={handleReserve}
+                        className="px-3 py-2 bg-sky-400 rounded-md text-white"
+                    >
+                        Reserve
+                    </button>
                 </div>
-            </div>  
+            </div>
         </div>
     );
 }

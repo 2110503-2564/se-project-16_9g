@@ -81,20 +81,20 @@ export default function EditReservation() {
 
     setSaving(true);
     try {
-        await deleteReservation(reservationData._id, session.user.token);
+      await deleteReservation(reservationData._id, session.user.token);
 
-        await makeReservation(
-            userProfile._id, 
-            name,
-            contact,
-            rid, 
-            resDate,
-            resTime,
-            endTime,
-            tableSize,
-            false,
-            session.user.token
-        );
+      await makeReservation(
+        userProfile._id,
+        name,
+        contact,
+        rid,
+        resDate,
+        resTime,
+        endTime,
+        tableSize,
+        false,
+        session.user.token
+      );
 
       setSuccess(true);
     } catch (error: any) {

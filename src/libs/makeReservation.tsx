@@ -2,6 +2,7 @@ import axios from "axios";
 
 export default async function makeReservation(
     userid: string,
+    // partySize: number,
     name: string,
     contact: string,
     resid: string,
@@ -9,8 +10,7 @@ export default async function makeReservation(
     resStartTime: string,
     resEndTime: string,
     tableSize: string,
-    lockedByAdmin: boolean,
-    token: string,
+    token: string
 ) {
     try {
         const response = await axios.post(
@@ -18,12 +18,13 @@ export default async function makeReservation(
             {
                 name,
                 contact,
+                // partySize,
                 resDate,
                 resStartTime,
                 resEndTime,
                 tableSize,
                 user: userid,
-                lockedByAdmin
+                restaurant: resid,
             },
             {
                 headers: {
@@ -33,8 +34,10 @@ export default async function makeReservation(
             }
         );
 
+
         return response.data;
     } catch (error) {
+        console.log(error);
         throw new Error("Failed to make reservation");
     }
 }
