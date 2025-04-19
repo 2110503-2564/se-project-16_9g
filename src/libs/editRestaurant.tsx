@@ -1,22 +1,22 @@
 import axios from "axios";
 
 export default async function EditRestaurantFunc(
-    token: string, 
-    resName: string, 
-    address: string, 
+    token: string,
+    resName: string,
+    address: string,
     district: string,
-    province: string, 
-    postalcode: string, 
-    picture: string, 
-    tel: string, 
-    region: string, 
-    opentime: string, 
-    closetime: string, 
+    province: string,
+    postalcode: string,
+    picture: string,
+    tel: string,
+    region: string,
+    opentime: string,
+    closetime: string,
     resid: string
 ) {
     try {
         const response = await axios.put(
-            `https://restaurant-api-fawn.vercel.app/api/stb/restaurants/${resid}`,
+            `http://localhost:5000/api/stb/restaurants/${resid}`,
             {
                 name: resName,
                 address: address,

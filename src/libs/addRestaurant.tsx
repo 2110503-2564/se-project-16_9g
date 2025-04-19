@@ -1,21 +1,21 @@
 import axios from "axios";
 
 export default async function AddNewRestaurant(
-    token: string, 
-    resName: string, 
-    address: string, 
+    token: string,
+    resName: string,
+    address: string,
     district: string,
-    province: string, 
-    postalcode: string, 
-    picture: string, 
-    tel: string, 
-    region: string, 
-    opentime: string, 
+    province: string,
+    postalcode: string,
+    picture: string,
+    tel: string,
+    region: string,
+    opentime: string,
     closetime: string
 ) {
     try {
         const response = await axios.post(
-            `https://restaurant-api-fawn.vercel.app/api/stb/restaurants`,
+            `http://localhost:5000/api/stb/restaurants`,
             {
                 name: resName,
                 address: address,

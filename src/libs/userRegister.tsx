@@ -8,7 +8,7 @@ export default async function userRegister(
 ) {
     try {
         const response = await axios.post(
-            "https://restaurant-api-fawn.vercel.app/api/stb/auth/register",
+            "http://localhost:5000/api/stb/auth/register",
             {
                 name,
                 email: userEmail,

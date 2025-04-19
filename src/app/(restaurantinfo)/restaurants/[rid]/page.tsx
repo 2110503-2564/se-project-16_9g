@@ -15,7 +15,7 @@ export default function InfoPage({ params }: { params: { rid: string } }) {
     const id = params.rid;
     const { data: session } = useSession();
     const [user, setUser] = useState<any | null>(null);
-    const [loading, setLoading] = useState<boolean>(true);  
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -32,7 +32,7 @@ export default function InfoPage({ params }: { params: { rid: string } }) {
             } catch (error) {
                 console.error("Error fetching data:", error);
             } finally {
-                setLoading(false); 
+                setLoading(false);
             }
         };
 
@@ -69,15 +69,15 @@ export default function InfoPage({ params }: { params: { rid: string } }) {
                 <div>
                     <div className="text-lg">
                         <div className="text-3xl py-8 font-mono">{res.data.name}</div>
-                            <p className="py-2">Address: {res.data.address} {res.data.province} {res.data.postalcode}</p>
-                            <p className="py-2">Tel: {res.data.tel}</p>
-                            <p className="py-2">Open time: {res.data.opentime}</p>
-                            <p className="py-2">Close time: {res.data.closetime}</p>
-                        </div>
+                        <p className="py-2">Address: {res.data.address} {res.data.province} {res.data.postalcode}</p>
+                        <p className="py-2">Tel: {res.data.tel}</p>
+                        <p className="py-2">Open time: {res.data.opentime}</p>
+                        <p className="py-2">Close time: {res.data.closetime}</p>
+                    </div>
                     <div className="my-5">
                         {user ? (
-                            <Link href={`/reservations?res=${res.data.id}&resname=${res.data.name}&img=${res.data.picture}&user=${user.data._id}`} 
-                            className="px-8 py-3 bg-[#4AC9FF] text-white 
+                            <Link href={`/reservations?res=${res.data.id}&resname=${res.data.name}&img=${res.data.picture}&user=${user.data._id}`}
+                                className="px-8 py-3 bg-[#4AC9FF] text-white 
                         rounded-lg w-full hover:bg-[#0356a3] duration-300 mr-3">
                                 Reserve
                             </Link>

@@ -12,7 +12,7 @@ export default async function makeReservation(
 ) {
     try {
         const response = await axios.post(
-            `https://restaurant-api-fawn.vercel.app/api/stb/restaurants/${resid}/reservations`,
+            `http://localhost:5000/api/stb/restaurants/${resid}/reservations`,
             {
                 name,
                 contact,

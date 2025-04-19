@@ -1,15 +1,15 @@
 import axios from "axios";
 
 export default async function addNewReview(
-    token: string, 
-    resid: string, 
-    userid: string, 
-    rating: number, 
+    token: string,
+    resid: string,
+    userid: string,
+    rating: number,
     comment: string
 ) {
     try {
         const response = await axios.post(
-            `https://restaurant-api-fawn.vercel.app/api/stb/restaurants/${resid}/reviews`,
+            `http://localhost:5000/api/stb/restaurants/${resid}/reviews`,
             {
                 user: userid,
                 rating: rating,

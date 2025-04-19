@@ -3,7 +3,7 @@ import axios from "axios";
 export default async function ChangePassword(userid: string, token: string, currentPassword: string, newPassword: string) {
     try {
         const response = await axios.put(
-            `https://restaurant-api-fawn.vercel.app/api/stb/auth/changepassword`,
+            `http://localhost:5000/api/stb/auth/changepassword`,
             {
                 currentPassword,
                 newPassword

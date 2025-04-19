@@ -1,18 +1,18 @@
 import axios from "axios";
 
 export default async function editReservation(
-    userid: string, 
-    partySize: number, 
+    userid: string,
+    partySize: number,
     name: string,
-    contact: string, 
-    resid: string, 
-    resDate: string, 
-    resTime: string, 
+    contact: string,
+    resid: string,
+    resDate: string,
+    resTime: string,
     token: string
 ) {
     try {
         const response = await axios.put(
-            `https://restaurant-api-fawn.vercel.app/api/stb/reservations/${resid}`,
+            `http://localhost:5000/api/stb/reservations/${resid}`,
             {
                 name: name,
                 contact: contact,
