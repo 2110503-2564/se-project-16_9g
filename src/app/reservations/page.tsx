@@ -61,10 +61,9 @@ export default function Reservation() {
         }
 
         try {
-            if (!name || !tel || !duration || !resDate || !resTime) {
-                setError("Please fill in all fields.");
-                setLoading(false);
-                return;
+            const valid = validationCheck();
+            if(!valid){
+                //show alert
             }
             //correct the make reservation to call the api
             
@@ -78,6 +77,14 @@ export default function Reservation() {
         }
     };
 
+    const validationCheck = (): boolean => {
+        if (!name || !tel || !duration || !resDate || !resTime) {
+            setError("Please fill in all fields.");
+            return false;
+        }
+        return true;
+    };
+    
     return (
         <div className="font-mono flex flex-col items-center my-10">
             
