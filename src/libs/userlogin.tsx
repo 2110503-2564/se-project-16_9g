@@ -3,7 +3,7 @@ import axios from "axios";
 export default async function userLogIn(userEmail: string, userPassword: string) {
     try {
         const response = await axios.post(
-            "https://restaurant-api-fawn.vercel.app/api/stb/auth/login",
+            "http://localhost:5000/api/stb/auth/login",
             {
                 email: userEmail,
                 password: userPassword,

@@ -3,7 +3,7 @@ import axios from "axios";
 export default async function deleteRestaurant(resId: string, token: string) {
     try {
         const response = await axios.delete(
-            `https://restaurant-api-fawn.vercel.app/api/stb/restaurants/${resId}`,
+            `http://localhost:5000/api/stb/restaurants/${resId}`,
             {
                 headers: {
                     "Content-Type": "application/json",

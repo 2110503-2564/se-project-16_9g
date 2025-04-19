@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import Alert from "@/components/Alert";
 import TableCardList from "@/components/TableCardList";
+import CheckTableForm from "@/components/CheckTableFrom";
 
 export default function Reservation() {
     const params = useSearchParams();
@@ -27,10 +28,10 @@ export default function Reservation() {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
-    const [userToken, setUserToken] = useState(""); 
+    const [userToken, setUserToken] = useState("");
     const [tableSize, setTableSize] = useState("small"); // Added state for table size
 
-    const { data: session } = useSession(); 
+    const { data: session } = useSession();
 
     const router = useRouter()
 
@@ -46,7 +47,7 @@ export default function Reservation() {
         };
 
         fetchUserProfile();
-    }, [session?.user?.token]); 
+    }, [session?.user?.token]);
 
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -67,7 +68,7 @@ export default function Reservation() {
                 //show alert
             }
             //correct the make reservation to call the api
-            
+
             const response = await makeReservation(userId, 2, name, tel, res, resDate, resTime, userToken);
             setSuccess(true);
             setLoading(false);
@@ -90,14 +91,17 @@ export default function Reservation() {
         <div className="font-mono flex flex-row justify-around items-center my-10">
 
             <div>
-                <h1 className="h-[250px] bg-sky-300 my-10">Form</h1>
+                {/* <h1 className="h-[250px] bg-sky-300 my-10">Form</h1> */}
+                <div>
+                    <CheckTableForm restaurantId={res} token={userToken} />
+                </div>
                 <div>
                     <h2 className="py-2 text-xl">Available Tables (ยังไม่ใช่ของจริงนะ แปะไว้ก่อนเฉยๆ)</h2>
                     <TableCardList />
                 </div>
             </div>
 
-            
+
             <form onSubmit={handleSubmit} className="w-[500px] h-auto p-5 flex flex-col items-center rounded-xl shadow-[0px_0px_8px_6px_rgba(0,0,0,0.15)]">
                 <div className="text-2xl">Make Reservation</div>
                 <div className="my-5">
@@ -133,7 +137,7 @@ export default function Reservation() {
                         <label>Date</label>
                         <div className="w-[70%] mx-5">
                             <DateReserve initialDate={dayjs()}
-                            onDateChange={(value: Dayjs) => { setResDate(dayjs(value).format("YYYY-MM-DD")) }} />
+                                onDateChange={(value: Dayjs) => { setResDate(dayjs(value).format("YYYY-MM-DD")) }} />
                         </div>
                     </div>
                     <div className="flex flex-row justify-between my-3 items-center">
@@ -157,16 +161,16 @@ export default function Reservation() {
                     </div>
                     {error && <div className="text-red-500 text-sm my-3">{error}</div>}
                     {success && (
-                    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-40">
-                        <Alert
-                        message="Reservation successful!"
-                        resName={resName || "Unknown"}
-                        name={name}
-                        date={resDate}
-                        time={resTime}
-                        size={tableSize}
-                        />
-                    </div>
+                        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-40">
+                            <Alert
+                                message="Reservation successful!"
+                                resName={resName || "Unknown"}
+                                name={name}
+                                date={resDate}
+                                time={resTime}
+                                size={tableSize}
+                            />
+                        </div>
                     )}
                     <div className="flex flex-row justify-between my-3 items-center">
                         <label>Table Size</label>
@@ -186,7 +190,7 @@ export default function Reservation() {
                     </div>
                     <div className="mt-5 text-center flex flex-row gap-2">
                         <button className="bg-[#4AC9FF] w-[50%] text-white px-10 py-2 rounded-md hover:bg-[#0356a3] duration-300"
-                        onClick={() => router.push(`/restaurants/${res}`)}>
+                            onClick={() => router.push(`/restaurants/${res}`)}>
                             Cancel
                         </button>
                         <button
