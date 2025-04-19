@@ -8,14 +8,14 @@ import makeReservation from "@/libs/makeReservation";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-
 interface RestaurantsProps {
     restaurants: { _id: string; name: string }[];
 }
 
-export default function LockTableForm({ restaurants, handleCancel }: {
+export default function LockTableForm({ restaurants, handleCancel, onSuccess }: {
     restaurants: RestaurantsProps,
-    handleCancel: Function
+    handleCancel: Function,
+    onSuccess: Function
 }) {
 
     const { data: session } = useSession();
@@ -58,9 +58,9 @@ export default function LockTableForm({ restaurants, handleCancel }: {
             const response = await makeReservation(userId, "admin", "-", selectedRestaurant, date, time, endTime, tableSize, true, userToken);
             setSuccess(true);
             setLoading(false);
-            alert("Reservation made successfully!");
-            router.push('/tables-status');
-            router.refresh();
+            alert("Locked new table successfully!");
+            handleCancel();
+            onSuccess();
         } catch (error) {
             setError("Failed to make reservation. Please try again.");
             setLoading(false);

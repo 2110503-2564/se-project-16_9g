@@ -10,6 +10,7 @@ export default async function makeReservation(
     resStartTime: string,
     resEndTime: string,
     tableSize: string,
+    lockedByAdmin: boolean,
     token: string
 ) {
     try {
@@ -18,12 +19,12 @@ export default async function makeReservation(
             {
                 name,
                 contact,
-                // partySize,
                 resDate,
                 resStartTime,
                 resEndTime,
                 tableSize,
                 user: userid,
+                lockedByAdmin,
                 restaurant: resid,
             },
             {

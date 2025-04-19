@@ -98,7 +98,6 @@ export default function Reservation() {
 
             const response = await makeReservation(
                 userId,
-                // partySize,
                 name,
                 tel,
                 res,
@@ -106,6 +105,7 @@ export default function Reservation() {
                 startTime,
                 endTime,
                 tableSize,
+                false,
                 userToken
             );
 

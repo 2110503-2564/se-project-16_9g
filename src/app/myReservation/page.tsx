@@ -12,7 +12,9 @@ import deleteReservation from "@/libs/deleteReservation";
 interface Reservation {
     _id: string,
     resDate: string,
-    resTime: string,
+    resStartTime: string,
+    resEndTime: string,
+    tableSize: string,
     partySize: number,
     contact: string,
     name: string,
@@ -64,7 +66,7 @@ export default function MyReservationPage() {
 
                 const res = await getReservations(session.user.token);
                 if (res?.data) {
-                    setReservations(res.data);
+                    setReservations(res.data.filter((reservation:any) => reservation.lockedByAdmin === false));
                 } else {
                     setReservations([]);
                 }
@@ -125,8 +127,8 @@ export default function MyReservationPage() {
                             <p className="py-2">Customer: {reservation.name}</p>
                             <p className="py-2">Tel: {reservation.contact}</p>
                             <p className="py-2">Date: {reservation.resDate}</p>
-                            <p className="py-2">Time: {reservation.resTime}</p>
-                            <p className="py-2">Number of people: {reservation.partySize}</p>
+                            <p className="py-2">Time: {reservation.resStartTime} - {reservation.resEndTime}</p>
+                            <p className="py-2">Table: {reservation.tableSize}</p>
                         </div>
                         <div className="flex gap-3 absolute bottom-0 right-0 m-3">
                             <button
