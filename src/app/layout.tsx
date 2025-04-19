@@ -40,7 +40,7 @@ export default async function RootLayout({
               <TopMenu />
               <div className="h-fit">
                 <Sidebar />
-                <div className="w-[80%] absolute right-0 ">
+                <div className="w-[79%] absolute right-0 ">
                   <div className=" ">
                     {children}    
                   </div>

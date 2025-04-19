@@ -70,10 +70,14 @@ export default function EditReservation() {
 
     fetchData();
   }, [session?.user?.token, rid]);
+  console.log(reservationData);
 
   const handleEditReservation = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!session?.user?.token || !rid) return;
+
+    const endhour = parseInt(resTime.split(":")[0]) + duration;
+    const endTime = `${endhour.toString().padStart(2, "0")}:00`;
 
     setSaving(true);
     try {
@@ -81,12 +85,14 @@ export default function EditReservation() {
 
         await makeReservation(
             userProfile._id, 
-            partySize,
             name,
             contact,
             rid, 
             resDate,
             resTime,
+            endTime,
+            tableSize,
+            false,
             session.user.token
         );
 

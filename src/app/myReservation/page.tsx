@@ -79,6 +79,8 @@ export default function MyReservationPage() {
         fetchData();
     }, [session?.user?.token]);
 
+    console.log(reservations);  
+
     if (loading) {
         return (
             <div className="w-full text-center">

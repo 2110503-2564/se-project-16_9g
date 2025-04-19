@@ -12,6 +12,7 @@ export default function CheckTableForm({ restaurantId, token }: { restaurantId: 
   const [partySize, setPartySize] = useState(1);
   const [results, setResults] = useState<any[]>([]);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,6 +40,7 @@ export default function CheckTableForm({ restaurantId, token }: { restaurantId: 
       if (response.success) {
         // alert(response.data);
         setResults(response.data);
+        setSuccess(true);
       } else {
         setError(response.message || "No tables available.");
       }

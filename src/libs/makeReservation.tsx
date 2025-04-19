@@ -2,13 +2,15 @@ import axios from "axios";
 
 export default async function makeReservation(
     userid: string,
-    partySize: number,
     name: string,
     contact: string,
     resid: string,
     resDate: string,
-    resTime: string,
-    token: string
+    resStartTime: string,
+    resEndTime: string,
+    tableSize: string,
+    lockedByAdmin: boolean,
+    token: string,
 ) {
     try {
         const response = await axios.post(
@@ -16,10 +18,12 @@ export default async function makeReservation(
             {
                 name,
                 contact,
-                partySize,
                 resDate,
-                resTime,
+                resStartTime,
+                resEndTime,
+                tableSize,
                 user: userid,
+                lockedByAdmin
             },
             {
                 headers: {

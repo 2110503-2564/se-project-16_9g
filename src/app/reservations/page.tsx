@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import Alert from "@/components/Alert";
 import TableCardList from "@/components/TableCardList";
-import CheckTableForm from "@/components/CheckTableFrom";
+import CheckTableForm from "@/components/CheckTableForm";
 
 export default function Reservation() {
     const params = useSearchParams();
@@ -62,6 +62,9 @@ export default function Reservation() {
             return;
         }
 
+        const endhour = parseInt(resTime.split(":")[0]) + duration;
+        const endTime = `${endhour.toString().padStart(2, "0")}:00`;
+
         try {
             const valid = validationCheck();
             if(!valid){
@@ -69,7 +72,8 @@ export default function Reservation() {
             }
             //correct the make reservation to call the api
 
-            const response = await makeReservation(userId, 2, name, tel, res, resDate, resTime, userToken);
+            const response = await makeReservation(userId, name, tel, res, resDate, resTime, endTime, tableSize, false, userToken);
+            
             setSuccess(true);
             setLoading(false);
             // router.push('/myReservation')
@@ -182,9 +186,9 @@ export default function Reservation() {
                                 value={tableSize}
                                 onChange={(e) => setTableSize(e.target.value)}
                             >
-                                <MenuItem value="small">Small (1-3)</MenuItem>
-                                <MenuItem value="medium">Medium (4-7)</MenuItem>
-                                <MenuItem value="large">Large (8++)</MenuItem>
+                                <MenuItem value="small">Small (1-4)</MenuItem>
+                                <MenuItem value="medium">Medium (5-9)</MenuItem>
+                                <MenuItem value="large">Large (10++)</MenuItem>
                             </Select>
                         </FormControl>
                     </div>
