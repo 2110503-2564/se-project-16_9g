@@ -15,6 +15,9 @@ import getUserProfile from "@/libs/getUserProfile";
 import Alert from "@/components/Alert";
 import deleteReservation from "@/libs/deleteReservation";
 import makeReservation from "@/libs/makeReservation";
+import CheckTableForm from "@/components/CheckTableForm";
+import TableCardList from "@/components/TableCardList";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 
 export default function EditReservation() {
@@ -24,13 +27,16 @@ export default function EditReservation() {
   const [reservationData, setReservationData] = useState<any>(null);
   const [name, setName] = useState<string>("");
   const [contact, setContact] = useState<string>("");
-  const [partySize, setPartySize] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true);
   const [saving, setSaving] = useState<boolean>(false);
   const [userProfile, setUserProfile] = useState<any>(null);
   const [duration, setDuration] = useState<number>(0);
   const [tableSize, setTableSize] = useState<string>('');
   const [success, setSuccess] = useState<boolean>(false);
+
+  const [availableTables, setAvailableTables] = useState<any[]>([]);
+  const [selectedTable, setSelectedTable] = useState<any | null>(null);
+  const [selectedDuration, setSelectedDuration] = useState<any | null>(null);
 
   const { data: session } = useSession();
   const params = useSearchParams();
@@ -49,7 +55,6 @@ export default function EditReservation() {
           setReservationData(res.data);
           setName(res.data.name);
           setContact(res.data.contact);
-          setPartySize(res.data.partySize);
           setResDate(res.data.resDate);
           setResTime(res.data.resTime);
           setDuration(res.data.duration);
@@ -123,6 +128,36 @@ export default function EditReservation() {
 
   return (
     <div className="flex flex-col items-center my-10 font-mono">
+      {/* ฝั่งซ้าย - ตรวจสอบโต๊ะ */}
+                  <div className="w-full lg:w-[50%]">
+                      <div className="mb-8">
+                          <CheckTableForm
+                              restaurantId={rid || ' '}
+                              token={session?.user?.token || ' '}
+                              onResult={(results, selectedDuration, selectedDate, partySize) => {
+                                  setAvailableTables(results);
+                                  setDuration(selectedDuration);
+                                  setResDate(selectedDate);
+                                  // setPartySize(partySize);
+                              }}
+                          />
+                      </div>
+                      <div className="max-w-xl mx-auto p-4 bg-white rounded-2xl shadow">
+                          <div>
+                              <h2 className="text-xl font-semibold mb-2">Available Tables</h2>
+                              <TableCardList
+                                  tables={availableTables}
+                                  onTableSelect={(date, time, table) => {
+                                      setSelectedTable({ date, time, table });
+                                      setResTime(time);
+                                      setTableSize(table);
+                                      console.log(table);
+                                  }}
+                              />
+                          </div>
+                      </div>
+                  </div>
+
       <form
         onSubmit={handleEditReservation}
         className="w-[500px] p-5 flex flex-col items-center rounded-xl shadow-md"
@@ -136,7 +171,8 @@ export default function EditReservation() {
             alt={reservationData?.restaurant.name || "Restaurant"}
             className="w-auto h-[300px] m-auto rounded-lg"
             unoptimized
-          />
+        />
+
         </div>
         <div className="text-xl">
           {reservationData?.restaurant.name || "Loading..."}
@@ -149,6 +185,7 @@ export default function EditReservation() {
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              placeholder="Enter your name"
               className="border-2 border-slate-300 w-[70%] h-[40px] px-2 rounded-md bg-white"
             />
           </div>
@@ -159,42 +196,43 @@ export default function EditReservation() {
               id="tel"
               value={contact}
               onChange={(e) => setContact(e.target.value)}
+              placeholder="Enter your contact number"
               className="border-2 border-slate-300 w-[70%] h-[40px] px-2 rounded-md bg-white"
             />
           </div>
-          <div className="flex flex-row justify-between my-3 items-center">
-            <label htmlFor="party-size">Number of People</label>
-            <input
-              type="number"
-              id="party-size"
-              value={partySize}
-              onChange={(e) => setPartySize(Number(e.target.value))}
-              className="border-2 border-slate-300 w-[70%] h-[40px] px-2 rounded-md bg-white"
-              min={1}
-            />
-          </div>
-          <div className="flex flex-row justify-between my-3 items-center">
-            <label>Date</label>
-            <div className="w-[70%]">
-              <DateReserve
-                initialDate={dayjs(resDate)}
-                onDateChange={(value: Dayjs) =>
-                  setResDate(value.format("YYYY-MM-DD"))
-                }
-              />
-            </div>
-          </div>
-          <div className="flex flex-row justify-between my-3 items-center">
-            <label>Time</label>
-            <div className="w-[70%]">
-              <TimeReserve
-                initialTime={dayjs(resTime, "HH:mm 00")}
-                onTimeChange={(value: Dayjs) =>
-                  setResTime(value.format("HH:mm:ss"))
-                }
-              />
-            </div>
-          </div>
+          
+          <div className="flex justify-between items-center">
+                        <label>Date</label>
+                        <span className="w-[70%] mx-5">{resDate}</span>
+                    </div>
+
+                    <div className="flex justify-between items-center">
+                        <label>Start Time</label>
+                        <span className="w-[70%] mx-5">{resTime}</span>
+                    </div>
+
+                    <div className="flex justify-between items-center">
+                        <label>Duration</label>
+                        <input
+                            type="number"
+                            value={duration}
+                            disabled
+                            className="w-[70%] h-10 px-2 border-2 border-slate-300 rounded-md bg-gray-100"
+                        />
+                    </div>
+
+                    <div className="flex justify-between items-center">
+                        <label>Table Size</label>
+                        <FormControl className="w-[70%] mx-5">
+                            <input
+                                type="text"
+                                value={tableSize}
+                                disabled
+                                className="h-10 px-3 border-2 border-slate-300 rounded-md bg-gray-100 text-gray-800"
+                            />
+                        </FormControl>
+                    </div>
+                    
           {success && (
             <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-40">
               <Alert

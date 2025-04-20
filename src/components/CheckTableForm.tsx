@@ -97,7 +97,6 @@ export default function CheckTableForm({ restaurantId, token, onResult }: CheckT
   return (
     <div className="max-w-xl mx-auto p-4 bg-white rounded-2xl shadow">
       <h2 className="text-xl font-bold mb-4">Check Table Availability</h2>
-      <h3 className="text-xl font-bold mb-4">{restaurantId}</h3>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="flex flex-row justify-between my-3 items-center">
           <label htmlFor="date" className="w-[30%]">Date</label>
