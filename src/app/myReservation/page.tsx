@@ -9,6 +9,7 @@ import { LinearProgress } from "@mui/material";
 import getReservations from "@/libs/getReservations";
 import deleteReservation from "@/libs/deleteReservation";
 import cancelReservation from "@/libs/cancelReservation";
+import Deletecom from "@/components/Deletecom";
 
 interface Reservation {
     _id: string,
@@ -36,12 +37,17 @@ export default function MyReservationPage() {
     const [user, setUser] = useState<any>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [reservations, setReservations] = useState<Reservation[]>([]);
-
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [reservationToDelete, setReservationToDelete] = useState<string | null>(null);
+    const handleDeleteClick = (reservationId: string) => {
+        setReservationToDelete(reservationId);
+        setShowDeleteModal(true);
+    };
     const handleDeleteReservation = async (reservationId: string) => {
         if (!session?.user?.token) return;
 
-        const confirmDelete = window.confirm("Are you sure you want to cancel this reservation?");
-        if (!confirmDelete) return;
+        //const confirmDelete = window.confirm("Are you sure you want to cancel this reservation?");
+        //if (!confirmDelete) return;
 
         try {
             await cancelReservation(reservationId, session.user.token);
@@ -55,6 +61,8 @@ export default function MyReservationPage() {
         } catch (error: any) {
             alert("Failed to cancel reservation: " + error.message);
         }
+        setShowDeleteModal(false);
+        setReservationToDelete(null);
     };
 
     useEffect(() => {
@@ -141,7 +149,7 @@ export default function MyReservationPage() {
                             </button>
                             <button
                                 className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 duration-300"
-                                onClick={() => handleDeleteReservation(reservation._id)}
+                                onClick={() => handleDeleteClick(reservation._id)}
                             >
                                 Cancel
                             </button>
@@ -149,6 +157,12 @@ export default function MyReservationPage() {
                     </div>      
                 ))}
             </div>
+            <Deletecom
+            open={showDeleteModal}
+            onConfirm={()=>{if(reservationToDelete!=null)handleDeleteReservation(reservationToDelete)}}
+            onCancel={() => setShowDeleteModal(false)}
+            message="Are you sure you want to cancel this reservation?"
+            />
         </div>
     );
 }
