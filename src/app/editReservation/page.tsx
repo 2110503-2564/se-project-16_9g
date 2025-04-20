@@ -31,6 +31,7 @@ export default function EditReservation() {
   const [duration, setDuration] = useState<number>(0);
   const [tableSize, setTableSize] = useState<string>('');
   const [success, setSuccess] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
   const { data: session } = useSession();
   const params = useSearchParams();
@@ -97,6 +98,14 @@ export default function EditReservation() {
       setSaving(false);
     }
   };
+
+  const validationCheck = (): boolean => {
+    if (!name || !contact || !reservationData || !resDate || !resTime || !duration || !tableSize) {
+        setError("Please fill in all fields.");
+        return false;
+    }
+    return true;
+};
 
   if (loading) {
     return (
