@@ -11,15 +11,12 @@ import deleteReservation from "@/libs/deleteReservation";
 export default function Tables() {
 
     const router = useRouter();
+    const { data: session, status } = useSession();
 
-    const { data: session } = useSession();
-    if (!session) return null;
-
+    // Always declare hooks before any early returns
     const [restaurants, setRestaurants] = useState<{ _id: string; name: string }[]>([]);
     const [selectedRestaurant, setSelectedRestaurant] = useState("");
-
     const [reservations, setReservations] = useState([]);
-
     const [showForm, setShowForm] = useState(false);
 
     const fetchData = async () => {
@@ -27,14 +24,17 @@ export default function Tables() {
         setRestaurants(res.data);
         console.log(res.data);
 
-        const reservations = await getReservations(session.user.token);
-        setReservations(reservations.data.filter((reservation: any) => reservation.lockedByAdmin === true));
-        
+        if (session?.user?.token) {
+            const reservations = await getReservations(session.user.token);
+            setReservations(reservations.data.filter((r: any) => r.lockedByAdmin === true));
+        }
     };
 
     useEffect(() => {
-        fetchData();
-    }, [session.user.token]);
+        if (session?.user?.token) {
+            fetchData();
+        }
+    }, [session?.user?.token]);
 
     console.log(reservations);
 
@@ -55,7 +55,7 @@ export default function Tables() {
     }
 
     return (
-        <div>
+        <div className="mx-3">
             <h1 className="text-3xl font-bold text-center mt-10">Locked Table</h1>
             <button className="bg-green-500 text-xl text-white rounded-md px-[20px] py-3 m-5
             hover:bg-green-700 duration-300 "

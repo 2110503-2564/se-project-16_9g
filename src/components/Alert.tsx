@@ -3,15 +3,17 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
+interface AlertProps {
+    message: string;
+    resName?: string;
+    name?: string;
+    date?: string;
+    time?: string;
+    size?: string;
+}
 
-export default function Alert({message, resName, name, date, time, size}: {
-    message: string,
-    resName: string,
-    name: string,
-    date: string,
-    time: string,
-    size: string,
-}) {
+
+export default function Alert({message, resName, name, date, time, size}: AlertProps) {
     const [visible, setVisible] = useState(true);
   const router = useRouter();
 
@@ -29,29 +31,33 @@ export default function Alert({message, resName, name, date, time, size}: {
       </button>
 
       {/* Message */}
-      <div>
+      <div className='py-5'>
         <span className="text-xl font-semibold text-green-500">{message}</span>
       </div>
 
       {/* Reservation Details */}
-      <div className="text-sm space-y-2">
-        <p className="font-medium text-lg">{resName}</p>
-        <p><span className="font-semibold">Name:</span> {name}</p>
-        <p><span className="font-semibold">Date:</span> {date}</p>
-        <p><span className="font-semibold">Time:</span> {time}</p>
-        <p><span className="font-semibold">Table:</span> {size}</p>
-      </div>
+      {
+        resName && name && date && time && size && (
+          <div className="text-sm space-y-2">
+            <p className="font-medium text-lg">{resName}</p>
+            <p><span className="font-semibold">Name:</span> {name}</p>
+            <p><span className="font-semibold">Date:</span> {date}</p>
+            <p><span className="font-semibold">Time:</span> {time}</p>
+            <p><span className="font-semibold">Table:</span> {size}</p>
+          </div>
+        )
+      }
 
       {/* Buttons */}
       <div className="flex gap-3">
         <button
-          className="bg-green-400 w-[50%] text-white px-10 py-3 rounded-md hover:bg-green-500 duration-300"
+          className="bg-green-400 w-[50%] text-white px-10 py-2 rounded-md hover:bg-green-500 duration-300"
           onClick={() => router.push('/restaurants')}
         >
           Go to Home
         </button>
         <button
-          className="bg-green-400 w-[50%] text-white px-10 py-3 rounded-md hover:bg-green-500 duration-300"
+          className="bg-green-400 w-[50%] text-white px-10 py-2 rounded-md hover:bg-green-500 duration-300"
           onClick={() => router.push('/myReservation')}
         >
           Go to My Reservations

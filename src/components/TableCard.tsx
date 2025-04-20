@@ -16,7 +16,7 @@ export default function TableCard({
 
     return (
         <div>
-            <div className='relative w-auto h-auto px-10 py-5 bg-white rounded-lg 
+            <div className=' w-auto h-auto px-10 py-5 bg-white rounded-lg 
             shadow-[0px_0px_8px_6px_rgba(0,0,0,0.15)]  m-5 flex flex-col items-center text-black'>
                 <div className="flex flex-row items-center justify-center gap-5 ">
                     <span>{time}</span>

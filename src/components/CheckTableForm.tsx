@@ -110,7 +110,7 @@ export default function CheckTableForm({ restaurantId, token, onResult }: CheckT
           </div>
         </div>
 
-        <div className="flex flex-row justify-between my-3 items-center">
+        {/* <div className="flex flex-row justify-between my-3 items-center">
         <label htmlFor="startTime" className="w-[30%]">Start Time</label>
         <div className="w-[70%] ml-4">
           <input
@@ -121,7 +121,7 @@ export default function CheckTableForm({ restaurantId, token, onResult }: CheckT
             required
           />
         </div>
-      </div>
+      </div> */}
 
         <div className="flex flex-row justify-between my-3 items-center">
           <label htmlFor="Duration" className="w-[30%]">Duration (hours)</label>

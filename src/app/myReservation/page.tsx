@@ -10,6 +10,7 @@ import getReservations from "@/libs/getReservations";
 import deleteReservation from "@/libs/deleteReservation";
 import cancelReservation from "@/libs/cancelReservation";
 import Deletecom from "@/components/Deletecom";
+import Alert from "@/components/Alert";
 
 interface Reservation {
     _id: string,
@@ -39,6 +40,7 @@ export default function MyReservationPage() {
     const [reservations, setReservations] = useState<Reservation[]>([]);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [reservationToDelete, setReservationToDelete] = useState<string | null>(null);
+    const [successDelete, setSuccessDelete] = useState(false);
     const handleDeleteClick = (reservationId: string) => {
         setReservationToDelete(reservationId);
         setShowDeleteModal(true);
@@ -51,7 +53,8 @@ export default function MyReservationPage() {
 
         try {
             await cancelReservation(reservationId, session.user.token);
-            alert("Reservation canceled successfully!");
+            // alert("Reservation canceled successfully!");
+            setSuccessDelete(true);
 
             setReservations((prevReservations) =>
                 prevReservations.filter((reservation) => reservation._id !== reservationId)
@@ -112,13 +115,13 @@ export default function MyReservationPage() {
 
     return (
         <div className=" p-6 font-mono">
-            <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6">
-                <h1 className="text-2xl text-black font-bold text-center mb-6">My Reservations</h1>
+            <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6 z-10">
+                <h1 className="text-2xl text-black font-bold text-center mb-6">All Reservations</h1>
                 {reservations.map((reservation) => (
                     <div
                         key={reservation._id}
-                        className="relative w-full bg-white rounded-lg shadow-md flex flex-row
-            p-4 mb-4 items-center gap-5 text-black "
+                        className=" w-full bg-white rounded-lg shadow-md flex flex-row
+            p-4 mb-4 items-center gap-5 text-black  "
                     >
                         {reservation.restaurant?.picture && (
                             <div className="w-1/4">
@@ -140,19 +143,21 @@ export default function MyReservationPage() {
                             <p className="py-2">Time: {reservation.resStartTime} - {reservation.resEndTime}</p>
                             <p className="py-2">Table: {reservation.tableSize}</p>
                         </div>
-                        <div className="flex gap-3 absolute bottom-0 right-0 m-3">
-                            <button
-                                className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-700 duration-300"
-                                onClick={() => router.push(`/editReservation?res=${reservation._id}`)}
-                            >
-                                Edit
-                            </button>
-                            <button
-                                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 duration-300"
-                                onClick={() => handleDeleteClick(reservation._id)}
-                            >
-                                Cancel
-                            </button>
+                        <div className="flex flex-col justify-between items-end ml-4 mt-auto">
+                            <div className="flex flex-row gap-3">
+                                <button
+                                    className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-700 duration-300"
+                                    onClick={() => router.push(`/editReservation?res=${reservation._id}`)}
+                                >
+                                    Edit
+                                </button>
+                                <button
+                                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 duration-300"
+                                    onClick={() => handleDeleteClick(reservation._id)}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
                         </div>
                     </div>      
                 ))}
@@ -163,6 +168,9 @@ export default function MyReservationPage() {
             onCancel={() => setShowDeleteModal(false)}
             message="Are you sure you want to cancel this reservation?"
             />
+
+            {successDelete && <Alert message="Cancel Reservation Successfully!" date="" resName="" name="" time="" size=""  />}
+
         </div>
     );
 }

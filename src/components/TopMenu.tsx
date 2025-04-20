@@ -22,7 +22,8 @@ export default function TopMenu() {
     }, [session]);
 
     return (
-        <div className="w-screen h-[60px] bg-[#4AC9FF] flex flew-row relative z-30 px-8 items-center font-mono text-xl justify-between ">
+        <div className="fixed top-0 left-0 w-screen h-[60px] bg-[#4AC9FF] flex flew-row mb-[60px] z-120 
+        px-8 items-center font-mono text-xl justify-between ">
             <div className=" flex flex-row justify-start items-center ">
                 {
                     profile && role === 'admin' ? (

@@ -20,40 +20,36 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   const session = await getServerSession(authOptions);
   let user;
   let role = "";
-  if(session?.user.token) {
+  if (session?.user.token) {
     user = await getUserProfile(session.user.token);
   }
-  if(user) {
+  if (user) {
     role = user.data.role;
   }
 
   return (
     <html lang="en">
-      <body className="bg-white text-black font-mono ">
-        {
-          role === 'admin' ? (
-            <NextAuthProvider>
-              <TopMenu />
-              <div className="h-fit">
+      <body className="bg-white text-black font-mono">
+        <NextAuthProvider>
+          <TopMenu />
+
+          {/* Push content down below fixed TopMenu (assumed height 80px) */}
+          <div className="pt-[60px] flex">
+            {role === "admin" && (
+              <div className="w-[300px]">
                 <Sidebar />
-                <div className="w-[79%] absolute right-0 ">
-                  <div className=" ">
-                    {children}    
-                  </div>
-                </div>
               </div>
-            </NextAuthProvider>
-          ) : (
-            <NextAuthProvider>
-              <TopMenu />
+            )}
+
+            {/* Content area */}
+            <div className={`flex-1  ${role === "admin" ? "" : "w-full"}`}>
               {children}
-            </NextAuthProvider>
-          )
-        }
+            </div>
+          </div>
+        </NextAuthProvider>
       </body>
     </html>
   );

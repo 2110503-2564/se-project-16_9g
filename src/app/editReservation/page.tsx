@@ -24,6 +24,7 @@ export default function EditReservation() {
   const router = useRouter();
   const [resDate, setResDate] = useState<string>(dayjs().format("YYYY-MM-DD"));
   const [resTime, setResTime] = useState<string>(dayjs().format("HH:mm:ss"));
+  const [endTime, setEndTime] = useState<string>(dayjs().format("HH:mm:ss"));
   const [reservationData, setReservationData] = useState<any>(null);
   const [name, setName] = useState<string>("");
   const [contact, setContact] = useState<string>("");
@@ -42,6 +43,7 @@ export default function EditReservation() {
   const { data: session } = useSession();
   const params = useSearchParams();
   const rid = params.get("res");
+  console.log(rid);
 
   useEffect(() => {
     if (!session?.user?.token || !rid) return;
@@ -57,9 +59,10 @@ export default function EditReservation() {
           setName(res.data.name);
           setContact(res.data.contact);
           setResDate(res.data.resDate);
-          setResTime(res.data.resTime);
+          setResTime(res.data.resStartTime);
           setDuration(res.data.duration);
           setTableSize(res.data.tableSize);
+          setEndTime(res.data.resEndTime);
         }
 
         // Fetch user profile data
@@ -75,48 +78,64 @@ export default function EditReservation() {
     };
 
     fetchData();
-  }, [session?.user?.token, rid]);
+  }, [session?.user?.token]);
+
   console.log(reservationData);
 
   const handleEditReservation = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
+    setSuccess(false);
     if (!session?.user?.token || !rid) return;
+
+    if (!validationCheck()) return;
+    
 
     const endhour = parseInt(resTime.split(":")[0]) + duration;
     const endTime = `${endhour.toString().padStart(2, "0")}:00`;
 
     setSaving(true);
-    try {
-      await deleteReservation(reservationData._id, session.user.token);
+    // try {
+    //   await deleteReservation(reservationData._id, session.user.token);
 
-      await makeReservation(
-        userProfile._id,
-        name,
-        contact,
-        rid,
-        resDate,
-        resTime,
-        endTime,
-        tableSize,
-        false,
-        session.user.token
-      );
+    //   const response = await makeReservation(
+    //     userProfile._id,
+    //     name,
+    //     contact,
+    //     rid,
+    //     resDate,
+    //     resTime,
+    //     endTime,
+    //     tableSize,
+    //     false,
+    //     session.user.token
+    //   );
 
-      setSuccess(true);
-    } catch (error: any) {
-      alert("Failed to update reservation: " + error.message);
-    } finally {
-      setSaving(false);
-    }
+    //   setSuccess(true);
+    // } catch (error: any) {
+    //   alert("Failed to update reservation: " + error.message);
+    // } finally {
+    //   setSaving(false);
+    // }
+    console.log("Form submitted with values: ", {
+      name,
+      contact,
+      rid,
+      resDate,
+      resTime,
+      endTime,
+      tableSize,
+    })
   };
 
   const validationCheck = (): boolean => {
     if (!name || !contact || !reservationData || !resDate || !resTime || !duration || !tableSize) {
-        setError("Please fill in all fields.");
-        return false;
+      setError("Please fill in all fields.");
+      return false;
     }
     return true;
-};
+  };
 
   if (loading) {
     return (
@@ -135,37 +154,38 @@ export default function EditReservation() {
     );
   }
 
+
   return (
-    <div className="flex flex-col items-center my-10 font-mono">
+    <div className="flex flex-row justify-center  my-10 font-mono">
       {/* ฝั่งซ้าย - ตรวจสอบโต๊ะ */}
-                  <div className="w-full lg:w-[50%]">
-                      <div className="mb-8">
-                          <CheckTableForm
-                              restaurantId={rid || ' '}
-                              token={session?.user?.token || ' '}
-                              onResult={(results, selectedDuration, selectedDate, partySize) => {
-                                  setAvailableTables(results);
-                                  setDuration(selectedDuration);
-                                  setResDate(selectedDate);
-                                  // setPartySize(partySize);
-                              }}
-                          />
-                      </div>
-                      <div className="max-w-xl mx-auto p-4 bg-white rounded-2xl shadow">
-                          <div>
-                              <h2 className="text-xl font-semibold mb-2">Available Tables</h2>
-                              <TableCardList
-                                  tables={availableTables}
-                                  onTableSelect={(date, time, table) => {
-                                      setSelectedTable({ date, time, table });
-                                      setResTime(time);
-                                      setTableSize(table);
-                                      console.log(table);
-                                  }}
-                              />
-                          </div>
-                      </div>
-                  </div>
+      <div className="w-full lg:w-[50%]">
+        <div className="mb-8">
+          <CheckTableForm
+            restaurantId={reservationData.restaurant._id}
+            token={session?.user?.token || ' '}
+            onResult={(results, selectedDuration, selectedDate, partySize) => {
+              setAvailableTables(results);
+              setDuration(selectedDuration);
+              setResDate(selectedDate);
+              // setPartySize(partySize);
+            }}
+          />
+        </div>
+        <div className="max-w-xl mx-auto p-4 bg-white rounded-2xl shadow">
+          <div>
+            <h2 className="text-xl font-semibold mb-2">Available Tables</h2>
+            <TableCardList
+              tables={availableTables}
+              onTableSelect={(date, time, table) => {
+                setSelectedTable({ date, time, table });
+                setResTime(time);
+                setTableSize(table);
+                console.log(table);
+              }}
+            />
+          </div>
+        </div>
+      </div>
 
       <form
         onSubmit={handleEditReservation}
@@ -180,7 +200,7 @@ export default function EditReservation() {
             alt={reservationData?.restaurant.name || "Restaurant"}
             className="w-auto h-[300px] m-auto rounded-lg"
             unoptimized
-        />
+          />
 
         </div>
         <div className="text-xl">
@@ -209,39 +229,49 @@ export default function EditReservation() {
               className="border-2 border-slate-300 w-[70%] h-[40px] px-2 rounded-md bg-white"
             />
           </div>
-          
+
+          <div className="flex justify-between items-center  py-2">
+            <label>Date</label>
+            <input
+              type="text"
+              value={resDate}
+              disabled
+              className="w-[70%] h-10 px-2 border-2 border-slate-300 rounded-md bg-gray-100"
+            />
+          </div>
+
+          <div className="flex justify-between items-center py-2">
+            <label>Time</label>
+            <input
+              type="text"
+              value={resTime}
+              disabled
+              className="w-[70%] h-10 px-2 border-2 border-slate-300 rounded-md bg-gray-100"
+            />
+          </div>
+
           <div className="flex justify-between items-center">
-                        <label>Date</label>
-                        <span className="w-[70%] mx-5">{resDate}</span>
-                    </div>
+            <label>Duration</label>
+            <input
+              type="number"
+              value={duration}
+              disabled
+              className="w-[70%] h-10 px-2 border-2 border-slate-300 rounded-md bg-gray-100"
+            />
+          </div>
 
-                    <div className="flex justify-between items-center">
-                        <label>Start Time</label>
-                        <span className="w-[70%] mx-5">{resTime}</span>
-                    </div>
+          <div className="flex justify-between items-center my-3">
+            <label>Table Size</label>
+            <FormControl className="w-[70%] ">
+              <input
+                type="text"
+                value={tableSize}
+                disabled
+                className="h-10 px-3 border-2 border-slate-300 rounded-md bg-gray-100 text-gray-800"
+              />
+            </FormControl>
+          </div>
 
-                    <div className="flex justify-between items-center">
-                        <label>Duration</label>
-                        <input
-                            type="number"
-                            value={duration}
-                            disabled
-                            className="w-[70%] h-10 px-2 border-2 border-slate-300 rounded-md bg-gray-100"
-                        />
-                    </div>
-
-                    <div className="flex justify-between items-center">
-                        <label>Table Size</label>
-                        <FormControl className="w-[70%] mx-5">
-                            <input
-                                type="text"
-                                value={tableSize}
-                                disabled
-                                className="h-10 px-3 border-2 border-slate-300 rounded-md bg-gray-100 text-gray-800"
-                            />
-                        </FormControl>
-                    </div>
-                    
           {success && (
             <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-40">
               <Alert
@@ -254,13 +284,17 @@ export default function EditReservation() {
               />
             </div>
           )}
-          <div className="mt-5 text-center">
+          <div className="mt-5 text-center flex flex-row gap-3">
+            <button onClick={() => router.push("/myReservation")}
+              className="bg-[#4AC9FF] w-[50%] text-white px-10 py-2 rounded-md hover:bg-[#0356a3] duration-300">
+              Cancel
+            </button>
             <button
               type="submit"
               className="bg-[#4AC9FF] w-[50%] text-white px-10 py-2 rounded-md hover:bg-[#0356a3] duration-300"
               disabled={saving}
             >
-              {saving ? "Saving..." : "Edit Reservation"}
+              {saving ? "Saving..." : "Edit"}
             </button>
           </div>
         </div>

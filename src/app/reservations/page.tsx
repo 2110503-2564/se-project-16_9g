@@ -92,7 +92,7 @@ export default function Reservation() {
         try {
             const valid = validationCheck();
             if (!valid) {
-                //show alert
+                setError("Please fill in all fields.");
             }
             //correct the make reservation to call the api
 
@@ -210,12 +210,22 @@ export default function Reservation() {
 
                     <div className="flex justify-between items-center">
                         <label>Date</label>
-                        <span className="w-[70%] mx-5">{resDate}</span>
+                        <input
+                            type="text"
+                            value={resDate}
+                            disabled
+                            className="w-[70%] h-10 px-2 border-2 border-slate-300 rounded-md bg-gray-100"
+                        />
                     </div>
 
                     <div className="flex justify-between items-center">
-                        <label>Start Time</label>
-                        <span className="w-[70%] mx-5">{resTime}</span>
+                        <label>Time</label>
+                        <input
+                            type="text"
+                            value={resTime}
+                            disabled
+                            className="w-[70%] h-10 px-2 border-2 border-slate-300 rounded-md bg-gray-100"
+                        />
                     </div>
 
                     <div className="flex justify-between items-center">
@@ -230,7 +240,7 @@ export default function Reservation() {
 
                     <div className="flex justify-between items-center">
                         <label>Table Size</label>
-                        <FormControl className="w-[70%] mx-5">
+                        <FormControl className="w-[70%]">
                             <input
                                 type="text"
                                 value={tableSize}
