@@ -36,11 +36,11 @@ export default async function RootLayout({
       <body className="bg-white text-black font-mono ">
         {
           role === 'admin' ? (
-            <NextAuthProvider session={session}>
+            <NextAuthProvider>
               <TopMenu />
               <div className="h-fit">
                 <Sidebar />
-                <div className="w-[80%] absolute right-0 ">
+                <div className="w-[79%] absolute right-0 ">
                   <div className=" ">
                     {children}    
                   </div>
@@ -48,7 +48,7 @@ export default async function RootLayout({
               </div>
             </NextAuthProvider>
           ) : (
-            <NextAuthProvider session={session}>
+            <NextAuthProvider>
               <TopMenu />
               {children}
             </NextAuthProvider>

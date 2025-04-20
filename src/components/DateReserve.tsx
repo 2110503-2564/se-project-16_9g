@@ -6,7 +6,7 @@ import { useState } from "react"
 import dayjs, { Dayjs } from "dayjs"
 
 export default function DateReserve({onDateChange, initialDate} : {onDateChange:Function, initialDate:Dayjs}) {
-    const [reserveDate, setReserveDate] = useState<Dayjs|null>(null);
+    const [reserveDate, setReserveDate] = useState<Dayjs|null>(initialDate);
     return(
         <div >
             <LocalizationProvider dateAdapter={AdapterDayjs}>

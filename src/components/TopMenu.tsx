@@ -1,39 +1,46 @@
+'use client';
 import TopMenuItem from "./TopMenuItem";
-import { Link } from "@mui/material";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/auth/[...nextauth]/authOptions";
+import Link from "next/link";
+import { useSession, signOut } from "next-auth/react";
+import { useEffect, useState } from "react";
 import getUserProfile from "@/libs/getUserProfile";
 
+export default function TopMenu() {
+    const { data: session, status } = useSession();
+    const [role, setRole] = useState("");
+    const [profile, setProfile] = useState<any>(null);
 
-export default async function TopMenu() {
-    const session = await getServerSession(authOptions)
-
-    let profile = null;
-    if (session?.user.token) {
-        profile = await getUserProfile(session.user.token);
-    }
+    useEffect(() => {
+        const fetchUser = async () => {
+            if (session?.user?.token) {
+                const profile = await getUserProfile(session.user.token);
+                setRole(profile.data.role);
+                setProfile(profile);
+            }
+        };
+        fetchUser();
+    }, [session]);
 
     return (
         <div className="w-screen h-[60px] bg-[#4AC9FF] flex flew-row relative z-30 px-8 items-center font-mono text-xl justify-between ">
             <div className=" flex flex-row justify-start items-center ">
                 {
-                    profile && profile.data.role === 'admin' ? (
+                    profile && role === 'admin' ? (
                         <TopMenuItem label="Home" href="/restaurants" />
                     ) : (
                         <TopMenuItem label="Home" href="/" />
                     )
                 }
-                
+
 
                 <TopMenuItem label="Restaurants" href="/restaurants" />
                 {
-                    session  ?
+                    session &&
                     <Link href="/myReservation" className="no-underline">
                         <div className=" h-full px-5 text-white text-xl  w-fit">
                             My Reservation
                         </div>
                     </Link>
-                    : null
                 }
             </div>
             <div >

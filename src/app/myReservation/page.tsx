@@ -8,14 +8,19 @@ import Image from "next/image";
 import { LinearProgress } from "@mui/material";
 import getReservations from "@/libs/getReservations";
 import deleteReservation from "@/libs/deleteReservation";
+import cancelReservation from "@/libs/cancelReservation";
+import Deletecom from "@/components/Deletecom";
 
 interface Reservation {
     _id: string,
     resDate: string,
-    resTime: string,
+    resStartTime: string,
+    resEndTime: string,
+    tableSize: string,
     partySize: number,
     contact: string,
     name: string,
+    status: string,
     restaurant: {
         _id: string,
         name: string,
@@ -32,16 +37,21 @@ export default function MyReservationPage() {
     const [user, setUser] = useState<any>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [reservations, setReservations] = useState<Reservation[]>([]);
-
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [reservationToDelete, setReservationToDelete] = useState<string | null>(null);
+    const handleDeleteClick = (reservationId: string) => {
+        setReservationToDelete(reservationId);
+        setShowDeleteModal(true);
+    };
     const handleDeleteReservation = async (reservationId: string) => {
         if (!session?.user?.token) return;
 
-        const confirmDelete = window.confirm("Are you sure you want to delete this reservation?");
-        if (!confirmDelete) return;
+        //const confirmDelete = window.confirm("Are you sure you want to cancel this reservation?");
+        //if (!confirmDelete) return;
 
         try {
-            await deleteReservation(reservationId, session.user.token);
-            alert("Reservation deleted successfully!");
+            await cancelReservation(reservationId, session.user.token);
+            alert("Reservation canceled successfully!");
 
             setReservations((prevReservations) =>
                 prevReservations.filter((reservation) => reservation._id !== reservationId)
@@ -49,8 +59,10 @@ export default function MyReservationPage() {
 
             router.refresh();
         } catch (error: any) {
-            alert("Failed to delete reservation: " + error.message);
+            alert("Failed to cancel reservation: " + error.message);
         }
+        setShowDeleteModal(false);
+        setReservationToDelete(null);
     };
 
     useEffect(() => {
@@ -64,7 +76,7 @@ export default function MyReservationPage() {
 
                 const res = await getReservations(session.user.token);
                 if (res?.data) {
-                    setReservations(res.data);
+                    setReservations(res.data.filter((reservation:any) => reservation.lockedByAdmin === false && reservation.status === "pending"));
                 } else {
                     setReservations([]);
                 }
@@ -78,6 +90,8 @@ export default function MyReservationPage() {
 
         fetchData();
     }, [session?.user?.token]);
+
+    console.log(reservations);  
 
     if (loading) {
         return (
@@ -123,8 +137,8 @@ export default function MyReservationPage() {
                             <p className="py-2">Customer: {reservation.name}</p>
                             <p className="py-2">Tel: {reservation.contact}</p>
                             <p className="py-2">Date: {reservation.resDate}</p>
-                            <p className="py-2">Time: {reservation.resTime}</p>
-                            <p className="py-2">Number of people: {reservation.partySize}</p>
+                            <p className="py-2">Time: {reservation.resStartTime} - {reservation.resEndTime}</p>
+                            <p className="py-2">Table: {reservation.tableSize}</p>
                         </div>
                         <div className="flex gap-3 absolute bottom-0 right-0 m-3">
                             <button
@@ -135,14 +149,20 @@ export default function MyReservationPage() {
                             </button>
                             <button
                                 className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 duration-300"
-                                onClick={() => handleDeleteReservation(reservation._id)}
+                                onClick={() => handleDeleteClick(reservation._id)}
                             >
-                                Delete
+                                Cancel
                             </button>
                         </div>
                     </div>      
                 ))}
             </div>
+            <Deletecom
+            open={showDeleteModal}
+            onConfirm={()=>{if(reservationToDelete!=null)handleDeleteReservation(reservationToDelete)}}
+            onCancel={() => setShowDeleteModal(false)}
+            message="Are you sure you want to cancel this reservation?"
+            />
         </div>
     );
 }
