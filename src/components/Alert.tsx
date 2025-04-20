@@ -14,7 +14,7 @@ interface AlertProps {
 
 
 export default function Alert({message, resName, name, date, time, size}: AlertProps) {
-    const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(true);
   const router = useRouter();
 
   if (!visible) return null;
@@ -52,13 +52,13 @@ export default function Alert({message, resName, name, date, time, size}: AlertP
       <div className="flex gap-3">
         <button
           className="bg-green-400 w-[50%] text-white px-10 py-2 rounded-md hover:bg-green-500 duration-300"
-          onClick={() => router.push('/restaurants')}
+          onClick={(e) => {e.preventDefault(); e.stopPropagation() ; router.push("/restaurants")}}
         >
           Go to Home
         </button>
         <button
           className="bg-green-400 w-[50%] text-white px-10 py-2 rounded-md hover:bg-green-500 duration-300"
-          onClick={() => router.push('/myReservation')}
+          onClick={(e) => {e.preventDefault(); e.stopPropagation() ; router.push("/myReservation")}}
         >
           Go to My Reservations
         </button>

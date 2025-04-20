@@ -55,12 +55,12 @@ export default function MyReservationPage() {
             await cancelReservation(reservationId, session.user.token);
             // alert("Reservation canceled successfully!");
             setSuccessDelete(true);
-
+            
             setReservations((prevReservations) =>
                 prevReservations.filter((reservation) => reservation._id !== reservationId)
-            );
-
-            router.refresh();
+        );
+        
+            // router.refresh();
         } catch (error: any) {
             alert("Failed to cancel reservation: " + error.message);
         }
@@ -169,7 +169,11 @@ export default function MyReservationPage() {
             message="Are you sure you want to cancel this reservation?"
             />
 
-            {successDelete && <Alert message="Cancel Reservation Successfully!" date="" resName="" name="" time="" size=""  />}
+            {successDelete && 
+                <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-40">
+                    <Alert message="Cancel Reservation Successfully!" date="" resName="" name="" time="" size=""  />
+                </div>
+            }
 
         </div>
     );

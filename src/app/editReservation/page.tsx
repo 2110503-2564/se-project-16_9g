@@ -35,6 +35,7 @@ export default function EditReservation() {
   const [tableSize, setTableSize] = useState<string>('');
   const [success, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  const [restaurantId, setRestaurantId] = useState<string>("");
 
   const [availableTables, setAvailableTables] = useState<any[]>([]);
   const [selectedTable, setSelectedTable] = useState<any | null>(null);
@@ -42,18 +43,17 @@ export default function EditReservation() {
 
   const { data: session } = useSession();
   const params = useSearchParams();
-  const rid = params.get("res");
-  console.log(rid);
+  const reservationId = params.get("res");
 
   useEffect(() => {
-    if (!session?.user?.token || !rid) return;
+    if (!session?.user?.token || !reservationId) return;
 
     const fetchData = async () => {
       setLoading(true);
 
       try {
         // Fetch reservation data
-        const res = await getReservation(rid, session.user.token);
+        const res = await getReservation(reservationId, session.user.token);
         if (res?.data) {
           setReservationData(res.data);
           setName(res.data.name);
@@ -63,6 +63,7 @@ export default function EditReservation() {
           setDuration(res.data.duration);
           setTableSize(res.data.tableSize);
           setEndTime(res.data.resEndTime);
+          setRestaurantId(res.data.restaurant._id);
         }
 
         // Fetch user profile data
@@ -82,51 +83,50 @@ export default function EditReservation() {
 
   console.log(reservationData);
 
-  const handleEditReservation = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+  const handleEditReservation = async () => {
+    
     setError("");
     setSuccess(false);
-    if (!session?.user?.token || !rid) return;
+    if (!session?.user?.token || !reservationId) return;
 
     if (!validationCheck()) return;
     
+    const resStartTime = resTime.split(' ')[0];
+    console.log(resStartTime);
 
-    const endhour = parseInt(resTime.split(":")[0]) + duration;
+    const endhour = parseInt(resStartTime.split(":")[0]) + duration;
     const endTime = `${endhour.toString().padStart(2, "0")}:00`;
+    console.log(endTime);
 
     setSaving(true);
-    // try {
-    //   await deleteReservation(reservationData._id, session.user.token);
+    try {
+      
+      // await cancelReservation(reservationData._id, session.user.token);
+      await deleteReservation(reservationId, session.user.token);
 
-    //   const response = await makeReservation(
-    //     userProfile._id,
-    //     name,
-    //     contact,
-    //     rid,
-    //     resDate,
-    //     resTime,
-    //     endTime,
-    //     tableSize,
-    //     false,
-    //     session.user.token
-    //   );
+      const response = await makeReservation(
+        userProfile._id,
+        name,
+        contact,
+        restaurantId,
+        resDate,
+        resStartTime,
+        endTime,
+        tableSize,
+        false,
+        session.user.token
+      );
+      
+      setSuccess(true);
+      setTimeout(() => {
+        router.push('/myReservation');
+      }, 2000);
+    } catch (error: any) {
+      alert("Failed to update reservation: " + error.message);
+    } finally {
+      setSaving(false);
+    }
 
-    //   setSuccess(true);
-    // } catch (error: any) {
-    //   alert("Failed to update reservation: " + error.message);
-    // } finally {
-    //   setSaving(false);
-    // }
-    console.log("Form submitted with values: ", {
-      name,
-      contact,
-      rid,
-      resDate,
-      resTime,
-      endTime,
-      tableSize,
-    })
   };
 
   const validationCheck = (): boolean => {
@@ -137,14 +137,14 @@ export default function EditReservation() {
     return true;
   };
 
-  if (loading) {
-    return (
-      <div className="w-full text-center">
-        <p>Loading...</p>
-        <LinearProgress />
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="w-full text-center">
+  //       <p>Loading...</p>
+  //       <LinearProgress />
+  //     </div>
+  //   );
+  // }
 
   if (!reservationData) {
     return (
@@ -161,7 +161,7 @@ export default function EditReservation() {
       <div className="w-full lg:w-[50%]">
         <div className="mb-8">
           <CheckTableForm
-            restaurantId={reservationData.restaurant._id}
+            restaurantId={restaurantId}
             token={session?.user?.token || ' '}
             onResult={(results, selectedDuration, selectedDate, partySize) => {
               setAvailableTables(results);
@@ -188,7 +188,6 @@ export default function EditReservation() {
       </div>
 
       <form
-        onSubmit={handleEditReservation}
         className="w-[500px] p-5 flex flex-col items-center rounded-xl shadow-md"
       >
         <div className="text-2xl">Edit Reservation</div>
@@ -285,12 +284,12 @@ export default function EditReservation() {
             </div>
           )}
           <div className="mt-5 text-center flex flex-row gap-3">
-            <button onClick={() => router.push("/myReservation")}
+            <button onClick={(e) => {e.preventDefault(); e.stopPropagation() ; router.push("/myReservation")}}
               className="bg-[#4AC9FF] w-[50%] text-white px-10 py-2 rounded-md hover:bg-[#0356a3] duration-300">
               Cancel
             </button>
             <button
-              type="submit"
+              onClick={(e) => { e.preventDefault(); handleEditReservation()}}
               className="bg-[#4AC9FF] w-[50%] text-white px-10 py-2 rounded-md hover:bg-[#0356a3] duration-300"
               disabled={saving}
             >

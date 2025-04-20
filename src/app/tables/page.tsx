@@ -46,9 +46,9 @@ export default function Tables() {
 
     return (
         <div>
-            <div className="flex flex-col mx-10  h-screen">
+            <div className="flex flex-col mx-10 h-screen">
                 <h1 className="text-3xl font-bold text-center mt-10 pb-5">Table Management</h1>
-                <div className="flex flex-row justify-left items-center gap-5  ">
+                <div className="flex flex-row justify-left items-center gap-5 mb-5 ">
                     <FormControl className="w-[50%] m-10">
                         <label className="font-mono" id="restaurant-select">Select Restaurant</label>
                         <Select
