@@ -66,9 +66,9 @@ export default function Transactions() {
                 </div>
             </div>
 
-            <div>
+            <div className="flex flex-col gap-5 w-[80%] justify-center mx-auto mt-10">
                 <div className="relative flex flex-col gap-3 justify-between mt-10 px-10 py-8 bg-white rounded-lg 
-                w-fit mx-auto w-[80%] border-2 border-red-500 " >
+                w-fit mx-auto w-full border-2 border-red-500 " >
                     <div className="absolute right-0 top-0 px-[30px] py-2 bg-red-500 rounded-tr-md 
                     text-white">Redeem</div>
                     <div className="flex flex-row gap-3 items-start ">
@@ -85,7 +85,7 @@ export default function Transactions() {
                     </div>
                 </div>
                 <div className="relative flex flex-col gap-3 justify-between mt-10 px-10 py-8 bg-white rounded-lg 
-                w-fit mx-auto w-[80%] border-2 border-green-500 " >
+                w-fit mx-auto w-full border-2 border-green-500 " >
                     <div className="absolute right-0 top-0 px-[30px] py-2 bg-green-500 rounded-tr-md 
                     text-white">Receive</div>
                     <div className="flex flex-row gap-3 items-start ">
@@ -102,7 +102,7 @@ export default function Transactions() {
                     </div>
                 </div>
                 <div className="relative flex flex-col gap-3 justify-between my-10 px-10 py-8 bg-white rounded-lg 
-                w-fit mx-auto w-[80%] border-2 border-green-500  " >
+                w-fit mx-auto w-full border-2 border-green-500  " >
                     <div className="absolute right-0 top-0 px-[30px] py-2 bg-green-500 rounded-tr-md 
                     text-white">Receive</div>
                     <div className="flex flex-row gap-3 items-start ">
