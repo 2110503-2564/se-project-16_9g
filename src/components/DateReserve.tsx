@@ -5,15 +5,17 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { useState } from "react"
 import dayjs, { Dayjs } from "dayjs"
 
-export default function DateReserve({onDateChange, initialDate} : {onDateChange:Function, initialDate:Dayjs}) {
-    const [reserveDate, setReserveDate] = useState<Dayjs|null>(initialDate);
-    return(
+export default function DateReserve({ onDateChange, initialDate }: { onDateChange: Function, initialDate: Dayjs }) {
+    const [reserveDate, setReserveDate] = useState<Dayjs | null>(initialDate);
+    return (
         <div >
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker className="bg-white w-full "
-                defaultValue={initialDate}
-                value={reserveDate} 
-                onChange={(value) => {setReserveDate(value); onDateChange(value)}} />
+                <DatePicker className="w-full "
+                    defaultValue={initialDate}
+                    value={reserveDate}
+                    onChange={(value) => { setReserveDate(value); onDateChange(value) }}
+                    
+                />
             </LocalizationProvider>
 
         </div>

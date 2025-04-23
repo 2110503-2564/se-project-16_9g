@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import getRestaurants from "@/libs/getRestaurants";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import viewTableStatus from "@/libs/viewTableStatus";
+import { table } from "console";
 
 export default function Tables() {
 
@@ -13,6 +14,7 @@ export default function Tables() {
 
     const [restaurants, setRestaurants] = useState<{ _id: string; name: string }[]>([]);
     const [selectedRestaurant, setSelectedRestaurant] = useState("");
+    const [selectedRestaurantName, setSelectedRestaurantName] = useState("");
     const [tableStatus, setTableStatus] = useState([]);
 
     useEffect(() => {
@@ -38,6 +40,7 @@ export default function Tables() {
         try {
             const response = await viewTableStatus(restaurantId, session?.user?.token ?? "");
             setTableStatus(response.data);
+            setSelectedRestaurantName(restaurants.find((restaurant) => restaurant._id === restaurantId)?.name || "");
             console.log("Fetched table status:", response.data);
         } catch (error) {
             console.error("Error fetching table status:", error);
@@ -46,10 +49,10 @@ export default function Tables() {
 
     return (
         <div>
-            <div className="flex flex-col mx-10 h-screen">
+            <div className="flex flex-col mx-10  ">
                 <h1 className="text-3xl font-bold text-center mt-10 pb-5">Table Management</h1>
                 <div className="flex flex-row justify-left items-center gap-5 mb-5 ">
-                    <FormControl className="w-[50%] m-10">
+                    <FormControl className="w-[50%] mx-10 ">
                         <label className="font-mono" id="restaurant-select">Select Restaurant</label>
                         <Select
                             labelId="restaurant-select-label"
@@ -70,10 +73,11 @@ export default function Tables() {
                 {
                     tableStatus.length > 0 && (
                         <div className="flex flex-col items-center justify-center w-full h-auto bg-white rounded-lg 
-                            shadow-[0px_0px_8px_6px_rgba(0,0,0,0.15)] mx-2  px-2 pt-3">
+                            shadow-[0px_0px_8px_6px_rgba(0,0,0,0.15)] mx-2 my-5 px-2 pt-3">
+                            <h1 className="text-2xl text-black my-5">Table Status for {selectedRestaurantName}</h1>
                             {tableStatus.map((table: any) => (
-                                <div key={table._id} className="w-full bg-white rounded-lg shadow-md flex flex-row
-                                    mb-4  justify-between px-10 py-5 text-black text-center" >
+                                <div key={table.time} className="w-full bg-white rounded-lg shadow-md flex flex-row
+                                mb-4  justify-between px-10 py-5 text-black text-center" >
                                     <div>
                                         <div>Date</div>
                                         <div>{table.date}</div>
@@ -101,6 +105,7 @@ export default function Tables() {
                                         <div>{table.tables.large.available}</div>
                                     </div>
                                 </div>
+
                             ))}
                         </div>
                     )

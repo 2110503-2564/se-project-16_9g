@@ -15,7 +15,7 @@ export default function Sidebar() {
                 <Link href={'/tables'} className="py-2 px-3 rounded-lg border border-slate-300
                 hover:scale-105 duration-300" >Table Management</Link> <br />
                 <Link href={'/tables-status'} className="py-2 px-3 rounded-lg border border-slate-300
-                hover:scale-105 duration-300" >Table Status</Link> <br />
+                hover:scale-105 duration-300" >Locking Table</Link> <br />
             </div>
         </div>
     );

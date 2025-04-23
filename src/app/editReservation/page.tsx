@@ -207,7 +207,7 @@ export default function EditReservation() {
         </div>
         <div className="w-[95%]">
           <div className="flex flex-row justify-between my-3 items-center">
-            <label htmlFor="name">Name</label>
+            <label htmlFor="name">Name *</label>
             <input
               type="text"
               id="name"
@@ -218,7 +218,7 @@ export default function EditReservation() {
             />
           </div>
           <div className="flex flex-row justify-between my-3 items-center">
-            <label htmlFor="tel">Contact</label>
+            <label htmlFor="tel">Contact *</label>
             <input
               type="text"
               id="tel"
@@ -285,12 +285,12 @@ export default function EditReservation() {
           )}
           <div className="mt-5 text-center flex flex-row gap-3">
             <button onClick={(e) => {e.preventDefault(); e.stopPropagation() ; router.push("/myReservation")}}
-              className="bg-[#4AC9FF] w-[50%] text-white px-10 py-2 rounded-md hover:bg-[#0356a3] duration-300">
-              Cancel
+              className="w-1/2 bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 duration-300 hover:text-white">
+              Cancel Editing
             </button>
             <button
               onClick={(e) => { e.preventDefault(); handleEditReservation()}}
-              className="bg-[#4AC9FF] w-[50%] text-white px-10 py-2 rounded-md hover:bg-[#0356a3] duration-300"
+              className="bg-yellow-500 w-[50%] text-white px-10 py-2 rounded-md hover:bg-yellow-700 duration-300"
               disabled={saving}
             >
               {saving ? "Saving..." : "Edit"}

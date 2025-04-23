@@ -52,13 +52,13 @@ export default function Alert({message, resName, name, date, time, size}: AlertP
       <div className="flex gap-3">
         <button
           className="bg-green-400 w-[50%] text-white px-10 py-2 rounded-md hover:bg-green-500 duration-300"
-          onClick={(e) => {e.preventDefault(); e.stopPropagation() ; router.push("/restaurants")}}
+          onClick={(e) => {e.preventDefault(); e.stopPropagation() ; router.push("/restaurants"); router.refresh()}}
         >
           Go to Home
         </button>
         <button
           className="bg-green-400 w-[50%] text-white px-10 py-2 rounded-md hover:bg-green-500 duration-300"
-          onClick={(e) => {e.preventDefault(); e.stopPropagation() ; router.push("/myReservation")}}
+          onClick={(e) => {e.preventDefault(); e.stopPropagation() ; router.push("/myReservation"); router.refresh()}}
         >
           Go to My Reservations
         </button>

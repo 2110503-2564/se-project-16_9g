@@ -13,7 +13,7 @@ interface CheckTableFormProps {
 }
 
 export default function CheckTableForm({ restaurantId, token, onResult }: CheckTableFormProps) {
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(dayjs().format("YYYY-MM-DD"));
   const [duration, setDuration] = useState(1);
   const [partySize, setPartySize] = useState(1);
   const [startTime, setStartTime] = useState<string>('');

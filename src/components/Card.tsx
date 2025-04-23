@@ -64,7 +64,8 @@ export default function Card(res: RestaurantItem) {
     return (
         <div className=" flex flex-col items-center w-[300px] h-auto bg-white rounded-lg 
         shadow-[0px_0px_8px_6px_rgba(0,0,0,0.15)] m-5 px-2 pt-3
-        transition duration-300 ease-in-out hover:scale-105 hover:cursor-pointer"
+        transition duration-300 ease-in-out hover:scale-105 hover:cursor-pointer
+        overflow-hidden"
             key={res.id}
             onClick={() => router.push(`/restaurants/${res.id}?id=${res.id}`)}
         >
