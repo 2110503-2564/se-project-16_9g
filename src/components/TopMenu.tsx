@@ -61,6 +61,15 @@ export default function TopMenu() {
                             <Link href="/profile" className=" h-full px-5 text-white no-underline ">
                                 Profile
                             </Link>
+                            {
+                                profile && role === 'user' ?
+                                    (
+                                        <Link href="/all-rewards" className=" h-full px-5 text-white no-underline ">
+                                            All Rewards
+                                        </Link>
+                                    )
+                                    : null
+                            }
                         </div>
                         : <div className="flex flex-row gap-4 items-center px-3">
                             <Link href="/register" className="no-underline">
@@ -75,6 +84,8 @@ export default function TopMenu() {
                             </Link>
                         </div>
                 }
+
+
 
             </div>
         </div>

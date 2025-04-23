@@ -75,6 +75,10 @@ export default function AllResrvationsPageForAdmin() {
                     setAllReservations([]);
                     setReservations([]);
                 }
+
+                
+
+
             }
 
 
