@@ -2,23 +2,24 @@
 
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
+import getUserProfile from "@/libs/getUserProfile";
 
 export default function Transactions() {
 
     const { data: session, status } = useSession();
     const [loading, setLoading] = useState(true);
+    const [profile, setProfile] = useState<any>(null);
 
     const fetchData = async () => {
-        if (session?.user.role !== "adimin") {
-            alert("You are not authorized to view this page.");
-            return;
-        }
         if (session?.user?.token) {
-            // Fetch transaction data here using session.user.token
-            // Example: const transactions = await getTransactions(session.user.token);
-            // setTransactions(transactions.data);
+            const profile = await getUserProfile(session.user.token);
+            setProfile(profile.data);
+            if (profile.data.role !== "admin") {
+                alert("You are not authorized to view this page.");
+                return;
+            }
         }
-    }
+    };
 
     return (
         <div>

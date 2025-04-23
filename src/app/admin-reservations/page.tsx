@@ -1,43 +1,26 @@
-"use client";
+'use client'
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import getUserProfile from "@/libs/getUserProfile";
-import Image from "next/image";
-import { LinearProgress } from "@mui/material";
 import getReservations from "@/libs/getReservations";
 import deleteReservation from "@/libs/deleteReservation";
-import cancelReservation from "@/libs/cancelReservation";
+import Image from "next/image";
+import { LinearProgress } from "@mui/material";
 import Deletecom from "@/components/Deletecom";
 import Alert from "@/components/Alert";
+import cancelReservation from "@/libs/cancelReservation";
 
-interface Reservation {
-    _id: string,
-    resDate: string,
-    resStartTime: string,
-    resEndTime: string,
-    tableSize: string,
-    partySize: number,
-    contact: string,
-    name: string,
-    status: string,
-    restaurant: {
-        _id: string,
-        name: string,
-        picture?: string,
-    },
-    user: {
-        name: string,
-    }
-}
+export default function AllResrvationsPageForAdmin() {
 
-export default function MyReservationPage() {
     const router = useRouter();
-    const { data: session } = useSession();
-    const [user, setUser] = useState<any>(null);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [reservations, setReservations] = useState<Reservation[]>([]);
+
+    const { data: session, status } = useSession();
+
+    const [profile, setProfile] = useState<any>(null);
+    const [reservations, setReservations] = useState([]);
+
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [reservationToDelete, setReservationToDelete] = useState<string | null>(null);
     const [successDelete, setSuccessDelete] = useState(false);
@@ -57,7 +40,7 @@ export default function MyReservationPage() {
             setSuccessDelete(true);
 
             setReservations((prevReservations) =>
-                prevReservations.filter((reservation) => reservation._id !== reservationId)
+                prevReservations.filter((reservation:any) => reservation._id !== reservationId)
             );
 
             // router.refresh();
@@ -68,60 +51,44 @@ export default function MyReservationPage() {
         setReservationToDelete(null);
     };
 
-    useEffect(() => {
-        const fetchData = async () => {
-            if (!session?.user?.token) return;
+    const fetchData = async () => {
+        try {
+            if (session?.user?.token) {
+                const profile = await getUserProfile(session.user.token);
+                setProfile(profile.data);
+                if (profile.data.role !== "admin") {
+                    alert("You are not authorized to view this page.");
+                    return;
+                }
 
-            setLoading(true);
-            try {
-                const userData = await getUserProfile(session.user.token);
-                setUser(userData);
-
-                const res = await getReservations(session.user.token);
-                if (res?.data) {
-                    setReservations(res.data.filter((reservation: any) => reservation.lockedByAdmin === false && reservation.status === "pending"));
+                const reservations = await getReservations(session.user.token);
+                if (reservations?.data) {
+                    setReservations(reservations.data.filter((reservation: any) => reservation.lockedByAdmin === false && reservation.status === "pending"));
                 } else {
                     setReservations([]);
                 }
-            } catch (error) {
-                console.error("Error fetching data:", error);
-                setReservations([]);
-            } finally {
-                setLoading(false);
             }
-        };
 
+
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    useEffect(() => {
         fetchData();
     }, [session?.user?.token]);
 
-    console.log(reservations);
-
-    if (loading) {
-        return (
-            <div className="w-full text-center">
-                <p>Loading...</p>
-                <LinearProgress />
-            </div>
-        );
-    }
-
-    if (reservations.length === 0) {
-        return (
-            <div className="w-full text-center text-gray-500">
-                <h1>No reservations found.</h1>
-            </div>
-        );
-    }
 
     return (
-        <div className=" p-6 font-mono">
+        <div className="p-6 font-mono">
             <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6 z-10">
                 <h1 className="text-2xl text-black font-bold text-center mb-6">All Reservations</h1>
-                {reservations.map((reservation) => (
+                {reservations.map((reservation: any) => (
                     <div
                         key={reservation._id}
                         className=" w-full bg-white rounded-lg shadow-md flex flex-row
-            p-4 mb-4 items-center gap-5 text-black  "
+                        p-4 mb-4 items-center gap-5 text-black  "
                     >
                         {reservation.restaurant?.picture && (
                             <div className="w-1/4">
@@ -174,7 +141,6 @@ export default function MyReservationPage() {
                     <Alert message="Cancel Reservation Successfully!" date="" resName="" name="" time="" size="" />
                 </div>
             }
-
         </div>
-    );
+    )
 }

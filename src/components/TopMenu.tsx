@@ -36,12 +36,17 @@ export default function TopMenu() {
 
                 <TopMenuItem label="Restaurants" href="/restaurants" />
                 {
-                    session &&
-                    <Link href="/myReservation" className="no-underline">
-                        <div className=" h-full px-5 text-white text-xl  w-fit">
-                            My Reservation
-                        </div>
-                    </Link>
+                    profile && role === 'admin' ?
+                        <Link href="/admin-reservations" className="no-underline">
+                            <div className=" h-full px-5 text-white text-xl  w-fit">
+                                All Reservation
+                            </div>
+                        </Link> :
+                        <Link href="/myReservation" className="no-underline">
+                            <div className=" h-full px-5 text-white text-xl  w-fit">
+                                My Reservation
+                            </div>
+                        </Link>
                 }
             </div>
             <div >
