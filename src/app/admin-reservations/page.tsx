@@ -6,46 +6,36 @@ import { useRouter } from "next/navigation";
 import getUserProfile from "@/libs/getUserProfile";
 import getReservations from "@/libs/getReservations";
 import deleteReservation from "@/libs/deleteReservation";
+import cancelReservation from "@/libs/cancelReservation";
 import Image from "next/image";
 import { LinearProgress } from "@mui/material";
 import Deletecom from "@/components/Deletecom";
 import Alert from "@/components/Alert";
-import cancelReservation from "@/libs/cancelReservation";
 
 export default function AllResrvationsPageForAdmin() {
-
     const router = useRouter();
-
     const { data: session, status } = useSession();
-
     const [profile, setProfile] = useState<any>(null);
     const [allreservations, setAllReservations] = useState([]);
     const [reservations, setReservations] = useState([]);
-
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [reservationToDelete, setReservationToDelete] = useState<string | null>(null);
     const [successDelete, setSuccessDelete] = useState(false);
     const [menu, setMenu] = useState("pending");
+
     const handleDeleteClick = (reservationId: string) => {
         setReservationToDelete(reservationId);
         setShowDeleteModal(true);
     };
+
     const handleDeleteReservation = async (reservationId: string) => {
         if (!session?.user?.token) return;
-
-        //const confirmDelete = window.confirm("Are you sure you want to cancel this reservation?");
-        //if (!confirmDelete) return;
-
         try {
             await cancelReservation(reservationId, session.user.token);
-            // alert("Reservation canceled successfully!");
             setSuccessDelete(true);
-
             setReservations((prevReservations) =>
                 prevReservations.filter((reservation: any) => reservation._id !== reservationId)
             );
-
-            // router.refresh();
         } catch (error: any) {
             alert("Failed to cancel reservation: " + error.message);
         }
@@ -75,13 +65,7 @@ export default function AllResrvationsPageForAdmin() {
                     setAllReservations([]);
                     setReservations([]);
                 }
-
-                
-
-
             }
-
-
         } catch (err) {
             console.error(err);
         }
@@ -91,26 +75,33 @@ export default function AllResrvationsPageForAdmin() {
         fetchData();
     }, [session?.user?.token]);
 
-
     return (
         <div className="p-6 font-mono">
             <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6 z-10">
                 <h1 className="text-2xl text-black font-bold text-center mb-6">All Reservations</h1>
-                <div className="flex flex-row text-slate-600 gap-5 justify-around  mb-6">
-                    <button className="hover:text-black duration-300 focus:text-black items-center"
-                    onClick={() => { setMenu("pending"); handleChange("pending"); }}>Pending</button>
-                    <button className="hover:text-black duration-300 focus:text-black items-center"
-                    onClick={() => { setMenu("complete"); handleChange("complete"); }} >Complete</button>
-                    <button className="hover:text-black duration-300 focus:text-black items-center"
-                    onClick={() => { setMenu("incomplete"); handleChange("incomplete"); }} >Incomplete</button>
-                    <button className="hover:text-black duration-300 focus:text-black items-center"
-                    onClick={() => { setMenu("cancelled"); handleChange("cancelled"); }} >Cancelled</button>
+                <div className="flex flex-row text-slate-600 gap-5 justify-around mb-6">
+                    <button className="hover:text-black duration-300 focus:text-black"
+                        onClick={() => { setMenu("pending"); handleChange("pending"); }}>
+                        Pending
+                    </button>
+                    <button className="hover:text-black duration-300 focus:text-black"
+                        onClick={() => { setMenu("complete"); handleChange("complete"); }}>
+                        Complete
+                    </button>
+                    <button className="hover:text-black duration-300 focus:text-black"
+                        onClick={() => { setMenu("incomplete"); handleChange("incomplete"); }}>
+                        Incomplete
+                    </button>
+                    <button className="hover:text-black duration-300 focus:text-black"
+                        onClick={() => { setMenu("cancelled"); handleChange("cancelled"); }}>
+                        Cancelled
+                    </button>
                 </div>
+
                 {reservations.map((reservation: any) => (
                     <div
                         key={reservation._id}
-                        className=" w-full bg-white rounded-lg shadow-md flex flex-row
-                        p-4 mb-4 items-center gap-5 text-black  "
+                        className="w-full bg-white rounded-lg shadow-md flex flex-row p-4 mb-4 items-center gap-5 text-black"
                     >
                         {reservation.restaurant?.picture && (
                             <div className="w-1/4">
@@ -132,10 +123,28 @@ export default function AllResrvationsPageForAdmin() {
                             <p className="py-2">Time: {reservation.resStartTime} - {reservation.resEndTime}</p>
                             <p className="py-2">Table: {reservation.tableSize}</p>
                         </div>
-                        {
-                            menu === "pending" &&
+
+                        {menu === "pending" && (
                             <div className="flex flex-col justify-between items-end ml-4 mt-auto">
                                 <div className="flex flex-row gap-3">
+                                    <button
+                                        className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 duration-300"
+                                        onClick={() => {
+                                            console.log("Complete reservation", reservation._id);
+                                            // ใส่ฟังก์ชัน complete ที่นี่
+                                        }}
+                                    >
+                                        Complete
+                                    </button>
+                                    <button
+                                        className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 duration-300"
+                                        onClick={() => {
+                                            console.log("Incomplete reservation", reservation._id);
+                                            // ใส่ฟังก์ชัน incomplete ที่นี่
+                                        }}
+                                    >
+                                        Incomplete
+                                    </button>
                                     <button
                                         className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 duration-300"
                                         onClick={() => handleDeleteClick(reservation._id)}
@@ -150,10 +159,11 @@ export default function AllResrvationsPageForAdmin() {
                                     </button>
                                 </div>
                             </div>
-                        }
+                        )}
                     </div>
                 ))}
             </div>
+
             <Deletecom
                 open={showDeleteModal}
                 onConfirm={() => { if (reservationToDelete != null) handleDeleteReservation(reservationToDelete) }}
@@ -161,11 +171,11 @@ export default function AllResrvationsPageForAdmin() {
                 message="Are you sure you want to cancel this reservation?"
             />
 
-            {successDelete &&
+            {successDelete && (
                 <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-40">
                     <Alert message="Cancel Reservation Successfully!" date="" resName="" name="" time="" size="" />
                 </div>
-            }
+            )}
         </div>
     )
 }
