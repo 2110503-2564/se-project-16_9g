@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
 import getUserProfile from "@/libs/getUserProfile";
+import { IoIosNotifications } from "react-icons/io";
 
 export default function TopMenu() {
     const { data: session, status } = useSession();
@@ -58,18 +59,24 @@ export default function TopMenu() {
                                     Log Out
                                 </div>
                             </Link>
-                            <Link href="/profile" className=" h-full px-5 text-white no-underline ">
-                                Profile
-                            </Link>
                             {
                                 profile && role === 'user' ?
                                     (
-                                        <Link href="/all-rewards" className=" h-full px-5 text-white no-underline ">
-                                            All Rewards
-                                        </Link>
+                                        <div className="flex flex-row items-center">
+                                            <Link href="/myPoints" className=" h-full px-5 text-white no-underline ">
+                                                My Points
+                                            </Link>
+                                            <Link href="/notifications" className=" h-full px-5 text-white text-3xl no-underline ">
+                                                <IoIosNotifications />
+                                            </Link>
+
+                                        </div>
                                     )
                                     : null
                             }
+                            <Link href="/profile" className=" h-full px-5 text-white no-underline ">
+                                Profile
+                            </Link>
                         </div>
                         : <div className="flex flex-row gap-4 items-center px-3">
                             <Link href="/register" className="no-underline">

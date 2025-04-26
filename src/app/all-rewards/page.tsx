@@ -50,8 +50,15 @@ const fetchUserData = async () => {
   
   const fetchRewardsData = async () => {
     try {
-      const response = await axios.get("/api/rewards");
-      setRewards(response.data);
+
+      if (session?.user.token) {
+        const response = await axios.get("/api/rewards");
+        setRewards(response.data);
+
+        const userData = await getUserProfile(session?.user.token);
+        setUser(userData.data);
+        setMyPoints(userData.data.currentPoints)
+      }
     } catch (error) {
       console.error("Error fetching rewards:", error);
     } finally {
@@ -91,7 +98,7 @@ const fetchUserData = async () => {
           </div>
 
           {/* Search */}
-          <div className="flex items-center mb-6">
+          {/* <div className="flex items-center mb-6">
             <input
               type="text"
               value={search}
@@ -102,7 +109,7 @@ const fetchUserData = async () => {
             <button className="bg-sky-400 text-white px-4 py-2 rounded-r-md">
               🔍
             </button>
-          </div>
+          </div> */}
 
           {/* Rewards List */}
           <div className="space-y-6">
@@ -114,12 +121,12 @@ const fetchUserData = async () => {
               filteredRewards.map((reward) => (
                 <div
                   key={reward.id}
-                  className="flex bg-white shadow-md rounded-lg overflow-hidden"
+                  className="flex flex-row bg-white shadow-md rounded-lg overflow-hidden  "
                 >
                   {/* Discount Section */}
-                  <div className="flex items-center justify-center w-32 bg-yellow-100 text-2xl font-bold text-gray-700">
-                    {reward.discountText ? (
-                      <span>{reward.discountText}</span>
+                  <div className="flex items-center justify-center w-[20%] px-3 bg-yellow-100 text-2xl font-bold text-gray-700">
+                    {reward.name ? (
+                      <span className="text-center">{reward.name}</span>
                     ) : reward.image ? (
                       <img
                         src={reward.image}
@@ -132,10 +139,10 @@ const fetchUserData = async () => {
                   </div>
 
                   {/* Info Section */}
-                  <div className="flex-1 p-4 flex flex-col justify-between">
+                  <div className="flex-1 p-4 flex flex-col justify-center ">
                     <div>
-                      <h2 className="text-lg font-semibold">{reward.name}</h2>
-                      <p className="text-gray-600">{reward.description}</p>
+                      {/* <h2 className="text-lg font-semibold">{reward.name}</h2> */}
+                      <h2 className="text-lg">{reward.description}</h2>
                     </div>
 
                     <div className="flex justify-between items-center mt-4">

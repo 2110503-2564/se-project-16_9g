@@ -5,13 +5,18 @@ import { useSession } from "next-auth/react";
 import getUserProfile from "@/libs/getUserProfile";
 import { LinearProgress } from "@mui/material";
 import Link from "next/link";
+import getTransactions from "@/libs/getTransactions";
+import dayjs from "dayjs";
 
 interface PointHistory {
   _id: string;
-  date: string;
-  restaurantName: string;
+  user: string;
   type: "earn" | "redeem";
-  points: number;
+  source: "reservation" | "reward";
+  sourceId: string;
+  amount: number;
+  message: string;
+  createdAt: string;
 }
 
 export default function MyPointsPage() {
@@ -25,8 +30,12 @@ export default function MyPointsPage() {
       if (!session?.user?.token) return;
       try {
         const userData = await getUserProfile(session.user.token);
-        setUser(userData);
-        setPointHistory(userData.pointHistory || []);
+        setUser(userData.data);
+        const transactions = await getTransactions(session.user.token);
+        const sortedTransactions = transactions.data.sort((a: any, b: any) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+        setPointHistory(sortedTransactions);
       } catch (error) {
         console.error("Error fetching user profile:", error);
       } finally {
@@ -45,13 +54,15 @@ export default function MyPointsPage() {
     );
   }
 
+  console.log(user)
+  console.log(pointHistory)
   return (
     <div className="p-6 font-mono">
       <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6">
         <h1 className="text-2xl font-bold text-center mb-6">My Points</h1>
 
         <div className="bg-green-500 text-white rounded-md p-4 text-center shadow-md mb-4">
-          <p className="text-lg">Your Current Points : {user?.points || 0}</p>
+          <p className="text-lg">Your Current Points : {user?.currentPoints }</p>
         </div>
 
         <div className="flex justify-center gap-4 mb-6">
@@ -84,8 +95,11 @@ export default function MyPointsPage() {
                 } rounded-lg p-4 flex justify-between items-center`}
               >
                 <div>
-                  <p className="font-medium">Date: {history.date}</p>
-                  <p>Restaurant Name: {history.restaurantName}</p>
+                  <p className="font-medium">Date: {dayjs(history.createdAt).format("YYYY-MM-DD")}</p>
+                  <p className="font-medium">Time: {dayjs(history.createdAt).format("HH:mm")}</p>
+                  {/* <p>Restaurant Name: {history.source}</p> */}
+                  <p>Description: {history.message}</p>
+                  <p className="text-lg">Amount: {history.amount}</p>
                 </div>
                 <div>
                   <span

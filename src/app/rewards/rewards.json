@@ -48,5 +48,55 @@
         "quantityAvailable": 30,
         "validFrom": "2025-05-01",
         "validTo": "2025-08-31"
+    },
+    {
+        "id": "reward006",
+        "name": "$20 Gift Card",
+        "description": "Receive a $20 gift card valid for any future purchase.",
+        "pointsRequired": 300,
+        "isActive": true,
+        "quantityAvailable": 20,
+        "validFrom": "2025-06-01",
+        "validTo": "2025-12-31"
+    },
+    {
+        "id": "reward007",
+        "name": "VIP Early Access to New Menu",
+        "description": "Get early access to try out our new seasonal menu before public release.",
+        "pointsRequired": 250,
+        "isActive": true,
+        "quantityAvailable": 10,
+        "validFrom": "2025-07-01",
+        "validTo": "2025-07-31"
+    },
+    {
+        "id": "reward008",
+        "name": "Free Coffee for a Month",
+        "description": "Enjoy one free coffee every day for a month.",
+        "pointsRequired": 400,
+        "isActive": true,
+        "quantityAvailable": 5,
+        "validFrom": "2025-08-01",
+        "validTo": "2025-12-31"
+    },
+    {
+        "id": "reward009",
+        "name": "Exclusive Chef's Special Dish",
+        "description": "A complimentary exclusive dish specially crafted by our head chef.",
+        "pointsRequired": 350,
+        "isActive": true,
+        "quantityAvailable": 15,
+        "validFrom": "2025-09-01",
+        "validTo": "2025-12-31"
+    },
+    {
+        "id": "reward010",
+        "name": "Priority Reservation Service",
+        "description": "Get priority seating and reservation at peak hours.",
+        "pointsRequired": 220,
+        "isActive": true,
+        "quantityAvailable": null,
+        "validFrom": "2025-01-01",
+        "validTo": "2025-12-31"
     }
 ]

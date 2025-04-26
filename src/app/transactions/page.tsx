@@ -41,7 +41,11 @@ export default function Transactions() {
 
             const transactionInfo = await getTransaction(session.user.token);
             if (transactionInfo !== null) {
-                setTransactions(transactionInfo);
+                const sortedTransactions = transactionInfo.data.sort((a: any, b: any) =>
+                    new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+                );
+
+                setTransactions(sortedTransactions);
             } else {
                 console.log("No transactions found.");
             }
@@ -57,12 +61,12 @@ export default function Transactions() {
     }, [session]);
 
     const handleSearch = () => {
-        if (!transactions || !transactions.data) {
+        if (!transactions || !transactions) {
             console.log("No transactions to filter.");
             return;
         }
 
-        let filtered = [...transactions.data];
+        let filtered = [...transactions];
 
         if (userIdFilter) {
             console.log("userId " + userIdFilter)
@@ -147,10 +151,11 @@ export default function Transactions() {
                     </div>
                     <div className="flex flex-row gap-3 items-center justify-between">
                         <label>Status</label>
-                        <select
+                        <select 
                             value={statusFilter}
                             onChange={(e) => setStatusFilter(e.target.value)}
-                            className="border border-slate-300 bg-white rounded-lg p-2 focus:outline-none"
+                            className="border border-slate-300 bg-white rounded-lg p-2 focus:outline-none
+                            w-full"
                         >
                             <option value="">Please Select</option>
                             <option value="earn">Earn</option>
@@ -168,20 +173,35 @@ export default function Transactions() {
                     </button>
                 </div>
             </div>
+            <div>
+                <div className="grid grid-cols-8 w-[80%] justify-center text-center bg-slate-800
+                text-white mt-10 mx-auto p-2
+                ">
+                    <div className="col-span-2">Transaction ID</div>
+                    <div>Date</div>
+                    <div className="col-span-2">User</div>
+                    <div className="col-span-2">Email</div>
+                    <div>Amount</div>
 
+                </div>
+            </div>
             {/* Transactions */}
-            <div className="flex flex-col gap-5 w-[80%] justify-center mx-auto mt-10">
-                {(isSearching ? filteredTransactions : transactions?.data)?.length > 0 ? (
-                    (isSearching ? filteredTransactions : transactions?.data)?.map((item: any) => (
-                        <TransactionBox
-                            key={item._id}
-                            transactionID={item._id}
-                            Date={new Date(item.createdAt).toLocaleString()}
-                            UserId={item.user._id}
-                            Username={item.user.name}
-                            email={item.user.email}
-                            type={item.type}
-                        />
+            <div className="w-[80%] mx-auto">
+                {(isSearching ? filteredTransactions : transactions)?.length > 0 ? (
+                    (isSearching ? filteredTransactions : transactions)?.map((item: any) => (
+                        <div >
+                            <TransactionBox
+                                key={item._id}
+                                transactionID={item._id}
+                                Date={new Date(item.createdAt).toLocaleString()}
+                                UserId={item.user._id}
+                                Username={item.user.name}
+                                email={item.user.email}
+                                type={item.type}
+                                amount={item.amount}
+                                message={item.message}
+                            />
+                        </div>
                     ))
                 ) : (
                     <div className="text-center text-gray-500">No transactions found.</div>

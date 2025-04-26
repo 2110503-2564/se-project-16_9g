@@ -4,6 +4,8 @@ interface TransactionBoxProps {
   UserId: string;
   Username: string;
   email: string;
+  amount: number;
+  message: string;
   type: "earn" | "redeem";
 }
 
@@ -13,51 +15,31 @@ export default function TransactionBox({
   UserId,
   Username,
   email,
-  type
+  type,
+  amount,
+  message
 }: TransactionBoxProps) {
   return (
-    type === "earn"
-      ? (
-        <div className="relative flex flex-col gap-3 justify-between mt-10 px-10 py-8 bg-white rounded-lg 
-                w-fit mx-auto w-full border-2 border-green-500 " >
-          <div className="absolute right-0 top-0 px-[30px] py-2 bg-green-500 rounded-tr-md 
-                    text-white">Receive</div>
-          <div className="flex flex-row gap-3 items-start ">
-            <div>Transaction ID {transactionID}</div>
-            <div>Date {Date}</div>
-          </div>
-          <div className="flex flex-row gap-3 items-start ">
-            <div>User ID {UserId}</div>
-            {/* <div>Username {Username}</div>
-            <div>email {email}</div> */}
-          </div>
-          <div className="flex flex-row gap-3 items-start ">
-            {/* <div>Restaurant Name</div> */}
-            <div>Username {Username}</div>
-            <div>email {email}</div>
-          </div>
+    <div className={`relative grid grid-cols-8 justify-center text-center 
+          ${type === "earn" ? "bg-green-100" : "bg-red-100"} my-2 p-3 `}>
+      <div className="col-span-2">{transactionID}</div>
+      <div>
+        <div>{Date.split(',')[0]}</div>
+        <div>{Date.split(',')[1]}</div>
+      </div>
+      <div className="col-span-2">
+        <div>{UserId}</div>
+        <div className="text-sm">@{Username}</div>
+      </div>
+      <div className="col-span-2">{email}</div>
+      <div className="flex flex-col justify-center ">
+        <div>{type === "earn" ? "+" : "-"}{amount}</div>
+        <div className={`flex items-center justify-center absolute top-1/2 right-0 transform 
+            -translate-y-1/2 rotate-90 ${type === "earn" ? "bg-green-500" : "bg-red-500"} text-white text-sm px-2 py-1 rounded-md`}>
+          {type === "earn" ? "Earn" : "Redeem"}
         </div>
-      )
+      </div>
+    </div>
+  )
 
-      :
-      (
-        <div className="relative flex flex-col gap-3 justify-between mt-10 px-10 py-8 bg-white rounded-lg 
-                w-fit mx-auto w-full border-2 border-red-500 " >
-          <div className="absolute right-0 top-0 px-[30px] py-2 bg-red-500 rounded-tr-md 
-                    text-white">Redeem</div>
-          <div className="flex flex-row gap-3 items-start ">
-            <div>Transaction ID</div>
-            <div>Date</div>
-          </div>
-          <div className="flex flex-row gap-3 items-start ">
-            <div>User ID</div>
-          </div>
-          <div className="flex flex-row gap-3 items-start ">
-            <div>Username {Username}</div>
-            <div>email {email}</div>
-            {/* <div>Restaurant Name</div> */}
-          </div>
-        </div>
-      )
-  );
 };
