@@ -141,10 +141,8 @@ const fetchUserData = async () => {
                     <div className="flex justify-between items-center mt-4">
                       <p className="text-sm text-gray-500">valid to:{reward.validTo}</p>
                       <div className="flex items-center space-x-4">
-                      <span className="text-gray-700 font-medium">
-                          {reward.pointsRequired} points
-                        </span>
-                        <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md">Buy</button>
+                        
+                        <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md">Use</button>
                       </div>
                     </div>
                   </div>
