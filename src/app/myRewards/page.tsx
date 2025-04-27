@@ -5,6 +5,7 @@ import axios from "axios";
 import SidebarAllReward from "@/components/SidebarAllReward";
 import { useSession } from "next-auth/react";
 import getUserProfile from "@/libs/getUserProfile";
+import getUserRewards from "@/libs/getUserRewards";
 
 interface Reward {
   id: string;
@@ -48,9 +49,22 @@ const fetchUserData = async () => {
     }
   };
   
-  const fetchRewardsData = async () => {
+  // const fetchRewardsData = async () => {
+  //   try {
+  //     const response = await axios.get("/api/rewards");
+  //     setRewards(response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching rewards:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  const fetchUserRewards = async () => {
     try {
-      const response = await axios.get("/api/rewards");
+      if (!session?.user?._id) return;
+      if (!session?.user?.token) return;
+      const response = await getUserRewards(session.user._id , session.user.token)
       setRewards(response.data);
     } catch (error) {
       console.error("Error fetching rewards:", error);
@@ -64,7 +78,7 @@ const fetchUserData = async () => {
   }, [session?.user?.token]);
   
   useEffect(() => {
-    fetchRewardsData();
+    fetchUserRewards();
   }, []);
   
 

@@ -86,7 +86,7 @@ const fetchUserData = async () => {
       <div className="flex-1 ml-[320px] p-8">
         {/* หัวข้อ All Rewards ตรงกลาง */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-center">My Rewards</h1>
+          <h1 className="text-2xl font-bold text-center">All Rewards</h1>
         </div>
 
         {/* ส่วนที่เหลือเต็มจอ */}
