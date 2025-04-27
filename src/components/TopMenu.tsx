@@ -43,12 +43,16 @@ export default function TopMenu() {
                             <div className=" h-full px-5 text-white text-xl  w-fit">
                                 All Reservation
                             </div>
-                        </Link> :
+                        </Link> : null
+                }
+                {
+                    profile && role === 'user' ?
                         <Link href="/myReservation" className="no-underline">
                             <div className=" h-full px-5 text-white text-xl  w-fit">
                                 My Reservation
                             </div>
                         </Link>
+                    : null
                 }
             </div>
             <div >

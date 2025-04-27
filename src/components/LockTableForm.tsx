@@ -46,6 +46,19 @@ export default function LockTableForm({ restaurants, handleCancel, onSuccess }: 
             return;
         }
 
+        if (!startTime || !endTime) return;
+
+        const today = dayjs().format('YYYY-MM-DD');
+
+        const startTimeWithDate = dayjs(`${today}T${startTime}`);
+        const endTimeWithDate = dayjs(`${today}T${endTime}`);
+
+        if (endTimeWithDate.isBefore(startTimeWithDate)) {
+            setError("Invalid Time: End time cannot be before Start time.");
+            return;
+        }
+
+
         console.log("Form submitted with values: ", {
             selectedRestaurant,
             date,
