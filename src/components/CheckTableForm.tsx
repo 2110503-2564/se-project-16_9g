@@ -32,6 +32,17 @@ export default function CheckTableForm({ restaurantId, token, onResult }: CheckT
 
     if (selectedDate.isBefore(today)) {
       setError("date cannot be in the past");
+      if(onResult) {
+        onResult([], -1, "", -1);
+      }
+      return;
+    }
+
+    if (date === 'Invalid Date') {
+      setError("Please select the date");
+      if(onResult) {
+        onResult([], -1, "", -1);
+      }
       return;
     }
 
@@ -66,9 +77,6 @@ export default function CheckTableForm({ restaurantId, token, onResult }: CheckT
     setError("Restaurant is not available in your chosen reservation time.");
     return;
   } */
-
-
-    
 
       try {
 
