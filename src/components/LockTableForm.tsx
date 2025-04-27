@@ -22,8 +22,9 @@ export default function LockTableForm({ restaurants, handleCancel, onSuccess }: 
     const router = useRouter();
 
     const [selectedRestaurant, setSelectedRestaurant] = useState<string>("");
-    const [date, setDate] = useState<string>("");
-    const [time, setTime] = useState<string>("");
+    const [date, setDate] = useState<string>(dayjs().format("YYYY-MM-DD"));
+    const [startTime, setStartTime] = useState<string>(dayjs().format("HH:mm"));
+    const [endTime, setEndTime] = useState<string>(dayjs().format("HH:mm"));
     const [tableSize, setTableSize] = useState<string>("small");
     const [duration, setDuration] = useState<number>(1);
 
@@ -36,18 +37,19 @@ export default function LockTableForm({ restaurants, handleCancel, onSuccess }: 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!selectedRestaurant || !date || !time) {
+        if (!selectedRestaurant || !date || !startTime || !endTime || !tableSize) {
             setError("Please fill in all fields.");
             return;
         }
-
-        const endhour = parseInt(time.split(":")[0]) + duration;
-        const endTime = `${endhour.toString().padStart(2, "0")}:00`;
+        if (dayjs(date).isBefore(dayjs(), "day")) {
+            setError("Date cannot be in the past.");
+            return;
+        }
 
         console.log("Form submitted with values: ", {
             selectedRestaurant,
             date,
-            time,
+            startTime,
             endTime,
             tableSize,
             duration,
@@ -55,7 +57,7 @@ export default function LockTableForm({ restaurants, handleCancel, onSuccess }: 
         });
 
         try {
-            const response = await makeReservation(userId, "admin", "-", selectedRestaurant, date, time, endTime, tableSize, true, userToken);
+            const response = await makeReservation(userId, "admin", "-", selectedRestaurant, date, startTime, endTime, tableSize, true, userToken);
             setSuccess(true);
             setLoading(false);
             alert("Locked new table successfully!");
@@ -114,9 +116,15 @@ export default function LockTableForm({ restaurants, handleCancel, onSuccess }: 
                     </div>
                 </div>
                 <div className="w-full  p-3 flex flex-row justify-between items-center">
-                    <label>Time</label>
+                    <label>Start Time</label>
                     <div className="w-[70%] mx-5">
-                        <TimeReserve initialTime={dayjs()} onTimeChange={(value: Dayjs) => { setTime(dayjs(value).format("HH:mm")) }} />
+                        <TimeReserve initialTime={dayjs()} onTimeChange={(value: Dayjs) => { setStartTime(dayjs(value).format("HH:mm")) }} />
+                    </div>
+                </div>
+                <div className="w-full  p-3 flex flex-row justify-between items-center">
+                    <label>End Time</label>
+                    <div className="w-[70%] mx-5">
+                        <TimeReserve initialTime={dayjs()} onTimeChange={(value: Dayjs) => { setEndTime(dayjs(value).format("HH:mm")) }} />
                     </div>
                 </div>
                 <div className="w-full p-3 flex flex-row justify-between items-center">
@@ -133,20 +141,6 @@ export default function LockTableForm({ restaurants, handleCancel, onSuccess }: 
                             <MenuItem value="large">Large (10++)</MenuItem>
                         </Select>
                     </FormControl>
-                </div>
-                <div className="w-full  p-3 flex flex-row justify-between items-center gap-10">
-                    <label>Duration</label>
-                    <input
-                            type="number"
-                            name="duration"
-                            id="duration"
-                            min={1}
-                            value={duration}
-                            onChange={(e) => setDuration(Number(e.target.value))}
-                            placeholder="Enter your duration (hours)"
-                            className="border-2 border-slate-300 w-full h-[40px] h-[50px] px-2 rounded-md focus:outline-none 
-                            focus:border-sky-500 bg-white"
-                        />
                 </div>
                 {error && <div className="text-red-500 text-sm my-3">{error}</div>}
                 <div className="flex flex-row justify-center my-3 gap-3">

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
 import getUserProfile from "@/libs/getUserProfile";
+import { IoIosNotifications } from "react-icons/io";
 
 export default function TopMenu() {
     const { data: session, status } = useSession();
@@ -22,8 +23,8 @@ export default function TopMenu() {
     }, [session]);
 
     return (
-        <div className="fixed top-0 left-0 w-screen h-[60px] bg-[#4AC9FF] flex flew-row mb-[60px] z-120 
-        px-8 items-center font-mono text-xl justify-between ">
+        <div className="fixed top-0 left-0 w-screen h-[60px] bg-[#4AC9FF] flex flew-row mb-[60px] z-[100] 
+        px-8 items-center font-mono text-xl justify-between overflow-auto ">
             <div className=" flex flex-row justify-start items-center ">
                 {
                     profile && role === 'admin' ? (
@@ -36,12 +37,17 @@ export default function TopMenu() {
 
                 <TopMenuItem label="Restaurants" href="/restaurants" />
                 {
-                    session &&
-                    <Link href="/myReservation" className="no-underline">
-                        <div className=" h-full px-5 text-white text-xl  w-fit">
-                            My Reservation
-                        </div>
-                    </Link>
+                    profile && role === 'admin' ?
+                        <Link href="/admin-reservations" className="no-underline">
+                            <div className=" h-full px-5 text-white text-xl  w-fit">
+                                All Reservation
+                            </div>
+                        </Link> :
+                        <Link href="/myReservation" className="no-underline">
+                            <div className=" h-full px-5 text-white text-xl  w-fit">
+                                My Reservation
+                            </div>
+                        </Link>
                 }
             </div>
             <div >
@@ -53,6 +59,21 @@ export default function TopMenu() {
                                     Log Out
                                 </div>
                             </Link>
+                            {
+                                profile && role === 'user' ?
+                                    (
+                                        <div className="flex flex-row items-center">
+                                            <Link href="/myPoints" className=" h-full px-5 text-white no-underline ">
+                                                My Points
+                                            </Link>
+                                            <Link href="/notifications" className=" h-full px-5 text-white text-3xl no-underline ">
+                                                <IoIosNotifications />
+                                            </Link>
+
+                                        </div>
+                                    )
+                                    : null
+                            }
                             <Link href="/profile" className=" h-full px-5 text-white no-underline ">
                                 Profile
                             </Link>
@@ -70,6 +91,8 @@ export default function TopMenu() {
                             </Link>
                         </div>
                 }
+
+
 
             </div>
         </div>

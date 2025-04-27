@@ -55,11 +55,11 @@ export default function MyReservationPage() {
             await cancelReservation(reservationId, session.user.token);
             // alert("Reservation canceled successfully!");
             setSuccessDelete(true);
-            
+
             setReservations((prevReservations) =>
                 prevReservations.filter((reservation) => reservation._id !== reservationId)
-        );
-        
+            );
+
             // router.refresh();
         } catch (error: any) {
             alert("Failed to cancel reservation: " + error.message);
@@ -79,7 +79,7 @@ export default function MyReservationPage() {
 
                 const res = await getReservations(session.user.token);
                 if (res?.data) {
-                    setReservations(res.data.filter((reservation:any) => reservation.lockedByAdmin === false && reservation.status === "pending"));
+                    setReservations(res.data.filter((reservation: any) => reservation.lockedByAdmin === false && reservation.status === "pending"));
                 } else {
                     setReservations([]);
                 }
@@ -94,7 +94,7 @@ export default function MyReservationPage() {
         fetchData();
     }, [session?.user?.token]);
 
-    console.log(reservations);  
+    console.log(reservations);
 
     if (loading) {
         return (
@@ -146,32 +146,32 @@ export default function MyReservationPage() {
                         <div className="flex flex-col justify-between items-end ml-4 mt-auto">
                             <div className="flex flex-row gap-3">
                                 <button
-                                    className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-700 duration-300"
-                                    onClick={() => router.push(`/editReservation?res=${reservation._id}`)}
-                                >
-                                    Edit
-                                </button>
-                                <button
                                     className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 duration-300"
                                     onClick={() => handleDeleteClick(reservation._id)}
                                 >
                                     Cancel
                                 </button>
+                                <button
+                                    className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-700 duration-300"
+                                    onClick={() => router.push(`/editReservation?res=${reservation._id}`)}
+                                >
+                                    Edit
+                                </button>
                             </div>
                         </div>
-                    </div>      
+                    </div>
                 ))}
             </div>
             <Deletecom
-            open={showDeleteModal}
-            onConfirm={()=>{if(reservationToDelete!=null)handleDeleteReservation(reservationToDelete)}}
-            onCancel={() => setShowDeleteModal(false)}
-            message="Are you sure you want to cancel this reservation?"
+                open={showDeleteModal}
+                onConfirm={() => { if (reservationToDelete != null) handleDeleteReservation(reservationToDelete) }}
+                onCancel={() => setShowDeleteModal(false)}
+                message="Are you sure you want to cancel this reservation?"
             />
 
-            {successDelete && 
+            {successDelete &&
                 <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-40">
-                    <Alert message="Cancel Reservation Successfully!" date="" resName="" name="" time="" size=""  />
+                    <Alert message="Cancel Reservation Successfully!" date="" resName="" name="" time="" size="" />
                 </div>
             }
 

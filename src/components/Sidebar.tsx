@@ -10,12 +10,14 @@ export default function Sidebar() {
                 hover:scale-105 duration-300" >All Restaurants</Link> <br />
                 <Link href={'/addrestaurant'} className="py-2 px-3 rounded-lg border border-slate-300
                 hover:scale-105 duration-300" >Add Restaurant</Link> <br />
-                <Link href={'/myReservation'} className="py-2 px-3 rounded-lg border border-slate-300
+                <Link href={'/admin-reservations'} className="py-2 px-3 rounded-lg border border-slate-300
                 hover:scale-105 duration-300" >All Reservations</Link> <br />
                 <Link href={'/tables'} className="py-2 px-3 rounded-lg border border-slate-300
                 hover:scale-105 duration-300" >Table Management</Link> <br />
                 <Link href={'/tables-status'} className="py-2 px-3 rounded-lg border border-slate-300
-                hover:scale-105 duration-300" >Table Status</Link> <br />
+                hover:scale-105 duration-300" >Locking Table</Link> <br />
+                <Link href={'/transactions'} className="py-2 px-3 rounded-lg border border-slate-300
+                hover:scale-105 duration-300" >Transaction Histories</Link> <br />
             </div>
         </div>
     );

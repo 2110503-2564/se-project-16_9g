@@ -185,7 +185,7 @@ export default function Reservation() {
 
                 <div className="space-y-4">
                     <div className="flex justify-between items-center">
-                        <label htmlFor="name">Name</label>
+                        <label htmlFor="name">Name *</label>
                         <input
                             id="name"
                             type="text"
@@ -197,7 +197,7 @@ export default function Reservation() {
                     </div>
 
                     <div className="flex justify-between items-center">
-                        <label htmlFor="tel">Contact</label>
+                        <label htmlFor="tel">Contact *</label>
                         <input
                             id="tel"
                             type="text"
@@ -267,7 +267,7 @@ export default function Reservation() {
                     <div className="flex justify-between gap-4 mt-6">
                         <button
                             type="button"
-                            className="w-1/2 bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400"
+                            className="w-1/2 bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 duration-300"
                             onClick={() => router.push(`/restaurants/${res}`)}
                         >
                             Cancel
