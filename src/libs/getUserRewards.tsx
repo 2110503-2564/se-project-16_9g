@@ -2,7 +2,7 @@ import axios from "axios";
 
 export default async function getUserRewards(id: string, token: string) {
     try {
-        const response = await axios.get(`http://localhost:5000/api/stb/${id}/rewards`, {
+        const response = await axios.get(`http://localhost:5000/api/stb/user/${id}/rewards`, {
             headers: {
                 authorization: `Bearer ${token}`,
             }

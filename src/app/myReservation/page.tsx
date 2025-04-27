@@ -38,9 +38,12 @@ export default function MyReservationPage() {
     const [user, setUser] = useState<any>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [reservations, setReservations] = useState<Reservation[]>([]);
+    const [allReservations, setAllReservations] = useState<Reservation[]>([]);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [reservationToDelete, setReservationToDelete] = useState<string | null>(null);
     const [successDelete, setSuccessDelete] = useState(false);
+    const [menu, setMenu] = useState('today');
+
     const handleDeleteClick = (reservationId: string) => {
         setReservationToDelete(reservationId);
         setShowDeleteModal(true);
@@ -79,8 +82,10 @@ export default function MyReservationPage() {
 
                 const res = await getReservations(session.user.token);
                 if (res?.data) {
+                    setAllReservations(res.data.filter((reservation: any) => reservation.lockedByAdmin === false));
                     setReservations(res.data.filter((reservation: any) => reservation.lockedByAdmin === false && reservation.status === "pending"));
                 } else {
+                    setAllReservations([]);
                     setReservations([]);
                 }
             } catch (error) {
@@ -105,18 +110,70 @@ export default function MyReservationPage() {
         );
     }
 
-    if (reservations.length === 0) {
-        return (
-            <div className="w-full text-center text-gray-500">
-                <h1>No reservations found.</h1>
-            </div>
-        );
+    const handleChange = (menu: string) => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Set time to 00:00:00
+
+        if (menu === 'today') {
+            const pending = allReservations.filter((res:any) => res.status === 'pending');
+            const todayReservations = pending.filter((res: any) => {
+                const resDate = new Date(res.resDate); // assume res.date is your reservation date
+                resDate.setHours(0, 0, 0, 0); // Normalize to 00:00:00
+                return resDate.getTime() === today.getTime();
+            });
+            setReservations(todayReservations);
+        } else if (menu === "pending") {
+            const anotherDayReservations = allReservations.filter((res: any) => {
+                const resDate = new Date(res.resDate); // assume res.date is your reservation date
+                resDate.setHours(0, 0, 0, 0); // Normalize to 00:00:00
+                return resDate.getTime() !== today.getTime();
+            });
+            setReservations(anotherDayReservations);
+        } else {
+            setReservations(allReservations.filter((reservation: any) => reservation.status === menu));
+        }
     }
+
+    // if (reservations.length === 0) {
+    //     return (
+    //         <div className="w-full text-center text-gray-500">
+    //             <h1>No reservations found.</h1>
+    //         </div>
+    //     );
+    // }
 
     return (
         <div className=" p-6 font-mono">
             <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6 z-10">
                 <h1 className="text-2xl text-black font-bold text-center mb-6">All Reservations</h1>
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
+                    <button className={`hover:text-black text-lg font-semibold duration-300 w-full
+                    ${menu === "today" ? "text-black" : "text-slate-600"} focus:text-black `}
+                        onClick={() => { setMenu("today"); handleChange("today"); }}>
+                        Today
+                    </button>
+                    {/* <button onClick={() => toast.success("test")}>test toast</button> */}
+                    <button className={`hover:text-black text-slate-600 text-lg font-semibold duration-300 w-full
+                    ${menu === "pending" ? "text-black" : "text-slate-600"} focus:text-black `}
+                        onClick={() => { setMenu("pending"); handleChange("pending"); }}>
+                        Pending
+                    </button>
+                    <button className={`hover:text-black text-slate-600 text-lg font-semibold duration-300 w-full
+                    ${menu === "complete" ? "text-black" : "text-slate-600"} focus:text-black `}
+                        onClick={() => { setMenu("complete"); handleChange("complete"); }}>
+                        Complete
+                    </button>
+                    <button className={`hover:text-black text-slate-600 text-lg font-semibold duration-300 w-full
+                    ${menu === "incomplete" ? "text-black" : "text-slate-600"} focus:text-black `}
+                        onClick={() => { setMenu("incomplete"); handleChange("incomplete"); }}>
+                        Incomplete
+                    </button>
+                    <button className={`hover:text-black text-slate-600 text-lg font-semibold duration-300 w-full
+                    ${menu === "cancelled" ? "text-black" : "text-slate-600"} focus:text-black `}
+                        onClick={() => { setMenu("cancelled"); handleChange("cancelled"); }}>
+                        Cancelled
+                    </button>
+                </div>
                 {reservations.map((reservation) => (
                     <div
                         key={reservation._id}
@@ -144,7 +201,9 @@ export default function MyReservationPage() {
                             <p className="py-2">Table: {reservation.tableSize}</p>
                         </div>
                         <div className="flex flex-col justify-between items-end ml-4 mt-auto">
-                            <div className="flex flex-row gap-3">
+                            {
+                                menu === 'pending' &&
+                                <div className="flex flex-row gap-3">
                                 <button
                                     className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 duration-300"
                                     onClick={() => handleDeleteClick(reservation._id)}
@@ -158,6 +217,7 @@ export default function MyReservationPage() {
                                     Edit
                                 </button>
                             </div>
+                            }
                         </div>
                     </div>
                 ))}

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import axios from "axios";
 import SidebarAllReward from "@/components/SidebarAllReward";
 import { useSession } from "next-auth/react";
 import getUserProfile from "@/libs/getUserProfile";
@@ -13,7 +12,7 @@ interface Reward {
   name: string;
   description: string;
   pointsRequired: number;
-  validTo: string;
+  expire: string;
   image?: string;
 }
 interface PointHistory {
@@ -25,7 +24,7 @@ interface PointHistory {
 }
 
 
-export default function AllRewardsPage() {
+export default function MyRewardsPage() {
   const [rewards, setRewards] = useState<Reward[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -39,16 +38,18 @@ const fetchUserData = async () => {
     if (!session?.user?.token) return;
     try {
       const userData = await getUserProfile(session.user.token);
-      setUser(userData);
+      setUser(userData.data);
       setPointHistory(userData.pointHistory || []);
-      setMyPoints(userData.points || 0); // อย่าลืม set points ด้วย
+      setMyPoints(userData.data.currentPoints || 0); // อย่าลืม set points ด้วย
+
+      // const response = await getUserRewards(userData.data._id , session.user.token)
+      setRewards(userData.data.rewards);
     } catch (error) {
       console.error("Error fetching user profile:", error);
     } finally {
       setLoading(false);
     }
   };
-  
   // const fetchRewardsData = async () => {
   //   try {
   //     const response = await axios.get("/api/rewards");
@@ -59,32 +60,15 @@ const fetchUserData = async () => {
   //     setLoading(false);
   //   }
   // };
-
-  const fetchUserRewards = async () => {
-    try {
-      if (!session?.user?._id) return;
-      if (!session?.user?.token) return;
-      const response = await getUserRewards(session.user._id , session.user.token)
-      setRewards(response.data);
-    } catch (error) {
-      console.error("Error fetching rewards:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
   
   useEffect(() => {
     fetchUserData();
   }, [session?.user?.token]);
-  
-  useEffect(() => {
-    fetchUserRewards();
-  }, []);
-  
 
-  const filteredRewards = rewards.filter((reward) =>
-    reward.name.toLowerCase().includes(search.toLowerCase())
-  );
+
+  // const filteredRewards = rewards.filter((reward) =>
+  //   reward.name.toLowerCase().includes(search.toLowerCase())
+  // );
 
   return (
     <div className="flex min-h-screen bg-gray-100 font-mono">
@@ -122,18 +106,18 @@ const fetchUserData = async () => {
           <div className="space-y-6">
             {loading ? (
               <p>Loading...</p>
-            ) : filteredRewards.length === 0 ? (
+            ) : rewards.length === 0 ? (
               <p>No rewards found.</p>
             ) : (
-              filteredRewards.map((reward) => (
+              rewards.map((reward) => (
                 <div
                   key={reward.id}
                   className="flex bg-white shadow-md rounded-lg overflow-hidden"
                 >
                   {/* Discount Section */}
-                  <div className="flex items-center justify-center w-32 bg-yellow-100 text-2xl font-bold text-gray-700">
-                    {reward.discountText ? (
-                      <span>{reward.discountText}</span>
+                  <div className="flex items-center justify-center w-[20%] px-3 bg-yellow-100 text-2xl font-bold text-gray-700">
+                    {reward.name ? (
+                      <span className="text-center">{reward.name}</span>
                     ) : reward.image ? (
                       <img
                         src={reward.image}
@@ -153,7 +137,7 @@ const fetchUserData = async () => {
                     </div>
 
                     <div className="flex justify-between items-center mt-4">
-                      <p className="text-sm text-gray-500">valid to:{reward.validTo}</p>
+                      <p className="text-sm text-gray-500">valid to: {reward.expire}</p>
                       <div className="flex items-center space-x-4">
                         
                         <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md">Use</button>
