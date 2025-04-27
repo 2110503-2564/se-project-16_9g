@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import getUserProfile from "@/libs/getUserProfile";
 import getReservations from "@/libs/getReservations";
 import cancelReservation from "@/libs/cancelReservation";
+import completeReservation from "@/libs/completeReservation"; // ✅
+import incompleteReservation from "@/libs/IncompleteReservation"; // ✅
 import Image from "next/image";
 import Deletecom from "@/components/Deletecom";
 import Alert from "@/components/Alert";
@@ -39,6 +41,28 @@ export default function AllResrvationsPageForAdmin() {
         }
         setShowDeleteModal(false);
         setReservationToDelete(null);
+    };
+
+    // 👈 เพิ่มฟังก์ชันสำหรับ Complete reservation
+    const handleCompleteReservation = async (reservationId: string) => {
+        if (!session?.user?.token) return;
+        try {
+            await completeReservation(reservationId, session.user.token);
+            fetchData(); // ดึงข้อมูลใหม่หลังจากทำเสร็จ
+        } catch (error: any) {
+            alert("Failed to complete reservation: " + error.message);
+        }
+    };
+
+    // 👈 เพิ่มฟังก์ชันสำหรับ Incomplete reservation
+    const handleIncompleteReservation = async (reservationId: string) => {
+        if (!session?.user?.token) return;
+        try {
+            await incompleteReservation(reservationId, session.user.token);
+            fetchData(); // ดึงข้อมูลใหม่หลังจากทำเสร็จ
+        } catch (error: any) {
+            alert("Failed to mark reservation as incomplete: " + error.message);
+        }
     };
 
     const handleChange = (menu: string) => {
@@ -127,19 +151,16 @@ export default function AllResrvationsPageForAdmin() {
 
                                 {menu === "pending" && (
                                     <div className="flex flex-wrap gap-2 mt-4 justify-end">
+                                        {/* 👈 เปลี่ยนจาก console.log เป็นเรียกฟังก์ชันจริง */}
                                         <button
                                             className="bg-green-600 text-white px-3 py-2 rounded hover:bg-green-700 duration-300 w-full md:w-auto"
-                                            onClick={() => {
-                                                console.log("Complete reservation", reservation._id);
-                                            }}
+                                            onClick={() => handleCompleteReservation(reservation._id)}
                                         >
                                             Complete
                                         </button>
                                         <button
                                             className="bg-orange-500 text-white px-3 py-2 rounded hover:bg-orange-600 duration-300 w-full md:w-auto"
-                                            onClick={() => {
-                                                console.log("Incomplete reservation", reservation._id);
-                                            }}
+                                            onClick={() => handleIncompleteReservation(reservation._id)}
                                         >
                                             Incomplete
                                         </button>
