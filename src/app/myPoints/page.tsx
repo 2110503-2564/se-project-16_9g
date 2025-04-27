@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import getUserProfile from "@/libs/getUserProfile";
 import { LinearProgress } from "@mui/material";
 import Link from "next/link";
-import getTransactions from "@/libs/getTransactions";
+import getTransactions from "@/libs/getTransaction";
 import dayjs from "dayjs";
 
 interface PointHistory {
