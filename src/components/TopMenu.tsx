@@ -5,6 +5,7 @@ import { useSession, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
 import getUserProfile from "@/libs/getUserProfile";
 import { IoIosNotifications } from "react-icons/io";
+import NotificationBell from "./NotificationBell";
 
 export default function TopMenu() {
     const { data: session, status } = useSession();
@@ -60,16 +61,16 @@ export default function TopMenu() {
                                 </div>
                             </Link>
                             {
-                                profile && role === 'user' ?
+                                profile ?
                                     (
                                         <div className="flex flex-row items-center">
                                             <Link href="/myPoints" className=" h-full px-5 text-white no-underline ">
                                                 My Points
                                             </Link>
-                                            <Link href="/notifications" className=" h-full px-5 text-white text-3xl no-underline ">
+                                            {/* <Link href="/notifications" className=" h-full px-5 text-white text-3xl no-underline ">
                                                 <IoIosNotifications />
-                                            </Link>
-
+                                            </Link> */}
+                                            <NotificationBell />
                                         </div>
                                     )
                                     : null

@@ -104,7 +104,7 @@ const fetchUserData = async () => {
             <p className="font-medium">My points: {myPoints}</p>
           </div>
 
-          {/* Search */}
+          {/* Search
           <div className="flex items-center mb-6">
             <input
               type="text"
@@ -116,7 +116,7 @@ const fetchUserData = async () => {
             <button className="bg-sky-400 text-white px-4 py-2 rounded-r-md">
               🔍
             </button>
-          </div>
+          </div> */}
 
           {/* Rewards List */}
           <div className="space-y-6">
