@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation";
 import getUserProfile from "@/libs/getUserProfile";
 import getReservations from "@/libs/getReservations";
 import cancelReservation from "@/libs/cancelReservation";
-import completeReservation from "@/libs/completeReservation"; // ✅
-import incompleteReservation from "@/libs/IncompleteReservation"; // ✅
+import completeReservation from "@/libs/completeReservation"; 
+import incompleteReservation from "@/libs/IncompleteReservation"; 
 import Image from "next/image";
 import Deletecom from "@/components/Deletecom";
 import Alert from "@/components/Alert";
@@ -43,7 +43,7 @@ export default function AllResrvationsPageForAdmin() {
         setReservationToDelete(null);
     };
 
-    // 👈 เพิ่มฟังก์ชันสำหรับ Complete reservation
+    //  เพิ่มฟังก์ชันสำหรับ Complete reservation
     const handleCompleteReservation = async (reservationId: string) => {
         if (!session?.user?.token) return;
         try {
@@ -54,7 +54,7 @@ export default function AllResrvationsPageForAdmin() {
         }
     };
 
-    // 👈 เพิ่มฟังก์ชันสำหรับ Incomplete reservation
+    //  เพิ่มฟังก์ชันสำหรับ Incomplete reservation
     const handleIncompleteReservation = async (reservationId: string) => {
         if (!session?.user?.token) return;
         try {
@@ -151,7 +151,7 @@ export default function AllResrvationsPageForAdmin() {
 
                                 {menu === "pending" && (
                                     <div className="flex flex-wrap gap-2 mt-4 justify-end">
-                                        {/* 👈 เปลี่ยนจาก console.log เป็นเรียกฟังก์ชันจริง */}
+                                        {/*  เปลี่ยนจาก console.log เป็นเรียกฟังก์ชันจริง */}
                                         <button
                                             className="bg-green-600 text-white px-3 py-2 rounded hover:bg-green-700 duration-300 w-full md:w-auto"
                                             onClick={() => handleCompleteReservation(reservation._id)}
