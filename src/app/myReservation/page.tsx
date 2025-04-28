@@ -63,7 +63,8 @@ export default function MyReservationPage() {
                 prevReservations.filter((reservation) => reservation._id !== reservationId)
             );
 
-            // router.refresh();
+            fetchData();
+            router.refresh();
         } catch (error: any) {
             alert("Failed to cancel reservation: " + error.message);
         }
@@ -71,31 +72,31 @@ export default function MyReservationPage() {
         setReservationToDelete(null);
     };
 
-    useEffect(() => {
-        const fetchData = async () => {
-            if (!session?.user?.token) return;
+    const fetchData = async () => {
+        if (!session?.user?.token) return;
 
-            setLoading(true);
-            try {
-                const userData = await getUserProfile(session.user.token);
-                setUser(userData);
+        setLoading(true);
+        try {
+            const userData = await getUserProfile(session.user.token);
+            setUser(userData);
 
-                const res = await getReservations(session.user.token);
-                if (res?.data) {
-                    setAllReservations(res.data.filter((reservation: any) => reservation.lockedByAdmin === false));
-                    setReservations(res.data.filter((reservation: any) => reservation.lockedByAdmin === false && reservation.status === "pending"));
-                } else {
-                    setAllReservations([]);
-                    setReservations([]);
-                }
-            } catch (error) {
-                console.error("Error fetching data:", error);
+            const res = await getReservations(session.user.token);
+            if (res?.data) {
+                setAllReservations(res.data.filter((reservation: any) => reservation.lockedByAdmin === false));
+                setReservations(res.data.filter((reservation: any) => reservation.lockedByAdmin === false && reservation.status === "today"));
+            } else {
+                setAllReservations([]);
                 setReservations([]);
-            } finally {
-                setLoading(false);
             }
-        };
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            setReservations([]);
+        } finally {
+            setLoading(false);
+        }
+    };
 
+    useEffect(() => {
         fetchData();
     }, [session?.user?.token]);
 
@@ -115,7 +116,7 @@ export default function MyReservationPage() {
         today.setHours(0, 0, 0, 0); // Set time to 00:00:00
 
         if (menu === 'today') {
-            const pending = allReservations.filter((res:any) => res.status === 'pending');
+            const pending = allReservations.filter((res: any) => res.status === 'pending');
             const todayReservations = pending.filter((res: any) => {
                 const resDate = new Date(res.resDate); // assume res.date is your reservation date
                 resDate.setHours(0, 0, 0, 0); // Normalize to 00:00:00
@@ -123,7 +124,8 @@ export default function MyReservationPage() {
             });
             setReservations(todayReservations);
         } else if (menu === "pending") {
-            const anotherDayReservations = allReservations.filter((res: any) => {
+            const pending = allReservations.filter((res:any) => res.status === 'pending')
+            const anotherDayReservations = pending.filter((res: any) => {
                 const resDate = new Date(res.resDate); // assume res.date is your reservation date
                 resDate.setHours(0, 0, 0, 0); // Normalize to 00:00:00
                 return resDate.getTime() !== today.getTime();
@@ -204,19 +206,19 @@ export default function MyReservationPage() {
                             {
                                 menu === 'pending' &&
                                 <div className="flex flex-row gap-3">
-                                <button
-                                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 duration-300"
-                                    onClick={() => handleDeleteClick(reservation._id)}
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-700 duration-300"
-                                    onClick={() => router.push(`/editReservation?res=${reservation._id}`)}
-                                >
-                                    Edit
-                                </button>
-                            </div>
+                                    <button
+                                        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 duration-300"
+                                        onClick={() => handleDeleteClick(reservation._id)}
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-700 duration-300"
+                                        onClick={() => router.push(`/editReservation?res=${reservation._id}`)}
+                                    >
+                                        Edit
+                                    </button>
+                                </div>
                             }
                         </div>
                     </div>
@@ -229,11 +231,11 @@ export default function MyReservationPage() {
                 message="Are you sure you want to cancel this reservation?"
             />
 
-            {successDelete &&
+            {/* {successDelete &&
                 <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-40">
                     <Alert message="Cancel Reservation Successfully!" date="" resName="" name="" time="" size="" />
                 </div>
-            }
+            } */}
 
         </div>
     );

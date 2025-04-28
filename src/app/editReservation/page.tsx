@@ -118,9 +118,9 @@ export default function EditReservation() {
       );
       
       setSuccess(true);
-      setTimeout(() => {
-        router.push('/myReservation');
-      }, 2000);
+      // setTimeout(() => {
+      //   router.push('/myReservation');
+      // }, 2000);
     } catch (error: any) {
       alert("Failed to update reservation: " + error.message);
     } finally {
