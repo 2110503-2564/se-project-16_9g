@@ -3,9 +3,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import SidebarAllReward from "@/components/SidebarAllReward";
-import getUserProfile from "@/libs/getUserProfile";
 import { useSession } from "next-auth/react";
-
+import getUserProfile from "@/libs/getUserProfile";
 
 interface Reward {
   id: string;
@@ -36,36 +35,8 @@ export default function AllRewardsPage() {
   const [myPoints, setMyPoints] = useState(user?.points || 0);
 
   // ===> เปลี่ยนชื่อ function ไม่ให้ซ้ำกัน
-const fetchUserData = async () => {
+const fetchData = async () => {
     if (!session?.user?.token) return;
-    try {
-      const userData = await getUserProfile(session.user.token);
-      setUser(userData);
-      setPointHistory(userData.pointHistory || []);
-      setMyPoints(userData.points || 0); // อย่าลืม set points ด้วย
-    } catch (error) {
-      console.error("Error fetching user profile:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-  
-  const fetchRewardsData = async () => {
-    try {
-
-      if (session?.user.token) {
-        const response = await axios.get("/api/rewards");
-        setRewards(response.data);
-
-        const userData = await getUserProfile(session?.user.token);
-        setUser(userData.data);
-        setMyPoints(userData.data.currentPoints)
-      }
-  const [user, setUser] = useState();
-
-  const { data: session } = useSession();
-
-  const fetchData = async () => {
     try {
 
       if (session?.user.token) {
