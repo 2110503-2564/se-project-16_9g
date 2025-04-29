@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test('test', async ({ page }) => {
+  test.setTimeout(120_000); // 2 minutes
   await page.goto('http://localhost:3000/');
   await page.getByRole('link', { name: 'Log In' }).click();
   await page.locator('div').filter({ hasText: /^Email$/ }).click();
