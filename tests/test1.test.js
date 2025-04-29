@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test('test', async ({ page }) => {
-  test.setTimeout(120_000); // 2 minutes
+  test.setTimeout(120000);
   await page.goto('http://localhost:3000/');
   await page.getByRole('link', { name: 'Log In' }).click();
   await page.getByRole('textbox', { name: 'Email' }).click();
@@ -9,32 +9,33 @@ test('test', async ({ page }) => {
   await page.getByRole('textbox', { name: 'Password' }).click();
   await page.getByRole('textbox', { name: 'Password' }).fill('123456');
   await page.getByRole('button', { name: 'Login' }).click();
-  await page.getByRole('button', { name: 'Reserve' }).nth(1).click();
+  await page.getByRole('button', { name: 'Reserve' }).first().click();
+  await page.goto('http://localhost:3000/reservations?res=67dea060bec2dacd38e0d012&resname=%E0%B9%80%E0%B8%88%E0%B9%8A%E0%B9%82%E0%B8%AD%E0%B8%A7%20%E0%B8%82%E0%B9%89%E0%B8%B2%E0%B8%A7%E0%B8%95%E0%B9%89%E0%B8%A1%E0%B9%80%E0%B8%9B%E0%B9%87%E0%B8%94%20edit&img=https://img.wongnai.com/p/1920x0/2025/03/01/a8681736b229474db464e64b483a0d3c.jpg&user=680fa779d30e16cf1e9b96ed');
   await page.getByRole('button', { name: 'Choose date, selected date is' }).click();
   await page.getByRole('button', { name: 'Next month' }).click();
   await page.getByRole('gridcell', { name: '2', exact: true }).click();
   await page.getByRole('button', { name: 'Check' }).click();
-  await page.getByRole('listitem').filter({ hasText: ':00 - 13:00smallReserve' }).getByRole('button').click();
+  await page.getByRole('listitem').filter({ hasText: ':00 - 17:00smallReserve' }).getByRole('button').click();
   await page.getByRole('textbox', { name: 'Name *' }).click();
-  await page.getByRole('textbox', { name: 'Name *' }).fill('test');
+  await page.getByRole('textbox', { name: 'Name *' }).fill('web');
   await page.getByRole('textbox', { name: 'Contact *' }).click();
   await page.getByRole('textbox', { name: 'Contact *' }).fill('1234567890');
-  await page.locator('form').filter({ hasText: 'Make ReservationFam Time' }).getByRole('button').nth(1).click();
+  await page.locator('form').filter({ hasText: 'Make Reservation' }).getByRole('button').nth(1).click();
   await page.getByRole('button', { name: 'Go to My Reservations' }).click();
   await page.getByRole('button', { name: 'Pending' }).click();
-  await page.getByRole('button', { name: 'Edit' }).nth(1).click();
+  await page.getByRole('button', { name: 'Edit' }).click();
   await page.getByRole('button', { name: 'Choose date, selected date is' }).click();
   await page.getByRole('button', { name: 'Next month' }).click();
-  await page.getByRole('gridcell', { name: '4', exact: true }).click();
+  await page.getByRole('gridcell', { name: '3', exact: true }).click();
   await page.getByPlaceholder('Duration (hours)').click();
   await page.getByPlaceholder('Duration (hours)').fill('2');
   await page.getByPlaceholder('Party Size').click();
   await page.getByPlaceholder('Party Size').fill('5');
   await page.getByRole('button', { name: 'Check' }).click();
-  await page.getByRole('listitem').filter({ hasText: ':00 - 13:00mediumReserve' }).getByRole('button').click();
+  await page.getByRole('listitem').filter({ hasText: ':00 - 18:00mediumReserve' }).getByRole('button').click();
   await page.getByRole('button', { name: 'Edit', exact: true }).click();
   await page.getByRole('button', { name: 'Go to My Reservations' }).click();
   await page.getByRole('button', { name: 'Pending' }).click();
-  await page.getByRole('button', { name: 'Cancel' }).nth(2).click();
+  await page.getByRole('button', { name: 'Cancel', exact: true }).click();
   await page.getByRole('button', { name: 'Confirm' }).click();
 });
