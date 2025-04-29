@@ -110,7 +110,7 @@ export default function AllResrvationsPageForAdmin() {
                 const reservations = await getReservations(session.user.token);
                 if (reservations?.data) {
                     setAllReservations(reservations.data.filter((reservation: any) => reservation.lockedByAdmin === false));
-                    setReservations(reservations.data.filter((reservation: any) => reservation.lockedByAdmin === false && reservation.status === "pending"));
+                    setReservations(reservations.data.filter((reservation: any) => reservation.lockedByAdmin === false && reservation.status === "today"));
                 } else {
                     setAllReservations([]);
                     setReservations([]);

@@ -1,9 +1,15 @@
 import axios from "axios";
 
 export default async function userLogIn(userEmail: string, userPassword: string) {
+    const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
+
+    if (!backendUrl) {
+        throw new Error("BACKEND_URL is not defined in environment variables");
+    }
+
     try {
         const response = await axios.post(
-            "http://localhost:5000/api/stb/auth/login",
+            `${backendUrl}/api/stb/auth/login`,
             {
                 email: userEmail,
                 password: userPassword,
